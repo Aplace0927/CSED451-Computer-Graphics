@@ -35,8 +35,17 @@ if(WIN32)
     configure_file("${CMAKE_SOURCE_DIR}/bin/win/glew32.dll"
                  "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/glew32.dll" COPYONLY)
 elseif(APPLE)
-    link_directories("${CMAKE_SOURCE_DIR}/lib/mac")
-    set(SHARED_PATH "${CMAKE_SOURCE_DIR}/bin/mac")
+    add_library(GLUT SHARED IMPORTED)
+    set_target_properties(GLUT PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/bin/mac/libglut.dylib"
+        INTERFACE_LINK_OPTIONS "-framework;GLUT"
+    )
+    add_library(glew SHARED IMPORTED)
+    set_target_properties(glew PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/bin/mac/libGLEW.dylib"
+    )
+    add_library(glm INTERFACE)
+    target_include_directories(glm INTERFACE "${CMAKE_SOURCE_DIR}/include/glm")
 elseif(UNIX)
     link_directories("${CMAKE_SOURCE_DIR}/lib/linux")
     set(SHARED_PATH "${CMAKE_SOURCE_DIR}/bin/linux")
