@@ -1,0 +1,57 @@
+﻿# CMakeList.txt : CMake project for CSED451, include source and define
+# project specific logic here.
+#
+cmake_minimum_required (VERSION 3.8)
+# Enable Hot Reload for MSVC compilers if supported.
+project (CSED451)
+
+set(CMAKE_CXX_STANDARD 17)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build")
+
+include_directories("${CMAKE_SOURCE_DIR}/include")
+find_package(OpenGL REQUIRED)
+
+if(WIN32)
+    add_library(GLUT SHARED IMPORTED)
+    set_target_properties(GLUT PROPERTIES
+        IMPORTED_IMPLIB "${CMAKE_SOURCE_DIR}/lib/win/freeglut.lib"
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/bin/win/freeglut.dll"
+    )
+    
+    add_library(glew SHARED IMPORTED)
+    set_target_properties(glew PROPERTIES
+        IMPORTED_IMPLIB "${CMAKE_SOURCE_DIR}/lib/win/glew32.lib"
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/bin/win/glew32.dll"
+    )
+
+    add_library(glm INTERFACE)
+    set_target_properties(glm PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/include/glm"
+    )
+
+    configure_file("${CMAKE_SOURCE_DIR}/bin/win/freeglut.dll"
+                 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/freeglut.dll" COPYONLY)
+    configure_file("${CMAKE_SOURCE_DIR}/bin/win/glew32.dll"
+                 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/glew32.dll" COPYONLY)
+elseif(APPLE)
+    link_directories("${CMAKE_SOURCE_DIR}/lib/mac")
+    set(SHARED_PATH "${CMAKE_SOURCE_DIR}/bin/mac")
+elseif(UNIX)
+    link_directories("${CMAKE_SOURCE_DIR}/lib/linux")
+    set(SHARED_PATH "${CMAKE_SOURCE_DIR}/bin/linux")
+endif()
+
+function(add_gl_executable_single_file exec_name source_file)
+  add_executable(${exec_name} ${source_file})
+  target_link_libraries(${exec_name} OpenGL::GL GLUT glew)
+  target_compile_definitions(${exec_name} PRIVATE GL_SILENCE_DEPRECATION)
+  if(DEFINED GLM_INCLUDE_DIR)
+    target_include_directories(${exec_name} PRIVATE ${GLM_INCLUDE_DIR})
+  else()
+    target_link_libraries(${exec_name} glm::glm)
+  endif()
+endfunction()
+
+# Add source to this project's executable.
+add_subdirectory(src)
