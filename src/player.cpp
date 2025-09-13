@@ -2,7 +2,9 @@
 
 Player::Player::Player()
     : Object::Object(
-        Shape::Shape<float, 3, Shape::RGBColor>(
+        // Center at origin
+        std::array<float, 3>{0.0f, -0.5f, 0.0f}, 
+        Shape::Shape<float, 3, Shape::RGBColor>(    
             // subshapes: vector of subshapes, each subshape is a vector of vertices
             std::vector<std::vector<std::array<float, 3>>>{
                 {

@@ -17,6 +17,12 @@ int main(int argc, char** argv) {
     glutCreateWindow(GameConfig::WINDOW_TITLE);
     glewInit();
 
+    glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(glm::ortho(
+        0.0f, static_cast<float>(GameConfig::WINDOW_HEIGHT),
+        0.0f, static_cast<float>(GameConfig::WINDOW_WIDTH),
+        -1.0f, 1.0f
+    )));
+
     glEnable(GL_DEPTH_TEST);
     glutDisplayFunc([]() {
         game.draw();
