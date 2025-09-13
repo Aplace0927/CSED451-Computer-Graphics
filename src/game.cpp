@@ -18,15 +18,19 @@ void Game::Game::draw() {
 void Game::Game::keyEvent(unsigned char key, int x, int y) {
     switch (key) {
         case 'w':
+        case 'W':
             player.update({0.0f, 0.02f, 0.0f});
             break;
         case 's':
+        case 'S':
             player.update({0.0f, -0.02f, 0.0f});
             break;
         case 'a':
+        case 'A':
             player.update({-0.02f, 0.0f, 0.0f});
             break;
         case 'd':
+        case 'D':
             player.update({0.02f, 0.0f, 0.0f});
             break;
         default:

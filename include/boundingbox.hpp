@@ -13,17 +13,29 @@ namespace BoundingBox {
         void update(
             const std::array<T, D>& displacement
         ) {
-            for (size_t i = 0; i < D; ++i) {
-                start[i] += displacement[i];
-                end[i] += displacement[i];
+            auto it_d = displacement.begin();
+            auto it_s = start.begin();
+            auto it_e = end.begin();
+            for(
+                ; it_d != displacement.end() && it_s != start.end() && it_e != end.end();
+                ++it_d, ++it_s, ++it_e
+            ) {
+                *it_s += *it_d;
+                *it_e += *it_d;
             }
         }
         
         bool operator&(
             const BoundingBox<T, D>& other
         ) const {
-            for (size_t i = 0; i < D; ++i) {
-                if (not (end[i] < other.start[i] || start[i] > other.end[i])) {
+            typename std::array<T, D>::const_iterator it_s, it_e, it_o_s, it_o_e;
+            for (
+                it_s = start.begin(), it_e = end.begin(), it_o_s = other.start.begin(), it_o_e = other.end.begin();
+                it_s != start.end() && it_e != end.end() && it_o_s != other.start.end() && it_o_e != other.end.end();
+                ++it_s, ++it_e, ++it_o_s, ++it_o_e
+            )
+            {
+                if (not (*it_e < *it_o_s || *it_s > *it_o_e)) {
                     return true;    // Collides in dim i
                 }
             }
