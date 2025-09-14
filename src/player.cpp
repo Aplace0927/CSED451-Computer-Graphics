@@ -3,22 +3,22 @@
 Player::Player::Player()
     : Object::Object(
         // Center at origin
-        std::array<float, 3>{0.0f, -0.5f, 0.0f}, 
-        Shape::Shape<float, 3, Shape::RGBColor>(    
+        glm::vec3(0.0f, -0.5f, 0.0f), 
+        Shape::Shape<glm::vec3, Shape::RGBColor>(    
             // subshapes: vector of subshapes, each subshape is a vector of vertices
-            std::vector<std::vector<std::array<float, 3>>>{
+            std::vector<std::vector<glm::vec3>>{
                 {
-                    {0.0f, 0.05f, 0.0f},
-                    {-0.1f, -0.05f, 0.0f},
-                    {0.1f, -0.05f, 0.0f}
+                    glm::vec3(0.0f, 0.05f, 0.0f),
+                    glm::vec3(-0.1f, -0.05f, 0.0f),
+                    glm::vec3(0.1f, -0.05f, 0.0f)
                 }
             },
             // colors: vector of color sets, each set is a vector of colors for the subshape
             std::vector<std::vector<Shape::RGBColor>>{
                 {
-                    {1.0f, 1.0f, 0.0f},
-                    {0.0f, 1.0f, 1.0f},
-                    {1.0f, 0.0f, 1.0f}
+                    Shape::RGBColor(1.0f, 1.0f, 0.0f),
+                    Shape::RGBColor(0.0f, 1.0f, 1.0f),
+                    Shape::RGBColor(1.0f, 0.0f, 1.0f)
                 }
             },
             // drawMethod: vector of draw methods for each subshape

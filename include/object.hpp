@@ -5,29 +5,29 @@
 #include "boundingbox.hpp"
 
 namespace Object {
-    template <typename T, size_t D, typename C>
+    template <typename T, typename C>
     class Object {
     public:
         Object(
-            const std::array<T, D>& _position,
-            const Shape::Shape<T, D, C> &_shape
+            const T  &_position,
+            const Shape::Shape<T, C> &_shape
         ): shape(_shape) {
             // Update to actual position (also initializes bounding box) 
             boundingBox = shape.move(_position);
         }
 
-        void move(const std::array<T, D>& displacement) {
+        void move(const T& displacement) {
             boundingBox = shape.move(displacement);
         }
 
-        void rotate(const std::array<T, D>& angles, const std::array<T, D>& pivot) {
+        void rotate(const T& angles, const T& pivot) {
             boundingBox = shape.rotate(angles, pivot);
         }
-        void applyTransition(const glm::mat<D+1, D+1, T>& transition) {
+        void applyTransition(const glm::mat4& transition) {
             boundingBox = shape.applyTransition(transition);
         }
 
-        std::array<T, D> getCenter() const {
+        T getCenter() const {
             return shape.getCenter();
         }
         
@@ -39,8 +39,8 @@ namespace Object {
         }
         
     private:
-        Shape::Shape<T, D, C> shape;
-        BoundingBox::BoundingBox<T, D> boundingBox;
+        Shape::Shape<T, C> shape;
+        BoundingBox::BoundingBox<T> boundingBox;
     };
 }
 

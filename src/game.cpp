@@ -19,31 +19,31 @@ void Game::Game::keyEvent(unsigned char key, int x, int y) {
     switch (key) {
         case 'w':
         case 'W':
-            player.move(std::array<float, 3>{0.0f, 0.02f, 0.0f});
+            player.move(glm::vec3(0.0f, 0.02f, 0.0f));
             break;
         case 's':
         case 'S':
-            player.move(std::array<float, 3>{0.0f, -0.02f, 0.0f});
+            player.move(glm::vec3(0.0f, -0.02f, 0.0f));
             break;
         case 'a':
         case 'A':
-            player.move(std::array<float, 3>{-0.02f, 0.0f, 0.0f});
+            player.move(glm::vec3(-0.02f, 0.0f, 0.0f));
             break;
         case 'd':
         case 'D':
-            player.move(std::array<float, 3>{0.02f, 0.0f, 0.0f});
+            player.move(glm::vec3(0.02f, 0.0f, 0.0f));
             break;
         case 'q':
         case 'Q':
             player.rotate(
-                std::array<float, 3>{0.0f, 0.0f, glm::radians(-5.0f)},
+                glm::vec3(0.0f, 0.0f, glm::radians(-5.0f)),
                 player.getCenter()
             );
             break;
         case 'e':
         case 'E':
             player.rotate(
-                std::array<float, 3>{0.0f, 0.0f, glm::radians(5.0f)},
+                glm::vec3(0.0f, 0.0f, glm::radians(5.0f)),
                 player.getCenter()
             );
             break;
