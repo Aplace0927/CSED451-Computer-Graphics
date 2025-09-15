@@ -29,13 +29,4 @@ namespace Bullet {
     };
 }
 
-namespace BulletPattern {
-    constexpr float BulletSpeed = 0.000005f;
-    inline std::function<glm::vec3(glm::vec3, time_t)> straight_down() {
-        return [](glm::vec3 origin, time_t time_elapsed) {
-            return origin + glm::vec3(0.0f, -BulletSpeed * static_cast<float>(time_elapsed), 0.0f);
-        };
-    }
-}
-
 #endif // BULLET_HPP

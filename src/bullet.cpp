@@ -43,6 +43,6 @@ Bullet::Bullet::Bullet(
     ) { }
 
 void Bullet::Bullet::draw(time_t current_time) {
-    move(movement_pattern(bullet_origin, current_time - created_time) - bullet_origin);
+    setPosition(movement_pattern(bullet_origin, current_time - created_time));
     Object::draw();
 }

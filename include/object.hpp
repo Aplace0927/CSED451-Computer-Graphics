@@ -16,6 +16,11 @@ namespace Object {
             boundingBox = shape.move(_position);
         }
 
+        void setPosition(const T& position) {
+            // Move by the difference between current center and new position
+            boundingBox = shape.move(position - shape.getCenter());
+        }
+
         void move(const T& displacement) {
             boundingBox = shape.move(displacement);
         }
