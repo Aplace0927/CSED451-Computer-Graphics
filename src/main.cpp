@@ -15,6 +15,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(GameConfig::WINDOW_WIDTH, GameConfig::WINDOW_HEIGHT);
     glutCreateWindow(GameConfig::WINDOW_TITLE);
+    glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
     glewInit();
 
     glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(glm::ortho(
@@ -29,6 +30,10 @@ int main(int argc, char** argv) {
     });
     glutKeyboardFunc([](unsigned char key, int x, int y) {
         game.keyEvent(key, x, y);
+    });
+
+    glutKeyboardUpFunc([](unsigned char key, int x, int y) {
+        game.keyUpEvent(key, x, y);
     });
     glutMainLoop();
 }  
