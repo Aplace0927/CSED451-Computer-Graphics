@@ -1,4 +1,5 @@
 #include "PhysicsManager.hpp"
+#include "config.hpp"
 #include <chrono>
 
 namespace PhysicsManager {
@@ -30,7 +31,7 @@ namespace PhysicsManager {
     }
 
     void PhysicsManager::start() {
-        if (running) return; // 이미 실행 중이면 무시
+        if (running) return;
         running = true;
         loopThread = std::thread([this]() {
             while (running) {
@@ -40,7 +41,7 @@ namespace PhysicsManager {
 
                 auto end = std::chrono::high_resolution_clock::now();
                 std::chrono::duration<float> elapsed = end - start;
-                auto sleepDuration = std::chrono::duration<float>(fixedtime) - elapsed;
+                auto sleepDuration = std::chrono::duration<float>(GameConfig::FIXED_DELTATIME) - elapsed;
                 if (sleepDuration.count() > 0)
                     std::this_thread::sleep_for(sleepDuration);
             }

@@ -6,13 +6,8 @@
 Game::Game::Game() {
     player = Player::Player();
 }
-
-void Game::Game::draw() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    player.draw();
-    //!TODO: add game objects drawing here
-    glutSwapBuffers();
-    glutPostRedisplay();
+Game::Game::~Game() {
+	delete& player;
 }
 
 void Game::Game::keyEvent(unsigned char key, int x, int y) {

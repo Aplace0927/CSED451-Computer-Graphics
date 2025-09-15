@@ -19,6 +19,10 @@ namespace Object {
             update_ptr = GraphicsManager::GraphicsManager::getInstance().registerHandler([this]() {this->update();});
             fixedUpdate_ptr = PhysicsManager::PhysicsManager::getInstance().registerHandler([this]() {this->fixedUpdate();});
         }
+        ~Object() {
+            GraphicsManager::GraphicsManager::getInstance().unregisterHandler(update_ptr);
+            PhysicsManager::PhysicsManager::getInstance().unregisterHandler(fixedUpdate_ptr);
+		}
 
         void move(const T& displacement) {
             boundingBox = shape.move(displacement);
@@ -42,7 +46,7 @@ namespace Object {
             #endif
         }
         
-        void update() {}
+        void update() { draw(); }
         void fixedUpdate() {}
 
     private:

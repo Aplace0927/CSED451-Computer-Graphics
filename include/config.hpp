@@ -5,6 +5,7 @@ namespace GameConfig {
     inline constexpr int WINDOW_WIDTH = 512;
     inline constexpr int WINDOW_HEIGHT = 1024;
     inline constexpr const char* WINDOW_TITLE = "POST-ouhou-ECH";
+	inline constexpr float FIXED_DELTATIME = 0.05f;
 }
 
 #endif // CONFIG_HPP    

@@ -15,7 +15,6 @@ namespace PhysicsManager {
         PhysicsManager& operator=(const PhysicsManager&) = delete;
 
         std::vector<std::shared_ptr<std::function<void()>>> handlers;
-        float fixedtime = 0.05f;
 
         std::atomic<bool> running{ false };
         std::thread loopThread;

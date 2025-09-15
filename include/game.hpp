@@ -8,9 +8,8 @@ namespace Game {
     class Game : public Singleton::Singleton<Game> {
     public:
         Game();
+		~Game();
         void keyEvent(unsigned char key, int x, int y);
-        void update();
-        void draw();
     private:
         Player::Player player; 
     };

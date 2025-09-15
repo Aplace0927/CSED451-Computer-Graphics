@@ -1,5 +1,7 @@
 #include "graphicsmanager.hpp"
 #include <algorithm>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 
 namespace GraphicsManager {
     std::shared_ptr<std::function<void()>> GraphicsManager::registerHandler(std::function<void()> func) {
@@ -16,8 +18,13 @@ namespace GraphicsManager {
     }
 
     void GraphicsManager::update() {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
         for (auto& handler : handlers) {
             (*handler)();
         }
+
+        glutSwapBuffers();
+        glutPostRedisplay();
     }
 }

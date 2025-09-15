@@ -71,7 +71,7 @@ namespace BoundingBox {
         const BoundingBox<glm::vec3>& other
     ) const {
         for (int i = 0; i < 3; ++i) {
-            if (not (end[i] < other.start[i] || start[i] > other.end[i])) {
+            if (! (end[i] < other.start[i] || start[i] > other.end[i])) {
                 return true;    // Collides in dim i
             }
         }
