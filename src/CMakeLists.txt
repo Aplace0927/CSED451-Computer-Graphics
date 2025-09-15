@@ -3,8 +3,10 @@ add_executable(
 	"main.cpp"
 	"game.cpp"
 	"player.cpp"
+	"enemy.cpp"
 	"object.cpp"
 	"shape.cpp"
+	"bullet.cpp"
 	"boundingbox.cpp"
 )
 
