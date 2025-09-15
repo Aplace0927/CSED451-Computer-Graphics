@@ -3,6 +3,8 @@
 
 #include "shape.hpp"
 #include "boundingbox.hpp"
+#include "graphicsmanager.hpp"
+#include "physicsmanager.hpp"
 
 namespace Object {
     template <typename T, typename C>
@@ -14,6 +16,8 @@ namespace Object {
         ): shape(_shape) {
             // Update to actual position (also initializes bounding box) 
             boundingBox = shape.move(_position);
+            update_ptr = GraphicsManager::GraphicsManager::getInstance().registerHandler([this]() {this->update();});
+            fixedUpdate_ptr = PhysicsManager::PhysicsManager::getInstance().registerHandler([this]() {this->fixedUpdate();});
         }
 
         void move(const T& displacement) {
@@ -38,9 +42,14 @@ namespace Object {
             #endif
         }
         
+        void update() {}
+        void fixedUpdate() {}
+
     private:
         Shape::Shape<T, C> shape;
         BoundingBox::BoundingBox<T> boundingBox;
+        std::shared_ptr<std::function<void()>> update_ptr;
+        std::shared_ptr<std::function<void()>> fixedUpdate_ptr;
     };
 }
 

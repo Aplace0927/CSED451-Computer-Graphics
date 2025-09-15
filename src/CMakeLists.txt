@@ -8,7 +8,7 @@ add_executable(
 	"boundingbox.cpp"
 	"singleton.cpp"
 	"physicsmanager.cpp"
- "grapicsmanager.cpp")
+ "graphicsmanager.cpp")
 
 target_link_libraries(touhou_postech
 	GLUT glew OpenGL::GL glm
