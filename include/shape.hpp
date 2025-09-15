@@ -4,99 +4,154 @@
 #include <vector>
 #include <array>
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "boundingbox.hpp"
 #include "config.hpp"
 
 
 namespace Shape {
-    typedef std::array<GLfloat, 3> RGBColor;
-    typedef std::array<GLfloat, 4> RGBAColor;
+    typedef glm::vec3 RGBColor;
+    typedef glm::vec4 RGBAColor;
 
-    template <typename T, size_t D, typename C>
+    template <typename T, typename C>
     class Shape {
     public:
         Shape(
-            const std::vector<std::vector<std::array<T, D>>>& _subshapes,
+            const std::vector<std::vector<T>>& _subshapes,
             const std::vector<std::vector<C>>& _colors,
             const std::vector<unsigned int>& _drawMethod
         ): subshapes(_subshapes), colors(_colors), drawMethod(_drawMethod) {
-
+            throw std::runtime_error("Shape constructor not implemented for this specialization");
         }
 
-        void update(const std::array<T, D>& displacement) {
-            typename std::array<T, D>::iterator it_v;
-            typename std::array<T, D>::const_iterator it_d;
-            for (auto& subshape : subshapes) {
-                for (auto& vertex : subshape) {
-                    for (
-                        it_v = vertex.begin(), it_d = displacement.begin();
-                        it_v != vertex.end() && it_d != displacement.end();
-                        ++it_v, ++it_d
-                    ) {
-                        *it_v += *it_d;
-                    }
-                }
-            }
+        T getCenter() const {
+            return center;
         }
 
-        BoundingBox::BoundingBox<T, D> getBoundingBox() const {
-            // Compute and return the bounding box based on subshapes
-            typename std::array<T, D>::iterator it_min, it_max;
-            typename std::array<T, D>::const_iterator it_v;
-            
-            std::array<T, D> minPoint, maxPoint;
-            minPoint.fill(std::numeric_limits<T>::max());
-            maxPoint.fill(std::numeric_limits<T>::min());
-            
-            for (const auto& subshape : subshapes) {
-                for (const auto& vertex : subshape) {
-                    for (
-                        it_v = vertex.begin(), it_min = minPoint.begin(), it_max = maxPoint.begin();
-                        it_v != vertex.end() && it_min != minPoint.end() && it_max != maxPoint.end();
-                        ++it_v, ++it_min, ++it_max
-                    ) {
-                        *it_min = std::min(*it_min, *it_v);
-                        *it_max = std::max(*it_max, *it_v);
-                    }
-                }
-            }
-            return BoundingBox::BoundingBox<T, D>(minPoint, maxPoint);
-        }
+        virtual BoundingBox::BoundingBox<T> move(const T& displacement) {throw std::runtime_error("move() not implemented for this Shape specialization");};
+        virtual BoundingBox::BoundingBox<T> rotate(
+            const T& rotation,
+            const T& pivot
+        ) {throw std::runtime_error("rotate() not implemented for this Shape specialization");};
 
-        virtual void draw() {
-            // Default implementation (can be empty or generic)
-        }
+        virtual void draw() {throw std::runtime_error("draw() not implemented for this Shape specialization");};
 
     private:
-        std::vector<std::vector<std::array<T, D>>> subshapes;
+        T center;
+        std::vector<std::vector<T>> subshapes;
         std::vector<std::vector<C>> colors;
         std::vector<unsigned int> drawMethod;        
+
+        BoundingBox::BoundingBox<T> getBoundingBox() const {
+            throw std::runtime_error("getBoundingBox() not implemented for this Shape specialization");
+        }
     };
 
-    // Explicit specialization for Shape<float, 3, RGBColor>
+    // Explicit specialization for Shape<glm::vec3, RGBColor>
+
     template <>
-    inline void Shape<float, 3, RGBColor>::draw() {
-        auto it_d = drawMethod.begin();
-        auto it_shape = subshapes.begin();
-        auto it_color = colors.begin();
+    inline Shape<glm::vec3, RGBColor>::Shape(
+        const std::vector<std::vector<glm::vec3>>& _subshapes,
+        const std::vector<std::vector<RGBColor>>& _colors,
+        const std::vector<unsigned int>& _drawMethod
+    ): subshapes(_subshapes), colors(_colors), drawMethod(_drawMethod) {
+        center = glm::vec3(0.0f, 0.0f, 0.0f);
+    }
+
+    template <>
+    inline void Shape<glm::vec3, RGBColor>::draw() {
+        typename std::vector<std::vector<glm::vec3>>::const_iterator it_drawing;
+        typename std::vector<std::vector<RGBColor>>::const_iterator it_coloring;
+        typename std::vector<unsigned int>::const_iterator it_method;
+
+        typename std::vector<glm::vec3>::const_iterator it_shape;
+        typename std::vector<RGBColor>::const_iterator it_color_vertex;;
         for (
-            ; it_d != drawMethod.end() && it_shape != subshapes.end() && it_color != colors.end();
-            ++it_d, ++it_shape, ++it_color
+            it_drawing = subshapes.begin(), it_coloring = colors.begin(), it_method = drawMethod.begin();
+            it_drawing != subshapes.end() && it_coloring != colors.end() && it_method != drawMethod.end();
+            ++it_drawing, ++it_coloring, ++it_method
         ) {
-            glBegin(*it_d);
+            glBegin(*it_method);
             for (
-                auto it_subshape = it_shape->begin(), it_color_vertex = it_color->begin();
-                it_subshape != it_shape->end() && it_color_vertex != it_color->end();
-                ++it_subshape, ++it_color_vertex
+                it_shape = it_drawing->begin(), it_color_vertex = it_coloring->begin();
+                it_shape != it_drawing->end() && it_color_vertex != it_coloring->end();
+                ++it_shape, ++it_color_vertex
             ) {
-                glColor3fv(it_color_vertex->data());
-                glVertex3fv(it_subshape->data());
+                glColor3fv(glm::value_ptr(*it_color_vertex));
+                glVertex3fv(glm::value_ptr(*it_shape));
             }
             glEnd();
         }
     }
 
+    template <>
+    inline BoundingBox::BoundingBox<glm::vec3> Shape<glm::vec3, RGBColor>::getBoundingBox() const {
+            GLfloat max = std::numeric_limits<GLfloat>::max();
+            GLfloat min = std::numeric_limits<GLfloat>::min();
+            
+            glm::vec3 minPoint(max, max, max);
+            glm::vec3 maxPoint(min, min, min);
 
+            for (const auto& subshape : subshapes) {
+                for (const auto& vertex : subshape) {
+                    minPoint = glm::min(minPoint, vertex);
+                    maxPoint = glm::max(maxPoint, vertex);
+                }
+            }
+            return BoundingBox::BoundingBox<glm::vec3>(minPoint, maxPoint);
+    }
+
+    template <>
+    inline BoundingBox::BoundingBox<glm::vec3> Shape<glm::vec3, RGBColor>::move(
+        const glm::vec3& displacement
+    ) {
+        glm::mat4x4 translationMatrix = glm::translate(
+            glm::identity<glm::mat4>(),
+            displacement
+        );
+        glm::vec4 translatedVec;
+
+        for (auto& subshape: subshapes) {
+            for (auto& vertex: subshape) {
+                translatedVec = translationMatrix * glm::vec4(vertex, 1.0f);
+                vertex = translatedVec / translatedVec.w;
+            }
+        }
+
+        translatedVec = translationMatrix * glm::vec4(center, 1.0f);
+        center = translatedVec / translatedVec.w;
+        return getBoundingBox();
+    }
+
+    template <>
+    inline BoundingBox::BoundingBox<glm::vec3> Shape<glm::vec3, RGBColor>::rotate(
+        const glm::vec3 &rotation,
+        const glm::vec3 &pivot
+    ) {
+        glm::mat4x4 rotationMatrix = glm::identity<glm::mat4>();
+        rotationMatrix = glm::rotate(rotationMatrix, rotation[0], glm::vec3(1.f, 0.f, 0.f));
+        rotationMatrix = glm::rotate(rotationMatrix, rotation[1], glm::vec3(0.f, 1.f, 0.f));
+        rotationMatrix = glm::rotate(rotationMatrix, rotation[2], glm::vec3(0.f, 0.f, 1.f));
+    
+        glm::vec4 pivotVec;
+        glm::vec4 rotatedVec;
+        for (auto& subshape: subshapes) {
+            for (auto& vertex: subshape) {
+                pivotVec = glm::vec4(vertex - pivot, 1.0f);
+                rotatedVec = rotationMatrix * pivotVec;
+                rotatedVec /= rotatedVec.w; // Normalize
+
+                vertex = glm::vec3(rotatedVec) + pivot;
+            }
+        }
+
+        pivotVec = glm::vec4(center - pivot, 1.0f);
+        rotatedVec = rotationMatrix * pivotVec;
+        rotatedVec /= rotatedVec.w; // Normalize
+        center = glm::vec3(rotatedVec) + pivot;
+        return getBoundingBox();
+    }
 }
 #endif // SHAPE_HPP

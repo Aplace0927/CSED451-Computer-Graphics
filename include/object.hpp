@@ -5,22 +5,42 @@
 #include "boundingbox.hpp"
 
 namespace Object {
-    template <typename T, size_t D, typename C>
+    template <typename T, typename C>
     class Object {
     public:
-        Object(const Shape::Shape<T, D, C> &_shape): shape(_shape), boundingBox(_shape.getBoundingBox()) {}
-
-        void update(const std::array<T, D>& displacement) {
-            shape.update(displacement);
-            boundingBox.update(displacement);
+        Object(
+            const T  &_position,
+            const Shape::Shape<T, C> &_shape
+        ): shape(_shape) {
+            // Update to actual position (also initializes bounding box) 
+            boundingBox = shape.move(_position);
         }
 
+        void move(const T& displacement) {
+            boundingBox = shape.move(displacement);
+        }
+
+        void rotate(const T& angles, const T& pivot) {
+            boundingBox = shape.rotate(angles, pivot);
+        }
+        void applyTransition(const glm::mat4& transition) {
+            boundingBox = shape.applyTransition(transition);
+        }
+
+        T getCenter() const {
+            return shape.getCenter();
+        }
+        
         void draw() {
             shape.draw();
+            #ifdef BOUNDING_BOX_DEBUG
+            boundingBox.draw();
+            #endif
         }
+        
     private:
-        Shape::Shape<T, D, C> shape;
-        BoundingBox::BoundingBox<T, D> boundingBox;
+        Shape::Shape<T, C> shape;
+        BoundingBox::BoundingBox<T> boundingBox;
     };
 }
 

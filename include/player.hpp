@@ -4,7 +4,7 @@
 #include "object.hpp"
 
 namespace Player {
-    class Player : public Object::Object<float, 3, Shape::RGBColor> {
+    class Player : public Object::Object<glm::vec3, Shape::RGBColor> {
     public:
         Player();
     private:
