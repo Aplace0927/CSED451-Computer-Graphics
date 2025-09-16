@@ -12,7 +12,7 @@ namespace Singleton{
 
     public:
         static T& getInstance() {
-            static T instance; // T 타입 객체를 함수 내부 static으로 생성 → Lazy Initialization
+            static T instance;
             return instance;
         }
     };

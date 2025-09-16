@@ -1,4 +1,4 @@
-#include "PhysicsManager.hpp"
+#include "physicsmanager.hpp"
 #include "config.hpp"
 #include <chrono>
 
