@@ -11,6 +11,7 @@ add_executable(
 	"singleton.cpp"
 	"physicsmanager.cpp"
  	"graphicsmanager.cpp"
+	"objectpool.cpp"
 )
 
 target_link_libraries(touhou_postech
