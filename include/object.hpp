@@ -15,6 +15,7 @@ namespace Object {
             const Shape::Shape<T, C> &_shape
         ): shape(_shape) {
             // Update to actual position (also initializes bounding box) 
+            active = true;
             boundingBox = shape.move(_position);
             update_ptr = GraphicsManager::GraphicsManager::getInstance().registerHandler([this]() {this->update();});
             fixedUpdate_ptr = PhysicsManager::PhysicsManager::getInstance().registerHandler([this]() {this->fixedUpdate();});
@@ -50,16 +51,32 @@ namespace Object {
             boundingBox.draw();
             #endif
         }
-        
-        void update() { draw(); }
-        void virtual fixedUpdate() {};
+
+        bool getStatus() const { return active; }
+        void setStatus(bool state) { active = state; }
+
+        void update() {
+            if (!active) {
+                return;
+            }
+            draw();
+        }
+
+        virtual void fixedUpdate();// {
+        //
 
     private:
+        bool active;
         Shape::Shape<T, C> shape;
         BoundingBox::BoundingBox<T> boundingBox;
         std::shared_ptr<std::function<void()>> update_ptr;
         std::shared_ptr<std::function<void()>> fixedUpdate_ptr;
     };
+
+    template <typename T, typename C>
+    void Object<T, C>::fixedUpdate() {
+        // Default implementation does nothing
+    }
 }
 
 #endif // OBJECT_HPP

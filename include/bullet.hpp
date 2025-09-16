@@ -15,7 +15,7 @@ namespace Bullet {
     class Bullet : public Object::Object<glm::vec3, Shape::RGBColor> {
     public:
         Bullet();
-
+        void fixedUpdate() override;
         void deactivate();
         void activate(
             glm::vec3 bullet_origin,
@@ -34,7 +34,7 @@ namespace Bullet {
 }
 
 namespace BulletPattern {
-    constexpr float BulletSpeed = 0.0001f;
+    constexpr float BulletSpeed = 0.001f;
     namespace Player {
         inline std::function<glm::vec3(glm::vec3, time_t)> straight_up() {
             return [](glm::vec3 origin, time_t time_elapsed) {

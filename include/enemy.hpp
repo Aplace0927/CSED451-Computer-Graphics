@@ -4,14 +4,18 @@
 #include <cmath>
 
 #include "object.hpp"
+#include "objectpool.hpp"
+#include "bullet.hpp"
 
 namespace Enemy {
     class Enemy : public Object::Object<glm::vec3, Shape::RGBColor> {
     public:
         Enemy();
+        void fixedUpdate() override;
     private:
         // Add enemy state variables here 
         int enemyHealth;
+        ObjectPool::ObjectPool<Bullet::Bullet> bullets;
     };
 };
 #endif // ENEMY_HPP

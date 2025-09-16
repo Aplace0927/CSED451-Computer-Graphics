@@ -27,8 +27,6 @@ namespace Game {
         glm::vec3 playerMoveVec;
 
         Enemy::Enemy enemy;
-        
-        ObjectPool::ObjectPool<Bullet::Bullet> bullets;
     };
 };
 

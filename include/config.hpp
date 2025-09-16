@@ -14,7 +14,9 @@ namespace GameConfig {
     inline constexpr float POSITION_LEFT_LIMIT = -0.8f;
     inline constexpr float POSITION_RIGHT_LIMIT = 0.8f;
 
-    inline constexpr size_t DEFAULT_POOL_SIZE = 100;
+    inline constexpr size_t DEFAULT_POOL_SIZE = 0x100;
+
+    inline constexpr time_t SHOOTING_COOLDOWN_MS = 50;
 }
 
 #endif // CONFIG_HPP    
