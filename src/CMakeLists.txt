@@ -12,6 +12,7 @@ add_executable(
 	"physicsmanager.cpp"
  	"graphicsmanager.cpp"
 	"objectpool.cpp"
+	"enemypatterns.cpp"
 )
 
 target_link_libraries(touhou_postech

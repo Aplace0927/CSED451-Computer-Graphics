@@ -2,6 +2,7 @@
 #define PLAYER_HPP
 
 #include "object.hpp"
+#include "config.hpp"
 
 namespace Player {
     class Player : public Object::Object<glm::vec3, Shape::RGBColor> {
