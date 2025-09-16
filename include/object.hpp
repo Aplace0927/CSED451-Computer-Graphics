@@ -8,7 +8,7 @@
 
 namespace Object {
     template <typename T, typename C>
-    class Object abstract{
+    class Object {
     public:
         Object(
             const T  &_position,

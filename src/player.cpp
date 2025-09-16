@@ -33,4 +33,10 @@ Player::Player::Player()
 
 void Player::Player::fixedUpdate() {
 	move(direction);
+    glm::vec3 currentPos = getCenter();
+    setPosition(glm::vec3(
+        glm::clamp(currentPos.x, GameConfig::POSITION_LEFT_LIMIT, GameConfig::POSITION_RIGHT_LIMIT),
+        glm::clamp(currentPos.y, GameConfig::POSITION_LOWER_LIMIT, GameConfig::POSITION_UPPER_LIMIT),
+        currentPos.z
+    ));
 }
