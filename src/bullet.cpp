@@ -1,10 +1,6 @@
 #include "bullet.hpp"
 
-Bullet::Bullet::Bullet(
-    glm::vec3 bullet_origin,
-    std::function<glm::vec3(glm::vec3, time_t)> movement_pattern, 
-    BulletType bullet_shooter
-): 
+Bullet::Bullet::Bullet(): 
     Object::Object(
         // Initial position at origin; will be updated immediately after creation
         glm::vec3(0.0f, 0.0f, 0.0f), 
@@ -33,16 +29,35 @@ Bullet::Bullet::Bullet(
             std::vector<unsigned int>{ GL_TRIANGLE_FAN }
         )
     ),
-    bullet_origin(bullet_origin),
-    movement_pattern(movement_pattern),
-    bullet_shooter(bullet_shooter),
-    created_time(
-        std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now().time_since_epoch()
-        ).count()
-    ) { }
+    active(false),
+    bullet_origin(glm::vec3(0.0f, 0.0f, 0.0f)),
+    movement_pattern(BulletPattern::empty()),
+    bullet_shooter(BulletType::NONE),
+    created_time(0) { }
 
 void Bullet::Bullet::draw(time_t current_time) {
     setPosition(movement_pattern(bullet_origin, current_time - created_time));
     Object::draw();
+}
+
+void Bullet::Bullet::deactivate() {
+    active = false;
+    bullet_origin = glm::vec3(0.0f, 0.0f, 0.0f);
+    movement_pattern = BulletPattern::empty();
+    bullet_shooter = BulletType::NONE;
+    created_time = 0;
+}
+
+void Bullet::Bullet::activate(
+    glm::vec3 origin,
+    std::function<glm::vec3(glm::vec3, time_t)> pattern,
+    BulletType shooter
+) {
+    bullet_origin = origin;
+    movement_pattern = pattern;
+    bullet_shooter = shooter;
+    created_time = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::system_clock::now().time_since_epoch()
+    ).count();
+    active = true;
 }
