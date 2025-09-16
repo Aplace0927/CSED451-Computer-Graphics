@@ -33,17 +33,14 @@ Player::Player::Player()
     // Initialize other player state variables here if needed
 }
 
-void Player::Player::fixedUpdate() {
-    time_t current_time = std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now().time_since_epoch()
-        ).count();
-    if (isShooting && current_time - shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_MS) {
+void Player::Player::update(time_t time) {
+    if (isShooting && time - shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_MS) {
         bullets.acquire()->activate(
             getCenter() + glm::vec3(0.0f, 0.05f, 0.0f),
             BulletPattern::Player::straight_up(),
             Bullet::BulletType::PLAYER
         );
-        shootingCooldown = current_time;
+        shootingCooldown = time;
     }
 
 	move(direction);
@@ -53,4 +50,5 @@ void Player::Player::fixedUpdate() {
         glm::clamp(currentPos.y, GameConfig::POSITION_LOWER_LIMIT, GameConfig::POSITION_UPPER_LIMIT),
         currentPos.z
     ));
+    draw();
 }

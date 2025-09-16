@@ -16,14 +16,14 @@ namespace GraphicsManager {
         GraphicsManager(const GraphicsManager&) = delete;
         GraphicsManager& operator=(const GraphicsManager&) = delete;
 
-        std::vector<std::shared_ptr<std::function<void()>>> handlers;
+        std::vector<std::shared_ptr<std::function<void(time_t)>>> handlers;
 
     public:
         GraphicsManager() = default;
         ~GraphicsManager() = default;
 
-        std::shared_ptr<std::function<void()>> registerHandler(std::function<void()> func);
-        void unregisterHandler(std::shared_ptr<std::function<void()>> ptr);
+        std::shared_ptr<std::function<void(time_t)>> registerHandler(std::function<void(time_t)> func);
+        void unregisterHandler(std::shared_ptr<std::function<void(time_t)>> ptr);
         void update();
     };
 }

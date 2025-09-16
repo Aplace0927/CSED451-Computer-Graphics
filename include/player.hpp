@@ -9,7 +9,8 @@ namespace Player {
     class Player : public Object::Object<glm::vec3, Shape::RGBColor> {
     public:
         Player();
-		void fixedUpdate() override;
+        void update(time_t time) override;
+		// void fixedUpdate() override;
         void setDirection(const glm::vec3& input) {
             direction = input;
 		}

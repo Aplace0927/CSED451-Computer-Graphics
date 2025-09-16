@@ -15,6 +15,7 @@ namespace Bullet {
     class Bullet : public Object::Object<glm::vec3, Shape::RGBColor> {
     public:
         Bullet();
+        void update(time_t time) override;
         void fixedUpdate() override;
         void deactivate();
         void activate(
