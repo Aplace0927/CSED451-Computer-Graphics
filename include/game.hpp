@@ -13,6 +13,7 @@
 #include "movement.hpp"
 #include "bullet.hpp"
 #include "singleton.hpp"
+#include "objectpool.hpp"
 
 namespace Game {
     class Game : public Singleton::Singleton<Game> {
@@ -27,7 +28,7 @@ namespace Game {
 
         Enemy::Enemy enemy;
         
-        std::vector<Bullet::Bullet> bullets;
+        ObjectPool::ObjectPool<Bullet::Bullet> bullets;
     };
 };
 

@@ -3,7 +3,7 @@
 Game::Game::Game() {
     player = Player::Player();
     enemy = Enemy::Enemy();
-    bullets = std::vector<Bullet::Bullet>();
+    bullets = ObjectPool::ObjectPool<Bullet::Bullet>(3);
 
     /*
     TEST EXAMPLE FOR 100 BULLETS
