@@ -1,3 +1,6 @@
+#ifndef OBJECTPOOL_HPP
+#define OBJECTPOOL_HPP
+
 #include <vector>
 #include <memory>
 
@@ -24,7 +27,7 @@ namespace ObjectPool
 
         T* acquire() {
             for (auto& obj : pool) {
-                if (!obj->active) return obj.get();
+                if (!obj->getStatus()) return obj.get();
             }
             return nullptr;
         }
@@ -34,3 +37,5 @@ namespace ObjectPool
         std::vector<std::unique_ptr<T>> pool;
     };
 }
+
+#endif // OBJECTPOOL_HPP

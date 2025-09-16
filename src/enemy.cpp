@@ -35,5 +35,11 @@ Enemy::Enemy::Enemy()
     ),
     enemyHealth(5)
 {
+    bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
     // Initialize other enemy state variables here if needed
+}
+
+void Enemy::Enemy::fixedUpdate() {
+    return;
+    // Implement enemy behavior here
 }

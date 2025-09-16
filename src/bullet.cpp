@@ -29,19 +29,19 @@ Bullet::Bullet::Bullet():
             std::vector<unsigned int>{ GL_TRIANGLE_FAN }
         )
     ),
-    active(false),
     bullet_origin(glm::vec3(0.0f, 0.0f, 0.0f)),
     movement_pattern(BulletPattern::empty()),
     bullet_shooter(BulletType::NONE),
-    created_time(0) { }
+    created_time(0) { 
+        Object::setStatus(false);
+    }
 
 void Bullet::Bullet::draw(time_t current_time) {
     setPosition(movement_pattern(bullet_origin, current_time - created_time));
-    Object::draw();
 }
 
 void Bullet::Bullet::deactivate() {
-    active = false;
+    Object::setStatus(false);
     bullet_origin = glm::vec3(0.0f, 0.0f, 0.0f);
     movement_pattern = BulletPattern::empty();
     bullet_shooter = BulletType::NONE;
@@ -59,5 +59,14 @@ void Bullet::Bullet::activate(
     created_time = std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::system_clock::now().time_since_epoch()
     ).count();
-    active = true;
+    Object::setStatus(true);
+}
+
+void Bullet::Bullet::fixedUpdate() {
+    if (!Object::getStatus()) {
+        return;
+    }
+    draw(std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::system_clock::now().time_since_epoch()
+    ).count());
 }

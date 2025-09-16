@@ -25,15 +25,29 @@ Player::Player::Player()
             std::vector<unsigned int>{ GL_TRIANGLES }
         )
     ),
-    playerHealth(5)
+    playerHealth(5),
+    isShooting(false)
 {
     // Initialize other player state variables here if needed
+    bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
 	playerHealth = GameConfig::PLAYER_LIFE;
 	isShooting = false;
 	direction = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
 void Player::Player::fixedUpdate() {
+    time_t current_time = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch()
+        ).count();
+    if (isShooting && current_time - shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_MS) {
+        bullets.acquire()->activate(
+            getCenter() + glm::vec3(0.0f, 0.05f, 0.0f),
+            BulletPattern::Player::straight_up(),
+            Bullet::BulletType::PLAYER
+        );
+        shootingCooldown = current_time;
+    }
+
 	move(direction);
     glm::vec3 currentPos = getCenter();
     setPosition(glm::vec3(
