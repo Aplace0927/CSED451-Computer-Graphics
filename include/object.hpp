@@ -37,9 +37,6 @@ namespace Object {
         void rotate(const T& angles, const T& pivot) {
             boundingBox = shape.rotate(angles, pivot);
         }
-        void applyTransition(const glm::mat4& transition) {
-            boundingBox = shape.applyTransition(transition);
-        }
 
         T getCenter() const {
             return shape.getCenter();

@@ -19,7 +19,15 @@ namespace GraphicsManager {
         time_t current_time = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch()
         ).count();
+
+        if (handlers.empty()) {
+            return;
+        }
         for (auto& handler : handlers) {
+            if (handler == nullptr) {
+                throw std::runtime_error("Null handler in PhysicsManager");
+                continue;
+            }
             (*handler)(current_time);
         }
 

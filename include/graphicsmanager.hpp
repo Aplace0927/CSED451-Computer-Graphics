@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <chrono>
 
 #include "singleton.hpp"
 

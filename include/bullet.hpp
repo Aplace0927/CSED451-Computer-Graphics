@@ -26,7 +26,6 @@ namespace Bullet {
         void draw(time_t current_time);
 
     private:
-        bool active;
         BulletType bullet_shooter;
         time_t created_time;
         glm::vec3 bullet_origin;

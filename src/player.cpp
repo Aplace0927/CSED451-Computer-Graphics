@@ -28,6 +28,7 @@ Player::Player::Player()
     playerHealth(5),
     isShooting(false)
 {
+	shootingCooldown = 0;
 	direction = glm::vec3(0.0f, 0.0f, 0.0f);
     bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
     // Initialize other player state variables here if needed
