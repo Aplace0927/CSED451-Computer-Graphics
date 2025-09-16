@@ -19,6 +19,7 @@ namespace Bullet {
             BulletType bullet_shooter
         );
 
+
         void draw(time_t current_time);
 
     private:

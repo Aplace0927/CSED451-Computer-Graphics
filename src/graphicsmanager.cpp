@@ -1,7 +1,4 @@
 #include "graphicsmanager.hpp"
-#include <algorithm>
-#include <GL/glew.h>
-#include <GL/freeglut.h>
 
 namespace GraphicsManager {
     std::shared_ptr<std::function<void()>> GraphicsManager::registerHandler(std::function<void()> func) {

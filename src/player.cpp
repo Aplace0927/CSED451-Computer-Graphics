@@ -27,5 +27,10 @@ Player::Player::Player()
     ),
     playerHealth(5)
 {
+	direction = glm::vec3(0.0f, 0.0f, 0.0f);
     // Initialize other player state variables here if needed
+}
+
+void Player::Player::fixedUpdate() {
+	move(direction);
 }

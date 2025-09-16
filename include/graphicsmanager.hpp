@@ -4,6 +4,10 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <algorithm>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+
 #include "singleton.hpp"
 
 namespace GraphicsManager {

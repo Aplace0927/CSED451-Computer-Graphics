@@ -7,9 +7,14 @@ namespace Player {
     class Player : public Object::Object<glm::vec3, Shape::RGBColor> {
     public:
         Player();
+		void fixedUpdate() override;
+        void setDirection(const glm::vec3& input) {
+            direction = input;
+		}
     private:
         // Add player state variables here 
-        int playerHealth;  
+        int playerHealth;
+		glm::vec3 direction;
     };
 
     namespace BulletPattern {

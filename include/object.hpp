@@ -8,7 +8,7 @@
 
 namespace Object {
     template <typename T, typename C>
-    class Object {
+    class Object abstract{
     public:
         Object(
             const T  &_position,
@@ -52,7 +52,7 @@ namespace Object {
         }
         
         void update() { draw(); }
-        void fixedUpdate() {}
+        void virtual fixedUpdate() {};
 
     private:
         Shape::Shape<T, C> shape;
