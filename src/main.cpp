@@ -7,6 +7,7 @@
 
 #include "config.hpp"
 #include "game.hpp"
+#include "graphicsmanager.hpp"
 
 Game::Game game;
 
@@ -26,7 +27,7 @@ int main(int argc, char** argv) {
 
     glEnable(GL_DEPTH_TEST);
     glutDisplayFunc([]() {
-        game.draw();
+		GraphicsManager::GraphicsManager::getInstance().update();
     });
     glutKeyboardFunc([](unsigned char key, int x, int y) {
         game.keyEvent(key, x, y);

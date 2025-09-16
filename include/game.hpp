@@ -12,15 +12,15 @@
 #include "enemy.hpp"
 #include "movement.hpp"
 #include "bullet.hpp"
+#include "singleton.hpp"
 
 namespace Game {
-    class Game {
+    class Game : public Singleton::Singleton<Game> {
     public:
         Game();
+		~Game();
         void keyEvent(unsigned char key, int x, int y);
         void keyUpEvent(unsigned char key, int x, int y);
-        void update();
-        void draw();
     private:
         Player::Player player;
         glm::vec3 playerMoveVec;

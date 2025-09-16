@@ -8,6 +8,9 @@ add_executable(
 	"shape.cpp"
 	"bullet.cpp"
 	"boundingbox.cpp"
+	"singleton.cpp"
+	"physicsmanager.cpp"
+ 	"graphicsmanager.cpp"
 )
 
 target_link_libraries(touhou_postech

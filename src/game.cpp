@@ -27,26 +27,27 @@ Game::Game::Game() {
     playerMoveVec = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
-void Game::Game::draw() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+// void Game::Game::draw() {
+//     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    uint64_t current_time = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::system_clock::now().time_since_epoch()
-    ).count();
+//     uint64_t current_time = std::chrono::duration_cast<std::chrono::milliseconds>(
+//         std::chrono::system_clock::now().time_since_epoch()
+//     ).count();
 
-    player.draw();
-    enemy.draw();
-    for (auto& bullet : bullets) {
-        bullet.draw(current_time);
-        printf("%.4f %.4f\n", bullet.getCenter().x, bullet.getCenter().y);
-    }
-    
-    
-    //!TODO: add game objects drawing here
-    glutSwapBuffers();
-    glutPostRedisplay();
-}
+//     GraphicsManager::GraphicsManager::getInstance().registerHandler(player);
 
+//     for (auto& bullet : bullets) {
+//         bullet.draw(current_time);
+//         printf("%.4f %.4f\n", bullet.getCenter().x, bullet.getCenter().y);
+//     }
+    
+    
+//     //!TODO: add game objects drawing here
+//     glutSwapBuffers();
+//     glutPostRedisplay();
+// }
+
+Game::Game::~Game() {}
 void Game::Game::keyEvent(unsigned char key, int x, int y) {
     switch (key) {
         case 'w':
