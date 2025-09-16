@@ -44,7 +44,6 @@ void Player::Player::update(time_t time) {
         shootingCooldown = time;
     }
 
-	move(direction);
     glm::vec3 currentPos = getCenter();
     setPosition(glm::vec3(
         glm::clamp(currentPos.x, GameConfig::POSITION_LEFT_LIMIT, GameConfig::POSITION_RIGHT_LIMIT),
@@ -52,4 +51,8 @@ void Player::Player::update(time_t time) {
         currentPos.z
     ));
     draw();
+}
+
+void Player::Player::fixedUpdate() {
+    move(direction);
 }

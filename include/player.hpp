@@ -10,7 +10,7 @@ namespace Player {
     public:
         Player();
         void update(time_t time) override;
-		// void fixedUpdate() override;
+		void fixedUpdate() override;
         void setDirection(const glm::vec3& input) {
             direction = input;
 		}
