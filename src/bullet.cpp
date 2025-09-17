@@ -61,6 +61,7 @@ void Bullet::Bullet::activate(
         std::chrono::system_clock::now().time_since_epoch()
     ).count();
     Object::setStatus(true);
+    setPosition(movement_pattern(bullet_origin, 0));
 }
 
 void Bullet::Bullet::update(time_t time) {

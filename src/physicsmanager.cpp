@@ -30,7 +30,6 @@ namespace PhysicsManager {
         }
         for (auto& handler : handlers) {
             if (handler == nullptr) {
-				throw std::runtime_error("Null handler in PhysicsManager");
                 continue;
             }
             (*handler)();

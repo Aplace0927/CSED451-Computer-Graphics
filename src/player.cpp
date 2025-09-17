@@ -36,12 +36,31 @@ Player::Player::Player()
 
 void Player::Player::update(time_t time) {
     if (isShooting && time - shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_MS) {
-        bullets.acquire()->activate(
+        Bullet::Bullet* newBullet = bullets.acquire();
+        newBullet->activate(
             getCenter() + glm::vec3(0.0f, 0.05f, 0.0f),
             BulletPattern::Player::straight_up(),
             Bullet::BulletType::PLAYER
         );
         shootingCooldown = time;
+    }
+
+    for (Bullet::Bullet* bullet : bullets.pool) {
+        printf("%c", bullet->getStatus() ? '*' : '_');
+    }
+    printf("\n");
+
+    for (Bullet::Bullet* bullet: bullets.pool) {
+        glm::vec3 bulletVec = bullet->getCenter();
+        if (
+            GameConfig::GAME_RENDER_LOWER_LIMIT < bulletVec.y && bulletVec.y < GameConfig::GAME_RENDER_UPPER_LIMIT &&
+            GameConfig::GAME_RENDER_LEFT_LIMIT < bulletVec.x && bulletVec.x < GameConfig::GAME_RENDER_RIGHT_LIMIT
+        ) {
+            continue;
+        }
+        if (bullet->getStatus()) {
+            bullets.release(bullet);
+        }
     }
 
     glm::vec3 currentPos = getCenter();
