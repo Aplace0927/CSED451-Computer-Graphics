@@ -11,8 +11,7 @@ namespace enemypatterns {
     class IPattern {
     public:
         virtual ~IPattern() = default;
-        virtual void update(float bossX, float bossY, float time,
-            std::vector<Bullet::Bullet>& bullets) = 0;
+        virtual void update(glm::vec3 pos);
     };
 
     class CirclePattern : public IPattern {
@@ -20,8 +19,7 @@ namespace enemypatterns {
         float speed;
     public:
         CirclePattern(int n, float s);
-        void update(float bossX, float bossY, float time,
-            std::vector<Bullet::Bullet>& bullets) override;
+        void update(glm::vec3 pos) override;
     };
 
     class SpiralPattern : public IPattern {
@@ -30,8 +28,7 @@ namespace enemypatterns {
         float angleStep;
     public:
         SpiralPattern(float s, float step);
-        void update(float bossX, float bossY, float time,
-            std::vector<Bullet::Bullet>& bullets) override;
+        void update(glm::vec3 pos) override;
     };
 
     class WavePattern : public IPattern {
@@ -40,8 +37,7 @@ namespace enemypatterns {
         float amp;
     public:
         WavePattern(float s, float f, float a);
-        void update(float bossX, float bossY, float time,
-            std::vector<Bullet::Bullet>& bullets) override;
+        void update(glm::vec3 pos) override;
     };
 
     class RandomBurstPattern : public IPattern {
@@ -49,8 +45,7 @@ namespace enemypatterns {
         int count;
     public:
         RandomBurstPattern(float s, int c);
-        void update(float bossX, float bossY, float time,
-            std::vector<Bullet::Bullet>& bullets) override;
+        void update(glm::vec3 pos) override;
     };
 }
 

@@ -2,6 +2,7 @@
 #define BULLET_HPP
 
 #include "object.hpp"
+#include "utils.hpp"
 #include <functional>
 #include <chrono>
 
@@ -45,10 +46,10 @@ namespace BulletPattern {
     }
 
     namespace Enemy {
-        inline std::function<glm::vec3(glm::vec3, time_t)> straight_down() {
-            return [](glm::vec3 origin, time_t time_elapsed) {
+        inline std::function<glm::vec3(glm::vec3, time_t)> straight(glm::vec3 direction) {
+            return [direction](glm::vec3 origin, time_t time_elapsed) {
                 float linear_speed = BulletSpeed * static_cast<float>(time_elapsed);
-                return origin + glm::vec3(0.0f, -linear_speed, 0.0f);
+                return origin + Utils::getNormalizedDirection(direction);
             };
         }
 

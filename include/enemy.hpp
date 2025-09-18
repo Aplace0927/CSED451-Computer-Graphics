@@ -6,6 +6,7 @@
 #include "object.hpp"
 #include "objectpool.hpp"
 #include "bullet.hpp"
+#include "enemypatterns.hpp"
 
 namespace Enemy {
     class Enemy : public Object::Object<glm::vec3, Shape::RGBColor> {
@@ -16,6 +17,7 @@ namespace Enemy {
     private:
         // Add enemy state variables here 
         int enemyHealth;
+		std::vector<enemypatterns::IPattern> attackPatterns;
         ObjectPool::ObjectPool<Bullet::Bullet> bullets;
     };
 };
