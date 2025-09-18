@@ -25,7 +25,13 @@ namespace PhysicsManager {
     }
 
     void PhysicsManager::fixedUpdate() {
+        if (handlers.empty()) {
+            return;
+        }
         for (auto& handler : handlers) {
+            if (handler == nullptr) {
+                continue;
+            }
             (*handler)();
         }
     }

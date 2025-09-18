@@ -18,3 +18,7 @@ add_executable(
 target_link_libraries(touhou_postech
 	GLUT glew OpenGL::GL glm
 )
+
+if (DEFINED BOUNDING_BOX_DEBUG)
+	target_compile_definitions(touhou_postech PRIVATE BOUNDING_BOX_DEBUG)
+endif()

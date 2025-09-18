@@ -38,6 +38,7 @@ Bullet::Bullet::Bullet():
 
 void Bullet::Bullet::draw(time_t current_time) {
     setPosition(movement_pattern(bullet_origin, current_time - created_time));
+    Object::draw();
 }
 
 void Bullet::Bullet::deactivate() {
@@ -60,13 +61,18 @@ void Bullet::Bullet::activate(
         std::chrono::system_clock::now().time_since_epoch()
     ).count();
     Object::setStatus(true);
+    setPosition(movement_pattern(bullet_origin, 0));
+}
+
+void Bullet::Bullet::update(time_t time) {
+    if (!Object::getStatus()) {
+        return;
+    }
+    draw(time);
 }
 
 void Bullet::Bullet::fixedUpdate() {
     if (!Object::getStatus()) {
         return;
     }
-    draw(std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::system_clock::now().time_since_epoch()
-    ).count());
 }

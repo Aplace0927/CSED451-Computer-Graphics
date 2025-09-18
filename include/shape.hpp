@@ -89,7 +89,7 @@ namespace Shape {
     template <>
     inline BoundingBox::BoundingBox<glm::vec3> Shape<glm::vec3, RGBColor>::getBoundingBox() const {
             GLfloat max = std::numeric_limits<GLfloat>::max();
-            GLfloat min = std::numeric_limits<GLfloat>::min();
+            GLfloat min = -std::numeric_limits<GLfloat>::max();
             
             glm::vec3 minPoint(max, max, max);
             glm::vec3 maxPoint(min, min, min);

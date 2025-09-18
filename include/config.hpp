@@ -8,12 +8,17 @@ namespace GameConfig {
 
     inline constexpr float PLAYER_SPEED = 0.02f;
 	inline constexpr int PLAYER_LIFE = 5;
-    inline constexpr float FIXED_DELTATIME = 0.05f;
+	inline constexpr float FIXED_DELTATIME = 0.02f;
 
     inline constexpr float POSITION_UPPER_LIMIT = 0.9f;
     inline constexpr float POSITION_LOWER_LIMIT = -0.9f;
     inline constexpr float POSITION_LEFT_LIMIT = -0.8f;
     inline constexpr float POSITION_RIGHT_LIMIT = 0.8f;
+
+    inline constexpr float GAME_RENDER_UPPER_LIMIT = 3.0f;
+    inline constexpr float GAME_RENDER_LOWER_LIMIT = -3.0f;
+    inline constexpr float GAME_RENDER_LEFT_LIMIT = -3.0f;
+    inline constexpr float GAME_RENDER_RIGHT_LIMIT = 3.0f;
 
     inline constexpr size_t DEFAULT_POOL_SIZE = 0x100;
 

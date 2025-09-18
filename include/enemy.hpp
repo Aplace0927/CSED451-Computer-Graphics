@@ -11,6 +11,7 @@ namespace Enemy {
     class Enemy : public Object::Object<glm::vec3, Shape::RGBColor> {
     public:
         Enemy();
+        void update(time_t time) override;
         void fixedUpdate() override;
     private:
         // Add enemy state variables here 

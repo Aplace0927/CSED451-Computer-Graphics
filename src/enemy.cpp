@@ -39,6 +39,12 @@ Enemy::Enemy::Enemy()
     // Initialize other enemy state variables here if needed
 }
 
+void Enemy::Enemy::update(time_t time) {
+    draw();
+    return;
+    // Implement enemy behavior here
+}
+
 void Enemy::Enemy::fixedUpdate() {
     return;
     // Implement enemy behavior here

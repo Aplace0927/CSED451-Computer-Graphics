@@ -3,25 +3,6 @@
 Game::Game::Game() {
     player = Player::Player();
     enemy = Enemy::Enemy();
-    /*
-    TEST EXAMPLE FOR 100 BULLETS
-    
-    for (int i = 0; i < 100; ++i)
-    {
-        bullets.push_back(
-        Bullet::Bullet(
-            glm::vec3(
-                -0.25f + (i / 10) * 0.05f, 
-                0.25f + (i % 10) * 0.05f, 
-                0.0f
-            ),
-                Enemy::BulletPattern::circular_motion(),
-                Bullet::BulletType::PLAYER
-            )
-        );
-    }
-    */
-
     playerMoveVec = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 

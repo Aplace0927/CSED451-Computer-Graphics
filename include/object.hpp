@@ -17,7 +17,7 @@ namespace Object {
             // Update to actual position (also initializes bounding box) 
             active = true;
             boundingBox = shape.move(_position);
-            update_ptr = GraphicsManager::GraphicsManager::getInstance().registerHandler([this]() {this->update();});
+            update_ptr = GraphicsManager::GraphicsManager::getInstance().registerHandler([this](time_t time) {this->update(time);});
             fixedUpdate_ptr = PhysicsManager::PhysicsManager::getInstance().registerHandler([this]() {this->fixedUpdate();});
         }
         ~Object() {
@@ -37,9 +37,6 @@ namespace Object {
         void rotate(const T& angles, const T& pivot) {
             boundingBox = shape.rotate(angles, pivot);
         }
-        void applyTransition(const glm::mat4& transition) {
-            boundingBox = shape.applyTransition(transition);
-        }
 
         T getCenter() const {
             return shape.getCenter();
@@ -55,23 +52,21 @@ namespace Object {
         bool getStatus() const { return active; }
         void setStatus(bool state) { active = state; }
 
-        void update() {
-            if (!active) {
-                return;
-            }
-            draw();
-        }
-
-        virtual void fixedUpdate();// {
-        //
+        virtual void update(time_t time);
+        virtual void fixedUpdate();
 
     private:
         bool active;
         Shape::Shape<T, C> shape;
         BoundingBox::BoundingBox<T> boundingBox;
-        std::shared_ptr<std::function<void()>> update_ptr;
+        std::shared_ptr<std::function<void(time_t)>> update_ptr;
         std::shared_ptr<std::function<void()>> fixedUpdate_ptr;
     };
+
+    template <typename T, typename C>
+    void Object<T, C>::update(time_t time) {
+        // Default implementation does nothing
+    }
 
     template <typename T, typename C>
     void Object<T, C>::fixedUpdate() {
