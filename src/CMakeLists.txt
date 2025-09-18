@@ -12,6 +12,8 @@ add_executable(
 	"physicsmanager.cpp"
  	"graphicsmanager.cpp"
 	"objectpool.cpp"
+	"digit.cpp"
+	"healthbar.cpp"
 )
 
 target_link_libraries(touhou_postech

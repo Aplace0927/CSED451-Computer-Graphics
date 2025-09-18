@@ -35,9 +35,27 @@ namespace Shape {
             const T& rotation,
             const T& pivot
         ) {throw std::runtime_error("rotate() not implemented for this Shape specialization");};
-
         virtual void draw() {throw std::runtime_error("draw() not implemented for this Shape specialization");};
 
+        virtual void popSubShape() {throw std::runtime_error("popSubShape() not implemented for this Shape specialization");};
+        virtual void clearSubShapes() {throw std::runtime_error("clearSubShapes() not implemented for this Shape specialization");};
+        virtual bool checkSubShapeEmpty() const {throw std::runtime_error("checkSubShapeEmpty() not implemented for this Shape specialization");};
+        virtual void addSubShape(
+            const std::vector<T>& vertices,
+            const std::vector<C>& colors,
+            unsigned int drawMethod
+        ) {throw std::runtime_error("addSubShape() not implemented for this Shape specialization");};
+
+        int getSubShapeCount() const {
+            return subshapes.size();
+        }
+
+        int getColorCount() const {
+            return colors.size();
+        }
+        int getMethodCount() const {
+            return drawMethod.size();
+        }
     private:
         T center;
         std::vector<std::vector<T>> subshapes;
@@ -67,7 +85,7 @@ namespace Shape {
         typename std::vector<unsigned int>::const_iterator it_method;
 
         typename std::vector<glm::vec3>::const_iterator it_shape;
-        typename std::vector<RGBColor>::const_iterator it_color_vertex;;
+        typename std::vector<RGBColor>::const_iterator it_color_vertex;
         for (
             it_drawing = subshapes.begin(), it_coloring = colors.begin(), it_method = drawMethod.begin();
             it_drawing != subshapes.end() && it_coloring != colors.end() && it_method != drawMethod.end();
@@ -153,5 +171,40 @@ namespace Shape {
         center = glm::vec3(rotatedVec) + pivot;
         return getBoundingBox();
     }
+
+    template <>
+    inline bool Shape<glm::vec3, RGBColor>::checkSubShapeEmpty() const
+    {
+        return subshapes.empty() || colors.empty() || drawMethod.empty();
+    }
+
+    template <>
+    inline void Shape<glm::vec3, RGBColor>::addSubShape(
+        const std::vector<glm::vec3>& vertices,
+        const std::vector<RGBColor>& color,
+        unsigned int method
+    ) {
+        subshapes.push_back(vertices);
+        colors.push_back(color);
+        drawMethod.push_back(method);
+    }
+
+    template <>
+    inline void Shape<glm::vec3, RGBColor>::popSubShape() {
+        if (checkSubShapeEmpty()) {
+            return;
+        }
+        subshapes.pop_back();
+        colors.pop_back();
+        drawMethod.pop_back();
+    }
+
+    template <>
+    inline void Shape<glm::vec3, RGBColor>::clearSubShapes() {
+        subshapes.clear();
+        colors.clear();
+        drawMethod.clear();
+    }
+    
 }
 #endif // SHAPE_HPP

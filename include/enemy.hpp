@@ -6,6 +6,7 @@
 #include "object.hpp"
 #include "objectpool.hpp"
 #include "bullet.hpp"
+#include "healthbar.hpp"
 
 namespace Enemy {
     class Enemy : public Object::Object<glm::vec3, Shape::RGBColor> {
@@ -17,9 +18,10 @@ namespace Enemy {
         std::function<void()> getBulletHitDetectHandlerFunction() {
             return [this]() {
                 enemyHealth = glm::max(0, enemyHealth - 1);
-                printf("Enemy hit! Now health: %d\n", enemyHealth);
+                healthBar.setCurrentHealth(enemyHealth);
                 if (enemyHealth == 0) {
-                    Object::setStatus(false);
+                    setStatus(false);
+                    healthBar.setStatus(false);
                 }
             };
         }
@@ -28,7 +30,7 @@ namespace Enemy {
         // Add enemy state variables here 
         int enemyHealth;
         ObjectPool::ObjectPool<Bullet::Bullet> bullets;
-        
+        HealthBar::HealthBar healthBar;
     };
 };
 #endif // ENEMY_HPP

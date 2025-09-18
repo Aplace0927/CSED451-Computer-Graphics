@@ -22,6 +22,17 @@ namespace GameConfig {
     inline constexpr size_t DEFAULT_POOL_SIZE = 0x100;
 
     inline constexpr time_t SHOOTING_COOLDOWN_MS = 50;
+
+    inline constexpr float FONT_DIGIT_SIZE = .01f;
+
+    inline constexpr float ENEMY_GAUGE_X = -0.9f;
+    inline constexpr float ENEMY_GAUGE_Y = -0.6f;
+
+    inline constexpr float ENEMY_GAUGE_WIDTH = 0.1f;
+    inline constexpr float ENEMY_GAUGE_HEIGHT = 1.4f;
+    
+    inline constexpr float ENEMY_GAUGE_FULL_COLOR[3] = {0.0f, 1.0f, 0.0f};
+    inline constexpr float ENEMY_GAUGE_EMPTY_COLOR[3] = {1.0f, 0.0f, 0.0f};
 }
 
 #endif // CONFIG_HPP    
