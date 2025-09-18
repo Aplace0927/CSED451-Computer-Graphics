@@ -33,7 +33,7 @@ Enemy::Enemy::Enemy()
             std::vector<unsigned int>{ GL_TRIANGLE_FAN }
         )
     ),
-    enemyHealth(5)
+    enemyHealth(1000)
 {
     bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
     // Initialize other enemy state variables here if needed

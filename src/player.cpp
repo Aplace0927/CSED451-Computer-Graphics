@@ -40,7 +40,10 @@ void Player::Player::update(time_t time) {
         newBullet->activate(
             getCenter() + glm::vec3(0.0f, 0.05f, 0.0f),
             BulletPattern::Player::straight_up(),
-            Bullet::BulletType::PLAYER
+            Bullet::BulletType::PLAYER,
+            [this, newBullet]() { this->bullets.release(newBullet); },
+            bulletHitDetectFunction,
+            bulletHitEventFunction
         );
         shootingCooldown = time;
     }
@@ -54,7 +57,7 @@ void Player::Player::update(time_t time) {
             continue;
         }
         if (bullet->getStatus()) {
-            bullets.release(bullet);
+            bullet->callReleaseFunction();
         }
     }
 

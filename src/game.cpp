@@ -4,6 +4,9 @@ Game::Game::Game() {
     player = Player::Player();
     enemy = Enemy::Enemy();
     playerMoveVec = glm::vec3(0.0f, 0.0f, 0.0f);
+
+    player.setBulletHitDetectFunction(enemy.getBoundingBoxCollisionFunction());
+    player.setBulletHitEventFunction(enemy.getBulletHitDetectHandlerFunction());
 }
 
 // void Game::Game::draw() {

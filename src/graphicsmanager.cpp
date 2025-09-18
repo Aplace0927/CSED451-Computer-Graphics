@@ -25,7 +25,7 @@ namespace GraphicsManager {
         }
         for (auto& handler : handlers) {
             if (handler == nullptr) {
-                throw std::runtime_error("Null handler in PhysicsManager");
+                throw std::runtime_error("Null handler in GraphicsManager");
                 continue;
             }
             (*handler)(current_time);

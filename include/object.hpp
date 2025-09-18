@@ -12,8 +12,9 @@ namespace Object {
     public:
         Object(
             const T  &_position,
-            const Shape::Shape<T, C> &_shape
-        ): shape(_shape) {
+            const Shape::Shape<T, C> &_shape,
+            std::function<void()> releaseFunc = nullptr
+        ): shape(_shape), releaseFunc(releaseFunc) {
             // Update to actual position (also initializes bounding box) 
             active = true;
             boundingBox = shape.move(_position);
@@ -52,15 +53,40 @@ namespace Object {
         bool getStatus() const { return active; }
         void setStatus(bool state) { active = state; }
 
+
+        std::function<bool(const BoundingBox::BoundingBox<T>&)> getBoundingBoxCollisionFunction() {
+            return [this](const BoundingBox::BoundingBox<T>& other) {
+                return this->boundingBox & other;
+            };
+        }
+
+        void setReleaseFunction(std::function<void()> func) {
+            releaseFunc = func;
+        }
+
+        void callReleaseFunction() {
+            if (releaseFunc != nullptr) {
+                releaseFunc();
+            }
+        }
+
+        Shape::Shape<T, C> getShape() const {
+            return shape;
+        }
+
+        BoundingBox::BoundingBox<T> getBoundingBox() const {
+            return boundingBox;
+        }
+
         virtual void update(time_t time);
         virtual void fixedUpdate();
-
     private:
         bool active;
         Shape::Shape<T, C> shape;
         BoundingBox::BoundingBox<T> boundingBox;
         std::shared_ptr<std::function<void(time_t)>> update_ptr;
         std::shared_ptr<std::function<void()>> fixedUpdate_ptr;
+        std::function<void()> releaseFunc;
     };
 
     template <typename T, typename C>
