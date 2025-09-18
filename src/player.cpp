@@ -45,11 +45,6 @@ void Player::Player::update(time_t time) {
         shootingCooldown = time;
     }
 
-    for (Bullet::Bullet* bullet : bullets.pool) {
-        printf("%c", bullet->getStatus() ? '*' : '_');
-    }
-    printf("\n");
-
     for (Bullet::Bullet* bullet: bullets.pool) {
         glm::vec3 bulletVec = bullet->getCenter();
         if (
