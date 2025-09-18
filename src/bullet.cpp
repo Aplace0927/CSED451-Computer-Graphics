@@ -47,12 +47,18 @@ void Bullet::Bullet::deactivate() {
     movement_pattern = BulletPattern::empty();
     bullet_shooter = BulletType::NONE;
     created_time = 0;
+    setReleaseFunction(nullptr);
+    hitDetectFunction = nullptr;
+    hitEventFunction = nullptr;
 }
 
 void Bullet::Bullet::activate(
     glm::vec3 origin,
     std::function<glm::vec3(glm::vec3, time_t)> pattern,
-    BulletType shooter
+    BulletType shooter,
+    std::function<void()> releaseFunc,
+    std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)> hitDetectFunc,
+    std::function<void()> hitEventFunc
 ) {
     bullet_origin = origin;
     movement_pattern = pattern;
@@ -60,6 +66,9 @@ void Bullet::Bullet::activate(
     created_time = std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::system_clock::now().time_since_epoch()
     ).count();
+    setReleaseFunction(releaseFunc);
+    hitDetectFunction = hitDetectFunc;
+    hitEventFunction = hitEventFunc;
     Object::setStatus(true);
     setPosition(movement_pattern(bullet_origin, 0));
 }
@@ -74,5 +83,10 @@ void Bullet::Bullet::update(time_t time) {
 void Bullet::Bullet::fixedUpdate() {
     if (!Object::getStatus()) {
         return;
+    }
+    // Collision with target
+    if (hitDetectFunction(getBoundingBox())) {
+        hitEventFunction();
+        callReleaseFunction();
     }
 }

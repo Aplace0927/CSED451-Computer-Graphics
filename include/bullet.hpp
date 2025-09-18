@@ -22,7 +22,10 @@ namespace Bullet {
         void activate(
             glm::vec3 bullet_origin,
             std::function<glm::vec3(glm::vec3, time_t)> movement_pattern,
-            BulletType bullet_shooter
+            BulletType bullet_shooter,
+            std::function<void()> releaseFunc = nullptr,
+            std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)> hitDetectFunc = nullptr,
+            std::function<void()> hitEventFunc = nullptr
         );
         void draw(time_t current_time);
 
@@ -31,6 +34,9 @@ namespace Bullet {
         time_t created_time;
         glm::vec3 bullet_origin;
         std::function<glm::vec3(glm::vec3, time_t)> movement_pattern;
+
+        std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)> hitDetectFunction;
+        std::function<void()> hitEventFunction;
     };
 }
 

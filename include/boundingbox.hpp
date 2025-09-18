@@ -70,10 +70,9 @@ namespace BoundingBox {
     inline bool BoundingBox<glm::vec3>::operator&(
         const BoundingBox<glm::vec3>& other
     ) const {
-        for (int i = 0; i < 3; ++i) {
-            if (! (end[i] < other.start[i] || start[i] > other.end[i])) {
-                return true;    // Collides in dim i
-            }
+        if (start.x <= other.end.x && end.x >= other.start.x &&
+            start.y <= other.end.y && end.y >= other.start.y) {
+            return true;    // Collision in all dimensions
         }
         return false;   // No collision in any dimension
     }
