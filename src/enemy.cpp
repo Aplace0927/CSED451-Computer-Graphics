@@ -38,7 +38,7 @@ Enemy::Enemy::Enemy()
     healthBar(glm::vec3(-0.80f, 0.0f, 0.0f), enemyHealth)
 {
     bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
-    currentPattern = new enemypatterns::CirclePattern(10, 0.001f);
+    currentPattern = new enemypatterns::CirclePattern(10);
 }
 
 void Enemy::Enemy::update(time_t time) {
@@ -49,5 +49,33 @@ void Enemy::Enemy::fixedUpdate() {
     if (!currentPattern)
         return;
 
-    currentPattern->fire(getCenter(), bullets);
+    if (currentPattern->fireCount <= 0)
+    {
+		// Reset pattern
+		delete currentPattern;
+		currentPattern = new enemypatterns::CirclePattern(10);
+    }
+    else
+    {
+        currentPattern->timeSinceLastFire += GameConfig::FIXED_DELTATIME;
+        if (currentPattern->timeSinceLastFire > currentPattern->cooldown) {
+            attack();
+            currentPattern->fireCount--;
+        }
+    }
+}
+
+void Enemy::Enemy::attack() {
+    for each(std::function<glm::vec3(glm::vec3, time_t)> func in currentPattern->fire())
+    {
+        Bullet::Bullet* newBullet = bullets.acquire();
+        newBullet->activate(
+            getCenter(),
+            func,
+            Bullet::BulletType::ENEMY,
+            [this, newBullet]() { this->bullets.release(newBullet); },
+            bulletHitDetectFunction,
+            bulletHitEventFunction
+        );
+    }
 }

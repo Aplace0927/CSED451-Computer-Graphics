@@ -15,6 +15,12 @@ namespace Enemy {
         Enemy();
         void update(time_t time) override;
         void fixedUpdate() override;
+        void setBulletHitDetectFunction(const std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)>& func) {
+            bulletHitDetectFunction = func;
+        }
+        void setBulletHitEventFunction(const std::function<void()>& func) {
+            bulletHitEventFunction = func;
+        }
 
         std::function<void()> getBulletHitDetectHandlerFunction() {
             return [this]() {
@@ -32,6 +38,9 @@ namespace Enemy {
         enemypatterns::IPattern* currentPattern;
         ObjectPool::ObjectPool<Bullet::Bullet> bullets;
         HealthBar::HealthBar healthBar;
+        std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)> bulletHitDetectFunction;
+        std::function<void()> bulletHitEventFunction;
+		void attack();
     };
 };
 #endif // ENEMY_HPP

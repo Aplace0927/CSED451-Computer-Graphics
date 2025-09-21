@@ -71,8 +71,8 @@ void Bullet::Bullet::activate(
     setReleaseFunction(releaseFunc);
     hitDetectFunction = hitDetectFunc;
     hitEventFunction = hitEventFunc;
-    Object::setStatus(true);
     setPosition(movement_pattern(bullet_origin, 0));
+    Object::setStatus(true);
 }
 
 bool Bullet::Bullet::isInRenderBounds(const glm::vec3& pos) {
@@ -98,10 +98,8 @@ void Bullet::Bullet::fixedUpdate() {
     }
     // We solve the error cased by missing hitDetectFunction or hitEventFunction - enemypattern
     // Collision with target 
-    /*
     if (hitDetectFunction(getBoundingBox())) {
         hitEventFunction();
         callReleaseFunction();
     }
-    */
 }

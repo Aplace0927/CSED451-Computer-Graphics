@@ -5,6 +5,7 @@
 #include "utils.hpp"
 #include <functional>
 #include <chrono>
+#include <iostream>
 
 namespace Bullet {
     enum class BulletType {
@@ -56,7 +57,7 @@ namespace BulletPattern {
         inline std::function<glm::vec3(glm::vec3, time_t)> straight(glm::vec3 direction, float speed = BulletSpeed) {
             return [direction, speed](glm::vec3 origin, time_t time_elapsed) {
                 float linear_speed = BulletSpeed * static_cast<float>(time_elapsed);
-                return origin + glm::vec3(0.0f, -linear_speed, 0.0f);
+                return origin + Utils::getNormalizedDirection(direction,linear_speed);
             };
         }
 

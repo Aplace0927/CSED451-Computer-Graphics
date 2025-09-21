@@ -28,7 +28,16 @@ namespace Player {
         void setBulletHitEventFunction(const std::function<void()> &func) {
             bulletHitEventFunction = func;
         }
-        
+
+        std::function<void()> getBulletHitDetectHandlerFunction() {
+            return [this]() {
+                playerHealth = glm::max(0, playerHealth - 1);
+                if (playerHealth == 0) {
+                    setStatus(false);
+                }
+                };
+        }
+
     private:
         // Add player state variables here 
         int playerHealth;

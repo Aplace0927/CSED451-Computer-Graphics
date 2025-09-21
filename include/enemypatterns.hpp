@@ -12,16 +12,19 @@ namespace enemypatterns {
     class IPattern {
     public:
         int fireCount = 10;
+		int maxFireCount = 10;
+		float cooldown = 0.2;
+		float timeSinceLastFire = 0.0f;
+		float speed = 0.001f;
         virtual ~IPattern() = default;
-        virtual void fire(glm::vec3 center, ObjectPool::ObjectPool<Bullet::Bullet> bulletPool) = 0;
+        virtual std::vector<std::function<glm::vec3(glm::vec3, time_t)>> fire() = 0;
     };
 
     class CirclePattern : public IPattern {
         int numBullets;
-        float speed;
     public:
-        CirclePattern(int n, float s);
-        void fire(glm::vec3 center, ObjectPool::ObjectPool<Bullet::Bullet> bulletPool) override;
+        CirclePattern(int num);
+        std::vector<std::function<glm::vec3(glm::vec3, time_t)>> fire() override;
     };
 
     class SpiralPattern : public IPattern {
@@ -30,7 +33,7 @@ namespace enemypatterns {
         float angleStep;
     public:
         SpiralPattern(float s, float step);
-        void fire(glm::vec3 center, ObjectPool::ObjectPool<Bullet::Bullet> bulletPool) override;
+        std::vector<std::function<glm::vec3(glm::vec3, time_t)>> fire() override;
     };
 
     class WavePattern : public IPattern {
@@ -39,7 +42,7 @@ namespace enemypatterns {
         float amp;
     public:
         WavePattern(float s, float f, float a);
-        void fire(glm::vec3 center, ObjectPool::ObjectPool<Bullet::Bullet> bulletPool) override;
+        std::vector<std::function<glm::vec3(glm::vec3, time_t)>> fire() override;
     };
 
     class RandomBurstPattern : public IPattern {
@@ -47,7 +50,7 @@ namespace enemypatterns {
         int count;
     public:
         RandomBurstPattern(float s, int c);
-        void fire(glm::vec3 center, ObjectPool::ObjectPool<Bullet::Bullet> bulletPool) override;
+        std::vector<std::function<glm::vec3(glm::vec3, time_t)>> fire() override;
     };
 }
 

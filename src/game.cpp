@@ -7,27 +7,9 @@ Game::Game::Game() {
 
     player.setBulletHitDetectFunction(enemy.getBoundingBoxCollisionFunction());
     player.setBulletHitEventFunction(enemy.getBulletHitDetectHandlerFunction());
+    enemy.setBulletHitDetectFunction(player.getBoundingBoxCollisionFunction());
+    enemy.setBulletHitEventFunction(player.getBulletHitDetectHandlerFunction());
 }
-
-// void Game::Game::draw() {
-//     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-//     uint64_t current_time = std::chrono::duration_cast<std::chrono::milliseconds>(
-//         std::chrono::system_clock::now().time_since_epoch()
-//     ).count();
-
-//     GraphicsManager::GraphicsManager::getInstance().registerHandler(player);
-
-//     for (auto& bullet : bullets) {
-//         bullet.draw(current_time);
-//         printf("%.4f %.4f\n", bullet.getCenter().x, bullet.getCenter().y);
-//     }
-    
-    
-//     //!TODO: add game objects drawing here
-//     glutSwapBuffers();
-//     glutPostRedisplay();
-// }
 
 Game::Game::~Game() {}
 void Game::Game::keyEvent(unsigned char key, int x, int y) {
