@@ -34,19 +34,19 @@ void Game::Game::keyEvent(unsigned char key, int x, int y) {
     switch (key) {
         case 'w':
             playerMoveVec.y ++;
-            player.setDirection(Movement::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
+            player.setDirection(Utils::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
             break;
         case 's':
             playerMoveVec.y --;
-            player.setDirection(Movement::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
+            player.setDirection(Utils::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
             break;
         case 'a':
             playerMoveVec.x --;
-            player.setDirection(Movement::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
+            player.setDirection(Utils::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
             break;
         case 'd':
             playerMoveVec.x ++;
-            player.setDirection(Movement::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
+            player.setDirection(Utils::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
             break;
         case 'q':
             glutSetKeyRepeat(GLUT_KEY_REPEAT_DEFAULT);
@@ -64,19 +64,19 @@ void Game::Game::keyUpEvent(unsigned char key, int x, int y) {
     switch (key) {
         case 'w':
             playerMoveVec.y --;
-            player.setDirection(Movement::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
+            player.setDirection(Utils::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
             break;
         case 's':
             playerMoveVec.y ++;
-            player.setDirection(Movement::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
+            player.setDirection(Utils::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
             break;
         case 'a':
             playerMoveVec.x ++;
-            player.setDirection(Movement::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
+            player.setDirection(Utils::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
             break;
         case 'd':
             playerMoveVec.x --;
-            player.setDirection(Movement::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
+            player.setDirection(Utils::getNormalizedDirection(playerMoveVec, GameConfig::PLAYER_SPEED));
             break;
         case ' ':
             player.shooting(false);

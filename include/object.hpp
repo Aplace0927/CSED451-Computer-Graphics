@@ -45,9 +45,9 @@ namespace Object {
         
         void draw() {
             shape.draw();
-            #ifdef BOUNDING_BOX_DEBUG
-            boundingBox.draw();
-            #endif
+            // #ifdef BOUNDING_BOX_DEBUG
+            // boundingBox.draw();
+            // #endif
         }
 
         bool getStatus() const { return active; }
@@ -68,6 +68,40 @@ namespace Object {
             if (releaseFunc != nullptr) {
                 releaseFunc();
             }
+        }
+
+        bool checkSubShapeEmpty() const {
+            return shape.checkSubShapeEmpty();
+        }
+
+        void popSubShape() {
+            shape.popSubShape();
+            boundingBox = shape.move(T(0));
+        }
+
+        void clearSubShapes() {
+            shape.clearSubShapes();
+        }
+
+        int getSubShapeCount() const {
+            return shape.getSubShapeCount();
+        }
+
+        int getColorCount() const {
+            return shape.getColorCount();
+        }
+
+        int getMethodCount() const {
+            return shape.getMethodCount();
+        }
+
+        void addSubShape(
+            const std::vector<T>& vertices,
+            const std::vector<C>& colors,
+            unsigned int drawMethod
+        ) {
+            shape.addSubShape(vertices, colors, drawMethod);
+            boundingBox = shape.move(T(0));
         }
 
         Shape::Shape<T, C> getShape() const {

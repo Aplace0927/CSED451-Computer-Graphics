@@ -13,6 +13,8 @@ add_executable(
  	"graphicsmanager.cpp"
 	"objectpool.cpp"
 	"enemypatterns.cpp"
+	"digit.cpp"
+	"healthbar.cpp"
 )
 
 target_link_libraries(touhou_postech

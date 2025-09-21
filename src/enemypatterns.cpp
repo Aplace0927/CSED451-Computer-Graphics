@@ -1,3 +1,4 @@
+/*
 #include "enemypatterns.hpp"
 
 #ifndef M_PI
@@ -51,3 +52,4 @@ namespace enemypatterns {
     }
 
 } // namespace enemypatterns
+*/
