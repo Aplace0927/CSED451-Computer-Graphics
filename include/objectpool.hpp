@@ -15,32 +15,29 @@ namespace ObjectPool
         ObjectPool() {
             pool.reserve(GameConfig::DEFAULT_POOL_SIZE);
             for (int i = 0; i < GameConfig::DEFAULT_POOL_SIZE; ++i) {
-                // pool.push_back(std::make_unique<T>());
                 pool.push_back(new T());
             }
         }
         ObjectPool(int size) {
             pool.reserve(size);
             for (int i = 0; i < size; ++i) {
-                // pool.push_back(std::make_unique<T>());
                 pool.push_back(new T());
             }
         }
 
         T* acquire() {
-            for (auto& obj : pool) {
-                if (!obj->getStatus()) {
-                    return obj;
-                }
-            }
-            return nullptr;
+            if (pool.empty()) return new T();
+            T* obj = pool.back();
+            pool.pop_back();
+            return obj;
         }
 
-        void release(T* obj) { obj->deactivate(); }
-        // std::vector<std::unique_ptr<T>> pool;
-        std::vector<T*> pool;
+        void release(T* obj) {
+            obj->deactivate();
+            pool.push_back(obj);
+        }
     private:
-        
+        std::vector<T*> pool;
     };
 }
 

@@ -80,6 +80,7 @@ void Game::Game::keyUpEvent(unsigned char key, int x, int y) {
             break;
         case ' ':
             player.shooting(false);
+            break;
         default:
             break;
     }

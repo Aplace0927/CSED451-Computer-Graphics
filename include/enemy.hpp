@@ -28,9 +28,8 @@ namespace Enemy {
         }
         
     private:
-        // Add enemy state variables here 
         int enemyHealth;
-		std::vector<enemypatterns::IPattern> attackPatterns;
+        enemypatterns::IPattern* currentPattern;
         ObjectPool::ObjectPool<Bullet::Bullet> bullets;
         HealthBar::HealthBar healthBar;
     };

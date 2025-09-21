@@ -6,12 +6,14 @@
 #include <cmath>
 #include <cstdlib>
 #include "bullet.hpp"
+#include "objectpool.hpp"
 
 namespace enemypatterns {
     class IPattern {
     public:
+        int fireCount = 10;
         virtual ~IPattern() = default;
-        virtual void update(glm::vec3 pos);
+        virtual void fire(glm::vec3 center, ObjectPool::ObjectPool<Bullet::Bullet> bulletPool) = 0;
     };
 
     class CirclePattern : public IPattern {
@@ -19,7 +21,7 @@ namespace enemypatterns {
         float speed;
     public:
         CirclePattern(int n, float s);
-        void update(glm::vec3 pos) override;
+        void fire(glm::vec3 center, ObjectPool::ObjectPool<Bullet::Bullet> bulletPool) override;
     };
 
     class SpiralPattern : public IPattern {
@@ -28,7 +30,7 @@ namespace enemypatterns {
         float angleStep;
     public:
         SpiralPattern(float s, float step);
-        void update(glm::vec3 pos) override;
+        void fire(glm::vec3 center, ObjectPool::ObjectPool<Bullet::Bullet> bulletPool) override;
     };
 
     class WavePattern : public IPattern {
@@ -37,7 +39,7 @@ namespace enemypatterns {
         float amp;
     public:
         WavePattern(float s, float f, float a);
-        void update(glm::vec3 pos) override;
+        void fire(glm::vec3 center, ObjectPool::ObjectPool<Bullet::Bullet> bulletPool) override;
     };
 
     class RandomBurstPattern : public IPattern {
@@ -45,7 +47,7 @@ namespace enemypatterns {
         int count;
     public:
         RandomBurstPattern(float s, int c);
-        void update(glm::vec3 pos) override;
+        void fire(glm::vec3 center, ObjectPool::ObjectPool<Bullet::Bullet> bulletPool) override;
     };
 }
 

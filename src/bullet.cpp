@@ -1,6 +1,7 @@
 #include "bullet.hpp"
 
-Bullet::Bullet::Bullet(): 
+Bullet::Bullet::Bullet():
+#pragma region Constructor
     Object::Object(
         // Initial position at origin; will be updated immediately after creation
         glm::vec3(0.0f, 0.0f, 0.0f), 
@@ -35,6 +36,7 @@ Bullet::Bullet::Bullet():
     created_time(0) { 
         Object::setStatus(false);
     }
+#pragma endregion
 
 void Bullet::Bullet::draw(time_t current_time) {
     setPosition(movement_pattern(bullet_origin, current_time - created_time));
@@ -73,10 +75,20 @@ void Bullet::Bullet::activate(
     setPosition(movement_pattern(bullet_origin, 0));
 }
 
+bool Bullet::Bullet::isInRenderBounds(const glm::vec3& pos) {
+    return pos.x > GameConfig::GAME_RENDER_LEFT_LIMIT &&
+        pos.x < GameConfig::GAME_RENDER_RIGHT_LIMIT &&
+        pos.y > GameConfig::GAME_RENDER_LOWER_LIMIT &&
+        pos.y < GameConfig::GAME_RENDER_UPPER_LIMIT;
+}
+
 void Bullet::Bullet::update(time_t time) {
-    if (!Object::getStatus()) {
+    if (!Object::getStatus())
         return;
-    }
+
+    if (!isInRenderBounds(getCenter()))
+        callReleaseFunction();
+
     draw(time);
 }
 
@@ -84,9 +96,12 @@ void Bullet::Bullet::fixedUpdate() {
     if (!Object::getStatus()) {
         return;
     }
-    // Collision with target
+    // We solve the error cased by missing hitDetectFunction or hitEventFunction - enemypattern
+    // Collision with target 
+    /*
     if (hitDetectFunction(getBoundingBox())) {
         hitEventFunction();
         callReleaseFunction();
     }
+    */
 }

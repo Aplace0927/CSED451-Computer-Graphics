@@ -1,4 +1,5 @@
 #include "enemy.hpp"
+#include <iostream>
 
 Enemy::Enemy::Enemy()
     : Object::Object(
@@ -37,16 +38,16 @@ Enemy::Enemy::Enemy()
     healthBar(glm::vec3(-0.80f, 0.0f, 0.0f), enemyHealth)
 {
     bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
-    // Initialize other enemy state variables here if needed
+    currentPattern = new enemypatterns::CirclePattern(10, 0.001f);
 }
 
 void Enemy::Enemy::update(time_t time) {
     draw();
-    return;
-    // Implement enemy behavior here
 }
 
 void Enemy::Enemy::fixedUpdate() {
-    return;
-    // Implement enemy behavior here
+    if (!currentPattern)
+        return;
+
+    currentPattern->fire(getCenter(), bullets);
 }

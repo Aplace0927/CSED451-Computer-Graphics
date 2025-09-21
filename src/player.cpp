@@ -50,18 +50,11 @@ void Player::Player::update(time_t time) {
         shootingCooldown = time;
     }
 
-    for (Bullet::Bullet* bullet: bullets.pool) {
-        glm::vec3 bulletVec = bullet->getCenter();
-        if (
-            GameConfig::GAME_RENDER_LOWER_LIMIT < bulletVec.y && bulletVec.y < GameConfig::GAME_RENDER_UPPER_LIMIT &&
-            GameConfig::GAME_RENDER_LEFT_LIMIT < bulletVec.x && bulletVec.x < GameConfig::GAME_RENDER_RIGHT_LIMIT
-        ) {
-            continue;
-        }
-        if (bullet->getStatus()) {
-            bullet->callReleaseFunction();
-        }
-    }
+    draw();
+}
+
+void Player::Player::fixedUpdate() {
+    move(direction);
 
     glm::vec3 currentPos = getCenter();
     setPosition(glm::vec3(
@@ -69,9 +62,4 @@ void Player::Player::update(time_t time) {
         glm::clamp(currentPos.y, GameConfig::POSITION_LOWER_LIMIT, GameConfig::POSITION_UPPER_LIMIT),
         currentPos.z
     ));
-    draw();
-}
-
-void Player::Player::fixedUpdate() {
-    move(direction);
 }
