@@ -12,6 +12,7 @@ add_executable(
 	"physicsmanager.cpp"
  	"graphicsmanager.cpp"
 	"objectpool.cpp"
+	"enemypatterns.cpp"
 	"digit.cpp"
 	"healthbar.cpp"
 )

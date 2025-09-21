@@ -1,5 +1,6 @@
 #include "bullet.hpp"
 
+#pragma region Constructor
 Bullet::Bullet::Bullet(): 
     Object::Object(
         // Initial position at origin; will be updated immediately after creation
@@ -35,6 +36,7 @@ Bullet::Bullet::Bullet():
     created_time(0) { 
         Object::setStatus(false);
     }
+#pragma endregion
 
 void Bullet::Bullet::draw(time_t current_time) {
     setPosition(movement_pattern(bullet_origin, current_time - created_time));
@@ -84,8 +86,8 @@ void Bullet::Bullet::fixedUpdate() {
     if (!Object::getStatus()) {
         return;
     }
-    // Collision with target
-    if (Utility::isInRenderBounds(getCenter()) == false) {
+
+    if (!Utility::isInRenderBounds(getCenter())) {
         callReleaseFunction();
         return;
     }

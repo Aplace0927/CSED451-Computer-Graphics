@@ -36,10 +36,12 @@ Player::Player::Player()
         playerHealth
     )
 {
-	shootingCooldown = 0;
-	direction = glm::vec3(0.0f, 0.0f, 0.0f);
-    bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
     // Initialize other player state variables here if needed
+	shootingCooldown = 0;
+    bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
+	playerHealth = GameConfig::PLAYER_LIFE;
+	isShooting = false;
+	direction = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
 void Player::Player::update(time_t time) {
@@ -59,19 +61,16 @@ void Player::Player::update(time_t time) {
         shootingCooldown = time;
     }
 
+    draw();
+}
+
+void Player::Player::fixedUpdate() {
+    move(direction);
+
     glm::vec3 currentPos = getCenter();
     setPosition(glm::vec3(
         glm::clamp(currentPos.x, GameConfig::POSITION_LEFT_LIMIT, GameConfig::POSITION_RIGHT_LIMIT),
         glm::clamp(currentPos.y, GameConfig::POSITION_LOWER_LIMIT, GameConfig::POSITION_UPPER_LIMIT),
         currentPos.z
     ));
-    draw();
-}
-
-void Player::Player::fixedUpdate() {
-    if (!getStatus()) {
-        return;
-    }
-    
-    move(direction);
 }

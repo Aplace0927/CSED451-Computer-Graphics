@@ -5,6 +5,7 @@
 #include "utility.hpp"
 #include <functional>
 #include <chrono>
+#include <iostream>
 
 namespace Bullet {
     enum class BulletType {
@@ -30,11 +31,12 @@ namespace Bullet {
         void draw(time_t current_time);
 
     private:
+        bool isInRenderBounds(const glm::vec3& pos);
+
         BulletType bullet_shooter;
         time_t created_time;
         glm::vec3 bullet_origin;
         std::function<glm::vec3(glm::vec3, time_t)> movement_pattern;
-
         std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)> hitDetectFunction;
         std::function<void()> hitEventFunction;
     };
@@ -43,7 +45,7 @@ namespace Bullet {
 namespace BulletPattern {
     constexpr float BulletSpeed = 0.001f;
     namespace Player {
-        inline std::function<glm::vec3(glm::vec3, time_t)> straight_up() {
+        inline std::function<glm::vec3(glm::vec3, time_t)> straight_up(float speed = BulletSpeed) {
             return [](glm::vec3 origin, time_t time_elapsed) {
                 float linear_speed = BulletSpeed * static_cast<float>(time_elapsed);
                 return origin + glm::vec3(0.0f, linear_speed, 0.0f);
@@ -52,10 +54,10 @@ namespace BulletPattern {
     }
 
     namespace Enemy {
-        inline std::function<glm::vec3(glm::vec3, time_t)> straight_down() {
-            return [](glm::vec3 origin, time_t time_elapsed) {
+        inline std::function<glm::vec3(glm::vec3, time_t)> straight(glm::vec3 direction, float speed = BulletSpeed) {
+            return [direction, speed](glm::vec3 origin, time_t time_elapsed) {
                 float linear_speed = BulletSpeed * static_cast<float>(time_elapsed);
-                return origin + glm::vec3(0.0f, -linear_speed, 0.0f);
+                return origin + Utility::getNormalizedDirection(direction,linear_speed);
             };
         }
 

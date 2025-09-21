@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <glm/glm.hpp>
+#include <stdexcept>
 #include "shape.hpp"
 #include "config.hpp"
 

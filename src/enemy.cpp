@@ -1,4 +1,5 @@
 #include "enemy.hpp"
+#include <iostream>
 
 Enemy::Enemy::Enemy()
     : Object::Object(
@@ -44,7 +45,7 @@ Enemy::Enemy::Enemy()
     )
 {
     bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
-    // Initialize other enemy state variables here if needed
+    shootingPattern = new ShootingPattern::CirclePattern(10);
 }
 
 void Enemy::Enemy::update(time_t time) {
@@ -72,13 +73,49 @@ void Enemy::Enemy::update(time_t time) {
         return;
     }
     draw();
-    return;
-    // Implement enemy behavior here
 }
 
 void Enemy::Enemy::fixedUpdate() {
-    if (!getStatus()) {
+    updateMovementPattern();
+	updateShootingPattern();
+}
+
+void Enemy::Enemy::updateMovementPattern() {
+    if (!movementPattern)
         return;
+}
+
+void Enemy::Enemy::updateShootingPattern() {
+    if (!shootingPattern)
+        return;
+
+    if (shootingPattern->fireCount <= 0)
+    {
+        delete shootingPattern;
+        shootingPattern = new ShootingPattern::CirclePattern(10);
     }
-    // move(movementPattern.move());
+    else
+    {
+        shootingPattern->timeSinceLastFire += GameConfig::FIXED_DELTATIME;
+        if (shootingPattern->timeSinceLastFire > shootingPattern->cooldown) {
+            attack();
+            shootingPattern->fireCount--;
+        }
+    }
+
+}
+
+void Enemy::Enemy::attack() {
+    for each(std::function<glm::vec3(glm::vec3, time_t)> func in shootingPattern->fire())
+    {
+        Bullet::Bullet* newBullet = bullets.acquire();
+        newBullet->activate(
+            getCenter(),
+            func,
+            Bullet::BulletType::ENEMY,
+            [this, newBullet]() { this->bullets.release(newBullet); },
+            bulletHitDetectFunction,
+            bulletHitEventFunction
+        );
+    }
 }

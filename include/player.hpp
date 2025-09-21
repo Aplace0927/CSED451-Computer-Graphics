@@ -2,6 +2,7 @@
 #define PLAYER_HPP
 
 #include "object.hpp"
+#include "config.hpp"
 #include "objectpool.hpp"
 #include "bullet.hpp"
 #include "healthbar.hpp"

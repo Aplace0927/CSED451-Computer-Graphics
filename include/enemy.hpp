@@ -6,8 +6,8 @@
 #include "object.hpp"
 #include "objectpool.hpp"
 #include "bullet.hpp"
+#include "enemypatterns.hpp"
 #include "healthbar.hpp"
-#include "enemypattern.hpp"
 
 namespace Enemy {
     class Enemy : public Object::Object<glm::vec3, Shape::RGBColor> {
@@ -15,14 +15,13 @@ namespace Enemy {
         Enemy();
         void update(time_t time) override;
         void fixedUpdate() override;
-
-        void setBulletHitDetectFunction(const std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)> &func) {
+        void setBulletHitDetectFunction(const std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)>& func) {
             bulletHitDetectFunction = func;
         }
-
-        void setBulletHitEventFunction(const std::function<void()> &func) {
+        void setBulletHitEventFunction(const std::function<void()>& func) {
             bulletHitEventFunction = func;
         }
+
 
         std::function<void()> getBulletHitDetectHandlerFunction() {
             return [this]() {
@@ -36,19 +35,21 @@ namespace Enemy {
         }
         
     private:
-        // Add enemy state variables here 
         int enemyHealth;
         ObjectPool::ObjectPool<Bullet::Bullet> bullets;
         HealthBar::HealthBar healthBar;
-        time_t shootingCooldown;
         
-        MovementPattern::MovementPattern movementPattern;
-        ShootingPattern::ShootingPattern shootingPattern;
-        time_t patternRefreshTime;
+        MovementPattern::IMovementPattern* movementPattern;
+        ShootingPattern::IShootingPattern* shootingPattern;
+        time_t movingCooldown;
+        time_t shootingCooldown;
 
-        ObjectPool::ObjectPool<Bullet::Bullet> bullets;
         std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)> bulletHitDetectFunction;
         std::function<void()> bulletHitEventFunction;
+		
+		void updateMovementPattern();
+		void updateShootingPattern();
+        void attack();
     };
 };
 #endif // ENEMY_HPP

@@ -7,6 +7,7 @@ namespace GameConfig {
     inline constexpr const char* WINDOW_TITLE = "POST-ouhou-ECH";
 
     inline constexpr float PLAYER_SPEED = 0.02f;
+	inline constexpr int PLAYER_LIFE = 5;
 	inline constexpr float FIXED_DELTATIME = 0.02f;
 
     inline constexpr float POSITION_UPPER_LIMIT = 0.9f;
