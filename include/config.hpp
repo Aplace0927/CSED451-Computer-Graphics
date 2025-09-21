@@ -19,7 +19,7 @@ namespace GameConfig {
     inline constexpr float GAME_RENDER_LEFT_LIMIT = -3.0f;
     inline constexpr float GAME_RENDER_RIGHT_LIMIT = 3.0f;
 
-    inline constexpr size_t DEFAULT_POOL_SIZE = 0x100;
+    inline constexpr size_t DEFAULT_POOL_SIZE = 0x10;
 
     inline constexpr time_t SHOOTING_COOLDOWN_MS = 50;
 

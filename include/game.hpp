@@ -10,7 +10,7 @@
 
 #include "player.hpp"
 #include "enemy.hpp"
-#include "movement.hpp"
+#include "utility.hpp"
 #include "bullet.hpp"
 #include "singleton.hpp"
 #include "objectpool.hpp"

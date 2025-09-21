@@ -28,15 +28,21 @@ namespace ObjectPool
         }
 
         T* acquire() {
-            for (auto& obj : pool) {
-                if (!obj->getStatus()) {
-                    return obj;
-                }
+            if (pool.empty()) {
+                pool.push_back(new T());
             }
-            return nullptr;
+            T* obj = pool.back();
+            pool.pop_back();
+            return obj;
+            //for (auto& obj : pool) {
+            //    if (!obj->getStatus()) {
+            //        return obj;
+            //    }
+            //}
+            //return nullptr;
         }
 
-        void release(T* obj) { obj->deactivate(); }
+        void release(T* obj) { obj->deactivate(); pool.push_back(obj); }
         // std::vector<std::unique_ptr<T>> pool;
         std::vector<T*> pool;
     private:

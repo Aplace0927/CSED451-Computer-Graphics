@@ -56,6 +56,9 @@ namespace Object {
 
         std::function<bool(const BoundingBox::BoundingBox<T>&)> getBoundingBoxCollisionFunction() {
             return [this](const BoundingBox::BoundingBox<T>& other) {
+                if (!this->active) {
+                    return false;
+                } 
                 return this->boundingBox & other;
             };
         }

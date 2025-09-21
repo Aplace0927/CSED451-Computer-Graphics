@@ -20,7 +20,7 @@ namespace Enemy {
                 enemyHealth = glm::max(0, enemyHealth - 1);
                 healthBar.setCurrentHealth(enemyHealth);
                 if (enemyHealth == 0) {
-                    setStatus(false);
+                    this->setStatus(false);
                     healthBar.setStatus(false);
                 }
             };

@@ -2,6 +2,7 @@
 #define BULLET_HPP
 
 #include "object.hpp"
+#include "utility.hpp"
 #include <functional>
 #include <chrono>
 

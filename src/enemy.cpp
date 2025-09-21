@@ -33,7 +33,7 @@ Enemy::Enemy::Enemy()
             std::vector<unsigned int>{ GL_TRIANGLE_FAN }
         )
     ),
-    enemyHealth(1000),
+    enemyHealth(100),
     healthBar(glm::vec3(-0.80f, 0.0f, 0.0f), enemyHealth)
 {
     bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
@@ -41,6 +41,9 @@ Enemy::Enemy::Enemy()
 }
 
 void Enemy::Enemy::update(time_t time) {
+    if (!getStatus()) {
+        return;
+    }
     draw();
     return;
     // Implement enemy behavior here
