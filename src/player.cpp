@@ -26,7 +26,15 @@ Player::Player::Player()
         )
     ),
     playerHealth(5),
-    isShooting(false)
+    isShooting(false),
+    healthBar(
+        glm::vec3(GameConfig::PLAYER_DIGIT_X, GameConfig::PLAYER_DIGIT_Y, 0.0f),
+        GameConfig::FONT_DIGIT_SIZE,
+        glm::vec3(GameConfig::PLAYER_GAUGE_X, GameConfig::PLAYER_GAUGE_Y, 0.0f),
+        GameConfig::PLAYER_GAUGE_WIDTH,
+        GameConfig::PLAYER_GAUGE_HEIGHT,
+        playerHealth
+    )
 {
 	shootingCooldown = 0;
 	direction = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -35,6 +43,9 @@ Player::Player::Player()
 }
 
 void Player::Player::update(time_t time) {
+    if (!getStatus()) {
+        return;
+    }
     if (isShooting && time - shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_MS) {
         Bullet::Bullet* newBullet = bullets.acquire();
         newBullet->activate(
@@ -58,5 +69,9 @@ void Player::Player::update(time_t time) {
 }
 
 void Player::Player::fixedUpdate() {
+    if (!getStatus()) {
+        return;
+    }
+    
     move(direction);
 }

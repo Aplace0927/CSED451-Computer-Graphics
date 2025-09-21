@@ -11,15 +11,19 @@ HealthBar::HealthBar::HealthBar()
         // drawMethod: vector of draw methods for each subshape
         std::vector<unsigned int>{GL_TRIANGLE_FAN}
     )
-) {}
+), maxHealth(0), currentHealth(0), digit_pos(0.0f), digit_sz(0.0f), gauge_pos(0.0f), gauge_w(0.0f), gauge_h(0.0f) {}
 
 
 HealthBar::HealthBar::HealthBar(
-    const glm::vec3& position, 
+    const glm::vec3& digit_position, 
+    const float digit_size,
+    const glm::vec3& gauge_position,
+    const float gauge_width,
+    const float gauge_height,
     int maxHealth
 )
 : Object::Object(
-    position,
+    digit_position,
     Shape::Shape<glm::vec3, Shape::RGBColor>(    
         // subshapes: vector of subshapes, each subshape is a vector of vertices
         std::vector<std::vector<glm::vec3>> {{}},
@@ -28,7 +32,7 @@ HealthBar::HealthBar::HealthBar(
         // drawMethod: vector of draw methods for each subshape
         std::vector<unsigned int>{}
     )
-), maxHealth(maxHealth) {
+), maxHealth(maxHealth), digit_pos(digit_position), digit_sz(digit_size), gauge_pos(gauge_position), gauge_w(gauge_width), gauge_h(gauge_height) {
     setCurrentHealth(maxHealth);    
 }
 
@@ -41,7 +45,11 @@ void HealthBar::HealthBar::setCurrentHealth(int health) {
     while (health > 0) {
         std::vector<glm::vec3> vertices = Digit::getDigitVertices(health % 10);
         for (auto& vertex: vertices) {
-            vertex += glm::vec3(GameConfig::ENEMY_GAUGE_X + GameConfig::FONT_DIGIT_SIZE * 6 * (3 - digitCnt), GameConfig::ENEMY_GAUGE_Y - 0.1f, 0.0f); // Slightly offset in z to avoid z-fighting
+            vertex += glm::vec3(
+                digit_pos.x + GameConfig::DIGIT_SPACING * (3 - digitCnt),
+                digit_pos.y,
+                0.0f
+            );
         }
         addSubShape(
             vertices,
@@ -53,7 +61,11 @@ void HealthBar::HealthBar::setCurrentHealth(int health) {
     }
 
     addSubShape(
-        createHealthBarShape((float)currentHealth / maxHealth),
+        createHealthBarShape(
+            gauge_pos,
+            gauge_pos + glm::vec3(gauge_w, gauge_h, 0.0f),
+            (float)currentHealth / maxHealth
+        ),
         createHealthBarColors((float)currentHealth / maxHealth),
         GL_TRIANGLE_FAN
     );
@@ -76,13 +88,13 @@ void HealthBar::HealthBar::fixedUpdate() {
     return;
 }
 
-std::vector<glm::vec3> HealthBar::createHealthBarShape(float gauge) {
+std::vector<glm::vec3> HealthBar::createHealthBarShape(glm::vec3 topleft, glm::vec3 bottomright, float gauge) {
     return std::vector<glm::vec3> {
-        glm::vec3(GameConfig::ENEMY_GAUGE_X, GameConfig::ENEMY_GAUGE_Y, 0.0f),
-        glm::vec3(GameConfig::ENEMY_GAUGE_X + GameConfig::ENEMY_GAUGE_WIDTH, GameConfig::ENEMY_GAUGE_Y, 0.0f),
-        glm::vec3(GameConfig::ENEMY_GAUGE_X + GameConfig::ENEMY_GAUGE_WIDTH, GameConfig::ENEMY_GAUGE_Y + glm::mix(0.0f, GameConfig::ENEMY_GAUGE_HEIGHT, gauge), 0.0f),
-        glm::vec3(GameConfig::ENEMY_GAUGE_X, GameConfig::ENEMY_GAUGE_Y + glm::mix(0.0f, GameConfig::ENEMY_GAUGE_HEIGHT, gauge), 0.0f),
-        glm::vec3(GameConfig::ENEMY_GAUGE_X, GameConfig::ENEMY_GAUGE_Y, 0.0f)
+        topleft,
+        topleft + glm::vec3(0.0f, (bottomright.y - topleft.y), 0.0f),
+        topleft + glm::vec3((bottomright.x - topleft.x) * gauge, (bottomright.y - topleft.y), 0.0f),
+        topleft + glm::vec3((bottomright.x - topleft.x) * gauge, 0.0f, 0.0f),
+        topleft
     };
 }
 
@@ -90,8 +102,8 @@ std::vector<Shape::RGBColor> HealthBar::createHealthBarColors(float gauge) {
     return std::vector<Shape::RGBColor>(
         5,
         glm::mix(
-            glm::make_vec3(GameConfig::ENEMY_GAUGE_EMPTY_COLOR),
-            glm::make_vec3(GameConfig::ENEMY_GAUGE_FULL_COLOR),
+            glm::make_vec3(GameConfig::GAUGE_EMPTY_COLOR),
+            glm::make_vec3(GameConfig::GAUGE_FULL_COLOR),
             gauge
         )
     );

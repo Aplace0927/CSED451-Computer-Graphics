@@ -34,13 +34,40 @@ Enemy::Enemy::Enemy()
         )
     ),
     enemyHealth(100),
-    healthBar(glm::vec3(-0.80f, 0.0f, 0.0f), enemyHealth)
+    healthBar(
+        glm::vec3(GameConfig::ENEMY_DIGIT_X, GameConfig::ENEMY_DIGIT_Y, 0.0f),
+        GameConfig::FONT_DIGIT_SIZE,
+        glm::vec3(GameConfig::ENEMY_GAUGE_X, GameConfig::ENEMY_GAUGE_Y, 0.0f),
+        GameConfig::ENEMY_GAUGE_WIDTH,
+        GameConfig::ENEMY_GAUGE_HEIGHT,
+        enemyHealth
+    )
 {
     bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
     // Initialize other enemy state variables here if needed
 }
 
 void Enemy::Enemy::update(time_t time) {
+    /**
+     * if (time - patternRefreshTime >= GameConfig::ENEMY_PATTERN_REFRESH_INTERVAL) {
+     *    // Update movement (and shooting) patterns - could be seperated
+     *    // Pattern update time also could be changed
+     * }
+     * 
+     */
+    // if (!time - shootingCooldown >= GameConfig::ENEMY_SHOOTING_COOLDOWN_MS) {
+    //     Bullet::Bullet* newBullet = bullets.acquire();
+    //     newBullet->activate(
+    //         getCenter() + glm::vec3(0.0f, -0.05f, 0.0f),
+    //         shootingPattern.shoot(getCenter(), time - patternRefreshTime),
+    //         Bullet::BulletType::ENEMY,
+    //         [this, newBullet]() { this->bullets.release(newBullet); },
+    //         bulletHitDetectFunction,
+    //         bulletHitEventFunction
+    //     );
+    //     shootingCooldown = time;
+    // }
+
     if (!getStatus()) {
         return;
     }
@@ -50,6 +77,8 @@ void Enemy::Enemy::update(time_t time) {
 }
 
 void Enemy::Enemy::fixedUpdate() {
-    return;
-    // Implement enemy behavior here
+    if (!getStatus()) {
+        return;
+    }
+    // move(movementPattern.move());
 }

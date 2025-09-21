@@ -10,7 +10,7 @@ namespace GameConfig {
 	inline constexpr float FIXED_DELTATIME = 0.02f;
 
     inline constexpr float POSITION_UPPER_LIMIT = 0.9f;
-    inline constexpr float POSITION_LOWER_LIMIT = -0.9f;
+    inline constexpr float POSITION_LOWER_LIMIT = -0.85f;
     inline constexpr float POSITION_LEFT_LIMIT = -0.8f;
     inline constexpr float POSITION_RIGHT_LIMIT = 0.8f;
 
@@ -23,16 +23,25 @@ namespace GameConfig {
 
     inline constexpr time_t SHOOTING_COOLDOWN_MS = 50;
 
-    inline constexpr float FONT_DIGIT_SIZE = .01f;
+    inline constexpr float FONT_DIGIT_SIZE = .005f;
+    inline constexpr float DIGIT_SPACING = FONT_DIGIT_SIZE * 6;
 
-    inline constexpr float ENEMY_GAUGE_X = -0.9f;
-    inline constexpr float ENEMY_GAUGE_Y = -0.6f;
+    inline constexpr float ENEMY_DIGIT_X = -0.9f;
+    inline constexpr float ENEMY_DIGIT_Y = 0.9f;
+    inline constexpr float ENEMY_GAUGE_X = ENEMY_DIGIT_X + DIGIT_SPACING * 5;
+    inline constexpr float ENEMY_GAUGE_Y = ENEMY_DIGIT_Y;
+    inline constexpr float ENEMY_GAUGE_WIDTH = 1.6f;
+    inline constexpr float ENEMY_GAUGE_HEIGHT = FONT_DIGIT_SIZE * 4;
 
-    inline constexpr float ENEMY_GAUGE_WIDTH = 0.1f;
-    inline constexpr float ENEMY_GAUGE_HEIGHT = 1.4f;
-    
-    inline constexpr float ENEMY_GAUGE_FULL_COLOR[3] = {0.0f, 1.0f, 0.0f};
-    inline constexpr float ENEMY_GAUGE_EMPTY_COLOR[3] = {1.0f, 0.0f, 0.0f};
+    inline constexpr float PLAYER_DIGIT_X = -0.9f;
+    inline constexpr float PLAYER_DIGIT_Y = -0.95f;
+    inline constexpr float PLAYER_GAUGE_X = PLAYER_DIGIT_X + DIGIT_SPACING * 5;
+    inline constexpr float PLAYER_GAUGE_Y = PLAYER_DIGIT_Y;
+    inline constexpr float PLAYER_GAUGE_WIDTH = 1.6f;
+    inline constexpr float PLAYER_GAUGE_HEIGHT = FONT_DIGIT_SIZE * 4;
+
+    inline constexpr float GAUGE_FULL_COLOR[3] = {0.0f, 1.0f, 0.0f};
+    inline constexpr float GAUGE_EMPTY_COLOR[3] = {1.0f, 0.0f, 0.0f};
 }
 
 #endif // CONFIG_HPP    

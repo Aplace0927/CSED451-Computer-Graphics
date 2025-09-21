@@ -4,6 +4,7 @@
 #include "object.hpp"
 #include "objectpool.hpp"
 #include "bullet.hpp"
+#include "healthbar.hpp"
 
 namespace Player {
     class Player : public Object::Object<glm::vec3, Shape::RGBColor> {
@@ -28,12 +29,25 @@ namespace Player {
             bulletHitEventFunction = func;
         }
         
+        std::function<void()> getBulletHitDetectHandlerFunction() {
+            return [this]() {
+                playerHealth = glm::max(0, playerHealth - 1);
+                healthBar.setCurrentHealth(playerHealth);
+                if (playerHealth == 0) {
+                    this->setStatus(false);
+                    healthBar.setStatus(false);
+                }
+            };
+        }
+
     private:
         // Add player state variables here 
         int playerHealth;
+        glm::vec3 direction;
         bool isShooting;
         time_t shootingCooldown;
-		glm::vec3 direction;
+        
+		HealthBar::HealthBar healthBar;
         ObjectPool::ObjectPool<Bullet::Bullet> bullets;
         std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)> bulletHitDetectFunction;
         std::function<void()> bulletHitEventFunction;
