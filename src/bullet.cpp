@@ -85,6 +85,11 @@ void Bullet::Bullet::fixedUpdate() {
         return;
     }
     // Collision with target
+    if (Utility::isInRenderBounds(getCenter()) == false) {
+        callReleaseFunction();
+        return;
+    }
+    
     if (hitDetectFunction(getBoundingBox())) {
         hitEventFunction();
         callReleaseFunction();
