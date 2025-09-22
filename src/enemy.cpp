@@ -34,7 +34,7 @@ Enemy::Enemy::Enemy()
             std::vector<unsigned int>{ GL_TRIANGLE_FAN }
         )
     ),
-    enemyHealth(100),
+    enemyHealth(GameConfig::ENEMY_LIFE),
     healthBar(
         glm::vec3(GameConfig::ENEMY_DIGIT_X, GameConfig::ENEMY_DIGIT_Y, 0.0f),
         GameConfig::FONT_DIGIT_SIZE,
@@ -106,7 +106,7 @@ void Enemy::Enemy::updateShootingPattern() {
 }
 
 void Enemy::Enemy::attack() {
-    for each(std::function<glm::vec3(glm::vec3, time_t)> func in shootingPattern->fire())
+    for (const std::function<glm::vec3(glm::vec3, time_t)> &func : shootingPattern->fire())
     {
         Bullet::Bullet* newBullet = bullets.acquire();
         newBullet->activate(

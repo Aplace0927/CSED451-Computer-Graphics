@@ -7,7 +7,6 @@ namespace GameConfig {
     inline constexpr const char* WINDOW_TITLE = "POST-ouhou-ECH";
 
     inline constexpr float PLAYER_SPEED = 0.02f;
-	inline constexpr int PLAYER_LIFE = 5;
 	inline constexpr float FIXED_DELTATIME = 0.02f;
 
     inline constexpr float POSITION_UPPER_LIMIT = 0.9f;
@@ -27,6 +26,7 @@ namespace GameConfig {
     inline constexpr float FONT_DIGIT_SIZE = .005f;
     inline constexpr float DIGIT_SPACING = FONT_DIGIT_SIZE * 6;
 
+    inline constexpr int ENEMY_LIFE = 100;
     inline constexpr float ENEMY_DIGIT_X = -0.9f;
     inline constexpr float ENEMY_DIGIT_Y = 0.9f;
     inline constexpr float ENEMY_GAUGE_X = ENEMY_DIGIT_X + DIGIT_SPACING * 5;
@@ -34,6 +34,8 @@ namespace GameConfig {
     inline constexpr float ENEMY_GAUGE_WIDTH = 1.6f;
     inline constexpr float ENEMY_GAUGE_HEIGHT = FONT_DIGIT_SIZE * 4;
 
+
+    inline constexpr int PLAYER_LIFE = 10;
     inline constexpr float PLAYER_DIGIT_X = -0.9f;
     inline constexpr float PLAYER_DIGIT_Y = -0.95f;
     inline constexpr float PLAYER_GAUGE_X = PLAYER_DIGIT_X + DIGIT_SPACING * 5;

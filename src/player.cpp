@@ -25,7 +25,7 @@ Player::Player::Player()
             std::vector<unsigned int>{ GL_TRIANGLES }
         )
     ),
-    playerHealth(5),
+    playerHealth(GameConfig::PLAYER_LIFE),
     isShooting(false),
     healthBar(
         glm::vec3(GameConfig::PLAYER_DIGIT_X, GameConfig::PLAYER_DIGIT_Y, 0.0f),
