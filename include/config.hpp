@@ -24,6 +24,7 @@ namespace GameConfig {
     inline constexpr float SHOOTING_COOLDOWN_MS = 0.05;
 
     inline constexpr float FONT_DIGIT_SIZE = 2.0f;
+    inline constexpr float BIG_FONT_SIZE = 8.0f;
     inline constexpr float DIGIT_SPACING = FONT_DIGIT_SIZE * 6;
 
     inline constexpr int ENEMY_LIFE = 100;
@@ -33,6 +34,7 @@ namespace GameConfig {
     inline constexpr float ENEMY_GAUGE_Y = ENEMY_DIGIT_Y - DIGIT_SPACING/2;
     inline constexpr float ENEMY_GAUGE_WIDTH = WINDOW_WIDTH * 0.8f;
     inline constexpr float ENEMY_GAUGE_HEIGHT = FONT_DIGIT_SIZE * 4;
+    inline constexpr float ENEMY_BULLET_COLOR[3] = { (float)0xFF / 0xFF, (float)0xC6 / 0xFF, (float)0x39 / 0xFF };
 
 
     inline constexpr int PLAYER_LIFE = 10;
@@ -42,8 +44,15 @@ namespace GameConfig {
     inline constexpr float PLAYER_GAUGE_Y = PLAYER_DIGIT_Y - DIGIT_SPACING/2;
     inline constexpr float PLAYER_GAUGE_WIDTH = WINDOW_WIDTH * 0.8f;
     inline constexpr float PLAYER_GAUGE_HEIGHT = FONT_DIGIT_SIZE * 4;
+    inline constexpr float PLAYER_BULLET_COLOR[3] = { (float)0x50 / 0xFF, (float)0xD0 / 0xFF, (float)0xD0 / 0xFF };
 
     inline constexpr float GAUGE_FULL_COLOR[3] = { 0.0f, 1.0f, 0.0f };
     inline constexpr float GAUGE_EMPTY_COLOR[3] = { 1.0f, 0.0f, 0.0f };
+
+    inline constexpr float WIN_TEXT_COLOR[3] = { (float)0xFF / 0xFF, (float)0xFF / 0xFF, (float)0xFF / 0xFF };
+    inline constexpr float WIN_BG_COLOR[3] = { (float)0x5C / 0xFF, (float)0x7C / 0xFF, (float)0xFA / 0xFF };
+
+    inline constexpr float LOSE_TEXT_COLOR[3] = { (float)0xFF / 0xFF, (float)0xFF / 0xFF, (float)0xFF / 0xFF };
+    inline constexpr float LOSE_BG_COLOR[3] = { (float)0xF0 / 0xFF, (float)0x65 / 0xFF, (float)0x95 / 0xFF };
 }
 #endif // CONFIG_HPP

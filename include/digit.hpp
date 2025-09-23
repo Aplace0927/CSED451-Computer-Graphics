@@ -12,4 +12,6 @@ namespace Digit {
     std::vector<Shape::RGBColor> getDigitColors(int digit, const Shape::RGBColor& color);
 }
 
+Shape::Shape<glm::vec3, Shape::RGBColor> getWinVertices();
+Shape::Shape<glm::vec3, Shape::RGBColor> getLoseVertices();
 #endif // DIGIT_HPP

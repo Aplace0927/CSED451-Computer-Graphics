@@ -1,7 +1,7 @@
 #include "enemypatterns.hpp"
 
 namespace MovementPattern {
-    HorizonPattern::HorizonPattern(float s = 10.0f) {
+    HorizonPattern::HorizonPattern(float s) {
         speed = s;
     }
 

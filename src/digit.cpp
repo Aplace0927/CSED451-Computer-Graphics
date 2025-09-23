@@ -135,3 +135,126 @@ std::vector<glm::vec3> Digit::getDigitColors(int digit, const Shape::RGBColor& c
     }
 
 }
+
+Shape::Shape<glm::vec3, Shape::RGBColor> getWinVertices() {
+    return Shape::Shape<glm::vec3, Shape::RGBColor>(
+        std::vector<std::vector<glm::vec3>>{
+            {
+                glm::vec3(-6 * GameConfig::BIG_FONT_SIZE,  6 * GameConfig::BIG_FONT_SIZE, 0.5f),
+                glm::vec3( 6 * GameConfig::BIG_FONT_SIZE,  6 * GameConfig::BIG_FONT_SIZE, 0.5f),
+                glm::vec3( 6 * GameConfig::BIG_FONT_SIZE, -6 * GameConfig::BIG_FONT_SIZE, 0.5f),
+                glm::vec3(-6 * GameConfig::BIG_FONT_SIZE, -6 * GameConfig::BIG_FONT_SIZE, 0.5f),
+
+            },
+            {
+                glm::vec3(-4 * GameConfig::BIG_FONT_SIZE, -4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-3 * GameConfig::BIG_FONT_SIZE, -2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-3 * GameConfig::BIG_FONT_SIZE,  4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-GameConfig::BIG_FONT_SIZE,  4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-GameConfig::BIG_FONT_SIZE,  2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-3 * GameConfig::BIG_FONT_SIZE,  2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-GameConfig::BIG_FONT_SIZE,  2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-GameConfig::BIG_FONT_SIZE,  0.0f, 1.0f),
+                glm::vec3(-3 * GameConfig::BIG_FONT_SIZE,  0.0f, 1.0f),
+                glm::vec3(-GameConfig::BIG_FONT_SIZE,  0.0f, 1.0f),
+                glm::vec3(-GameConfig::BIG_FONT_SIZE, -4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-2 * GameConfig::BIG_FONT_SIZE, -3 * GameConfig::BIG_FONT_SIZE, 1.0f)
+            },
+            {
+                glm::vec3( GameConfig::BIG_FONT_SIZE,  4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 0.0f,  3 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 4 * GameConfig::BIG_FONT_SIZE,  3 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 3 * GameConfig::BIG_FONT_SIZE,  4 * GameConfig::BIG_FONT_SIZE, 1.0f)
+            },
+            {
+                glm::vec3( 2 * GameConfig::BIG_FONT_SIZE,  4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( GameConfig::BIG_FONT_SIZE,  2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 0.0f,  2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 4 * GameConfig::BIG_FONT_SIZE,  2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( GameConfig::BIG_FONT_SIZE,  2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 0.0f,  0.0f, 1.0f),
+                glm::vec3( 0.0f, -2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 0.0f,  0.0f, 1.0f),
+                glm::vec3( 4 * GameConfig::BIG_FONT_SIZE,  0.0f, 1.0f),
+                glm::vec3( 4 * GameConfig::BIG_FONT_SIZE, -GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 4 * GameConfig::BIG_FONT_SIZE,  0.0f, 1.0f),
+                glm::vec3( 2 * GameConfig::BIG_FONT_SIZE,  3 * GameConfig::BIG_FONT_SIZE, 1.0f)
+            },
+            {
+                glm::vec3( 0.0f, -GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 3 * GameConfig::BIG_FONT_SIZE, -GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 4 * GameConfig::BIG_FONT_SIZE, -3 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 3 * GameConfig::BIG_FONT_SIZE, -4 * GameConfig::BIG_FONT_SIZE, 1.0f)
+            },
+            {
+                glm::vec3( 2 * GameConfig::BIG_FONT_SIZE,  GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( GameConfig::BIG_FONT_SIZE, -4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 0.0f, -3 * GameConfig::BIG_FONT_SIZE, 1.0f)
+            }
+        },
+        std::vector<std::vector<Shape::RGBColor>>{
+            std::vector<Shape::RGBColor>(4, static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::WIN_BG_COLOR))),
+            std::vector<Shape::RGBColor>(12, static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::WIN_TEXT_COLOR))),
+            std::vector<Shape::RGBColor>(4, static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::WIN_TEXT_COLOR))),
+            std::vector<Shape::RGBColor>(12, static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::WIN_TEXT_COLOR))),
+            std::vector<Shape::RGBColor>(4, static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::WIN_TEXT_COLOR))),
+            std::vector<Shape::RGBColor>(3, static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::WIN_TEXT_COLOR)))
+        },
+        std::vector<unsigned int>{ GL_TRIANGLE_FAN, GL_LINE_STRIP, GL_LINE_STRIP, GL_LINE_STRIP, GL_LINE_STRIP, GL_LINE_STRIP }
+    );
+}
+
+Shape::Shape<glm::vec3, Shape::RGBColor> getLoseVertices() {
+    return Shape::Shape<glm::vec3, Shape::RGBColor>(
+        std::vector<std::vector<glm::vec3>>{
+            {
+                glm::vec3(-6 * GameConfig::BIG_FONT_SIZE,  6 * GameConfig::BIG_FONT_SIZE, 0.5f),
+                glm::vec3( 6 * GameConfig::BIG_FONT_SIZE,  6 * GameConfig::BIG_FONT_SIZE, 0.5f),
+                glm::vec3( 6 * GameConfig::BIG_FONT_SIZE, -6 * GameConfig::BIG_FONT_SIZE, 0.5f),
+                glm::vec3(-6 * GameConfig::BIG_FONT_SIZE, -6 * GameConfig::BIG_FONT_SIZE, 0.5f),
+
+            },
+            {
+                glm::vec3(-4 * GameConfig::BIG_FONT_SIZE,  4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-GameConfig::BIG_FONT_SIZE,  4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-GameConfig::BIG_FONT_SIZE, -GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-4 * GameConfig::BIG_FONT_SIZE, -GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-4 * GameConfig::BIG_FONT_SIZE,  0.0f, 1.0f),
+                glm::vec3(-GameConfig::BIG_FONT_SIZE,  0.0f, 1.0f),
+                glm::vec3(-4 * GameConfig::BIG_FONT_SIZE,  0.0f, 1.0f),
+                glm::vec3(-4 * GameConfig::BIG_FONT_SIZE,  GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-GameConfig::BIG_FONT_SIZE,  GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-4 * GameConfig::BIG_FONT_SIZE,  GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-4 * GameConfig::BIG_FONT_SIZE,  4 * GameConfig::BIG_FONT_SIZE, 1.0f)
+            },
+            {
+                glm::vec3(-3 * GameConfig::BIG_FONT_SIZE, -2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-4 * GameConfig::BIG_FONT_SIZE, -4 * GameConfig::BIG_FONT_SIZE, 1.0f)
+            },
+            {
+                glm::vec3(-2 * GameConfig::BIG_FONT_SIZE, -2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3(-GameConfig::BIG_FONT_SIZE, -4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+            },
+            {
+                glm::vec3( 0.0f,  0.0f, 1.0f),
+                glm::vec3( 2 * GameConfig::BIG_FONT_SIZE,  4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( GameConfig::BIG_FONT_SIZE,  2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 4 * GameConfig::BIG_FONT_SIZE,  2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 2 * GameConfig::BIG_FONT_SIZE, -2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( GameConfig::BIG_FONT_SIZE,  GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 2 * GameConfig::BIG_FONT_SIZE, -2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 0.0f, -4 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 2 * GameConfig::BIG_FONT_SIZE, -2 * GameConfig::BIG_FONT_SIZE, 1.0f),
+                glm::vec3( 4 * GameConfig::BIG_FONT_SIZE, -4 * GameConfig::BIG_FONT_SIZE, 1.0f)
+            }
+        },
+        std::vector<std::vector<Shape::RGBColor>>{
+            std::vector<Shape::RGBColor>(4, static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::LOSE_BG_COLOR))),
+            std::vector<Shape::RGBColor>(11, static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::LOSE_TEXT_COLOR))),
+            std::vector<Shape::RGBColor>(2, static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::LOSE_TEXT_COLOR))),
+            std::vector<Shape::RGBColor>(2, static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::LOSE_TEXT_COLOR))),
+            std::vector<Shape::RGBColor>(10, static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::LOSE_TEXT_COLOR)))
+        },
+        std::vector<unsigned int>{ GL_TRIANGLE_FAN, GL_LINE_STRIP, GL_LINE_STRIP, GL_LINE_STRIP, GL_LINE_STRIP }
+    );
+}
