@@ -19,7 +19,14 @@ namespace GraphicsManager {
         GraphicsManager(const GraphicsManager&) = delete;
         GraphicsManager& operator=(const GraphicsManager&) = delete;
 
+        void applyCameraShake() const;
+
         std::vector<std::shared_ptr<std::function<void(float)>>> handlers;
+        bool shaking = false;
+        float shakeDuration = 0.0f;
+        float shakeTimer = 0.0f;
+        float shakeMagnitude = 0.0f;
+        float shakeSpeed = 0.0f;
 
     public:
         GraphicsManager() { lastFrame = std::chrono::high_resolution_clock::now(); };
@@ -28,7 +35,7 @@ namespace GraphicsManager {
         std::shared_ptr<std::function<void(float)>> registerHandler(std::function<void(float)> func);
         void unregisterHandler(std::shared_ptr<std::function<void(float)>> ptr);
 
-        void setCameraShake(float timeSec, float shakeMagnitude, float shakeSpeed);
+        void startCameraShake(float duration, float magnitude, float speed);
         void reshape(int width, int height);
         void update();
     };

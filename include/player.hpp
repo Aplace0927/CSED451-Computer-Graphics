@@ -6,6 +6,7 @@
 #include "objectpool.hpp"
 #include "bullet.hpp"
 #include "healthbar.hpp"
+#include "graphicsmanager.hpp"
 
 namespace Player {
     class Player : public Object::Object<glm::vec3, Shape::RGBColor> {
@@ -32,6 +33,7 @@ namespace Player {
         
         std::function<void()> getBulletHitDetectHandlerFunction() {
             return [this]() {
+                GraphicsManager::GraphicsManager::getInstance().startCameraShake(0.5f, 10.0f, 20.0f);
                 playerHealth = glm::max(0, playerHealth - 1);
                 healthBar.setCurrentHealth(playerHealth);
                 if (playerHealth == 0) {

@@ -26,10 +26,10 @@ int main(int argc, char** argv) {
         GraphicsManager::GraphicsManager::getInstance().reshape(x,y);
         });
     
-
     glutDisplayFunc([]() {
         GraphicsManager::GraphicsManager::getInstance().update();
         });
+
     glutKeyboardFunc([](unsigned char key, int x, int y) {
         game.keyEvent(key, x, y);
         });

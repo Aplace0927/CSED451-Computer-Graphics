@@ -32,16 +32,30 @@ namespace GraphicsManager {
             (*handler)(deltaTime);
         }
 
+        if (shaking) {
+            shakeTimer += deltaTime;
+            if (shakeTimer >= shakeDuration) {
+                shaking = false;
+            }
+            else {
+                applyCameraShake();
+            }
+        }
+
         glutSwapBuffers();
         glutPostRedisplay();
     }
-    void GraphicsManager::setCameraShake(float timeSec, float shakeMagnitude, float shakeSpeed) {
-        float offsetX = sin(timeSec * shakeSpeed) * shakeMagnitude;
-        float offsetY = cos(timeSec * shakeSpeed * 1.3f) * shakeMagnitude;
+
+    void GraphicsManager::applyCameraShake() const {
+        float offsetX = sin(shakeTimer * shakeSpeed) * shakeMagnitude;
+        float offsetY = cos(shakeTimer * shakeSpeed * 1.3f) * shakeMagnitude;
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluOrtho2D(0, GameConfig::WINDOW_WIDTH, 0, GameConfig::WINDOW_HEIGHT);
+
+        float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
+        float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
+        gluOrtho2D(-halfWidth, halfWidth, -halfHeight, halfHeight);
 
         glTranslatef(-offsetX, -offsetY, 0.0f);
 
@@ -49,12 +63,22 @@ namespace GraphicsManager {
         glLoadIdentity();
     }
 
+    void GraphicsManager::startCameraShake(float duration, float magnitude, float speed) {
+        shakeDuration = duration;
+        shakeMagnitude = magnitude;
+        shakeSpeed = speed;
+        shakeTimer = 0.0f;
+        shaking = true;
+	}
+
     void GraphicsManager::reshape(int width, int height) {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
+        
         float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
         float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
         gluOrtho2D(-halfWidth, halfWidth, -halfHeight, halfHeight);
+
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
