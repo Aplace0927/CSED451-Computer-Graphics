@@ -51,7 +51,7 @@ namespace Player {
         float shootingCooldown;
         
 		HealthBar::HealthBar healthBar;
-        ObjectPool::ObjectPool<Bullet::Bullet> bullets;
+        ObjectPool::ObjectPool<Bullet::PlayerBullet> bullets;
         std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)> bulletHitDetectFunction;
         std::function<void()> bulletHitEventFunction;
     };

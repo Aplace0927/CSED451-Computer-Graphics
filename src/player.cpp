@@ -36,7 +36,7 @@ namespace Player
         )
     {
         shootingCooldown = 0;
-        bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
+        bullets = ObjectPool::ObjectPool<Bullet::PlayerBullet>();
         playerHealth = GameConfig::PLAYER_LIFE;
         isShooting = false;
         direction = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -44,12 +44,15 @@ namespace Player
 
     void Player::update(float time) {
         if (!getStatus()) {
+            changeShape(getLoseVertices());
+            setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+            draw();
             return;
         }
 
         shootingCooldown += time;
         if (isShooting && shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_MS) {
-            Bullet::Bullet* newBullet = bullets.acquire();
+            Bullet::PlayerBullet* newBullet = bullets.acquire();
             newBullet->activate(
                 getCenter() + glm::vec3(0.0f, 17.3f, 0.0f),
                 BulletPattern::straight(glm::vec3(0, 1.0f, 0),400.0f),

@@ -36,7 +36,7 @@ namespace Enemy {
         
     private:
         int enemyHealth;
-        ObjectPool::ObjectPool<Bullet::Bullet> bullets;
+        ObjectPool::ObjectPool<Bullet::EnemyBullet> bullets;
         HealthBar::HealthBar healthBar;
         
         MovementPattern::MovementPattern* movementPattern;

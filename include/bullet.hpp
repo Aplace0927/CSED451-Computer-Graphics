@@ -15,7 +15,7 @@ namespace Bullet {
 
     class Bullet : public Object::Object<glm::vec3, Shape::RGBColor> {
     public:
-        Bullet();
+        Bullet(Shape::RGBColor color);
         void update(float time) override;
         void fixedUpdate() override;
         void deactivate();
@@ -36,6 +36,16 @@ namespace Bullet {
         std::function<glm::vec3(glm::vec3, float)> movement_pattern;
         std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)> hitDetectFunction;
         std::function<void()> hitEventFunction;
+    };
+
+    class PlayerBullet : public Bullet {
+    public:
+        PlayerBullet();
+    };
+
+    class EnemyBullet : public Bullet {
+    public:
+        EnemyBullet();
     };
 }
 

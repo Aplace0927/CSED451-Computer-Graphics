@@ -41,7 +41,7 @@ namespace Enemy
             enemyHealth
         )
     {
-        bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
+        bullets = ObjectPool::ObjectPool<Bullet::EnemyBullet>();
         shootingPatterns = {
             new ShootingPattern::CirclePattern(200.0f, 12),
             new ShootingPattern::SpiralPattern(200.0f, 20.0f),
@@ -53,7 +53,8 @@ namespace Enemy
 
     void Enemy::update(float time) {
         if (!getStatus()) {
-            return;
+            changeShape(getWinVertices());
+            setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
         }
         draw();
     }
@@ -102,7 +103,7 @@ namespace Enemy
     void Enemy::shooting() {
         for (const std::function<glm::vec3(glm::vec3, float)>& func : shootingPattern->fire())
         {
-            Bullet::Bullet* newBullet = bullets.acquire();
+            Bullet::EnemyBullet* newBullet = bullets.acquire();
             newBullet->activate(
                 getCenter(),
                 func,

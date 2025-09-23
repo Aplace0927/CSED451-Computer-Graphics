@@ -73,6 +73,11 @@ namespace Object {
             }
         }
 
+        void changeShape(const Shape::Shape<T, C>& newShape) {
+            shape = newShape;
+            boundingBox = shape.move(T(0));
+        }
+
         bool checkSubShapeEmpty() const {
             return shape.checkSubShapeEmpty();
         }

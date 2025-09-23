@@ -3,7 +3,7 @@
 
 namespace Bullet
 {
-    Bullet::Bullet() :
+    Bullet::Bullet(Shape::RGBColor color) :
         Object::Object(
             glm::vec3(0.0f, 0.0f, 0.0f),
             Shape::Shape<glm::vec3, Shape::RGBColor>(
@@ -15,16 +15,16 @@ namespace Bullet
                             glm::vec3(-2.0f, -2.0f, 0.0f),
                             glm::vec3(-2.0f, 2.0f, 0.0f),
                     }
-    },
+                },
                 std::vector<std::vector<Shape::RGBColor>>{
                     {
-                        Shape::RGBColor(1.0f, 0.7734f, 0.2227f),
-                            Shape::RGBColor(1.0f, 0.7734f, 0.2227f),
-                            Shape::RGBColor(1.0f, 0.7734f, 0.2227f),
-                            Shape::RGBColor(1.0f, 0.7734f, 0.2227f),
-                            Shape::RGBColor(1.0f, 0.7734f, 0.2227f)
+                        color,
+                        color,
+                        color,
+                        color,
+                        color
                     }
-    },
+                },
                 std::vector<unsigned int>{ GL_TRIANGLE_FAN }
             )
         ),
@@ -86,4 +86,10 @@ namespace Bullet
             callReleaseFunction();
         }
     }
+
+    PlayerBullet::PlayerBullet()
+        : Bullet(static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::PLAYER_BULLET_COLOR))) {}
+    
+    EnemyBullet::EnemyBullet()
+        : Bullet(static_cast<Shape::RGBColor>(glm::make_vec3(GameConfig::ENEMY_BULLET_COLOR))) {}
 }
