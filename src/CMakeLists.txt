@@ -16,7 +16,7 @@ add_executable(
 	"digit.cpp"
 	"healthbar.cpp"
 )
-if (UNIX and NOT APPLE)
+if (UNIX AND NOT APPLE)
 	target_link_libraries(touhou_postech
 		GLUT glew OpenGL::GL glm glu
 	)
