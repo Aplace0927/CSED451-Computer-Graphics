@@ -41,6 +41,7 @@ namespace Enemy {
         
         MovementPattern::MovementPattern* movementPattern;
         ShootingPattern::ShootingPattern* shootingPattern;
+        std::vector<ShootingPattern::ShootingPattern*> shootingPatterns;
         time_t movingCooldown;
         time_t shootingCooldown;
 

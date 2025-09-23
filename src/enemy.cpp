@@ -42,6 +42,11 @@ namespace Enemy
         )
     {
         bullets = ObjectPool::ObjectPool<Bullet::Bullet>();
+        shootingPatterns = {
+            new ShootingPattern::CirclePattern(200.0f, 12),
+            new ShootingPattern::SpiralPattern(200.0f, 20.0f),
+            new ShootingPattern::RandomBurstPattern(250.0f, 5)
+		};
         shootingPattern = chooseShootingPattern();
         movementPattern = new MovementPattern::HorizonPattern(100.0f);
     }
@@ -73,8 +78,8 @@ namespace Enemy
 
         if (shootingPattern->fireCount <= 0)
         {
-            delete shootingPattern;
             shootingPattern = chooseShootingPattern();
+			shootingPattern->Init();
         }
         else
         {
@@ -89,19 +94,9 @@ namespace Enemy
     ShootingPattern::ShootingPattern* Enemy::chooseShootingPattern()
     {
         static std::mt19937 rng(std::random_device{}());
-        std::uniform_int_distribution<int> dist(1, 3);
+        std::uniform_int_distribution<int> dist(0, 2);
 
-        switch (dist(rng))
-        {
-        case 1:
-            return new ShootingPattern::CirclePattern(500.0f, 6);
-        case 2:
-            return new ShootingPattern::SpiralPattern(400.0f, glm::radians(10.0f));
-        case 3:
-            return new ShootingPattern::RandomBurstPattern(300.0f, 5);
-        default:
-            throw std::runtime_error("Invalid shooting pattern choice");
-        };
+        return shootingPatterns[dist(rng)];
     }
 
     void Enemy::shooting() {

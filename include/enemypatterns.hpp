@@ -34,6 +34,10 @@ namespace ShootingPattern {
 		float cooldown = 0.2;
 		float timeSinceLastFire = 0.0f;
 		float speed = 1.0f;
+        void Init() {
+            fireCount = maxFireCount;
+            timeSinceLastFire = cooldown;
+		}
         virtual ~ShootingPattern() = default;
         virtual std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() = 0;
     };
