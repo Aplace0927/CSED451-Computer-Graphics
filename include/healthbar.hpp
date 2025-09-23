@@ -8,7 +8,7 @@
 namespace HealthBar {
     class HealthBar: public Object::Object<glm::vec3, Shape::RGBColor>{
     public:
-        void update(time_t time) override;
+        void update(float time) override;
         void fixedUpdate() override;
 
         HealthBar();

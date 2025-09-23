@@ -13,7 +13,7 @@ namespace Enemy {
     class Enemy : public Object::Object<glm::vec3, Shape::RGBColor> {
     public:
         Enemy();
-        void update(time_t time) override;
+        void update(float time) override;
         void fixedUpdate() override;
         void setBulletHitDetectFunction(const std::function<bool(const BoundingBox::BoundingBox<glm::vec3>&)>& func) {
             bulletHitDetectFunction = func;
@@ -39,8 +39,8 @@ namespace Enemy {
         ObjectPool::ObjectPool<Bullet::Bullet> bullets;
         HealthBar::HealthBar healthBar;
         
-        MovementPattern::IMovementPattern* movementPattern;
-        ShootingPattern::IShootingPattern* shootingPattern;
+        MovementPattern::MovementPattern* movementPattern;
+        ShootingPattern::ShootingPattern* shootingPattern;
         time_t movingCooldown;
         time_t shootingCooldown;
 
@@ -49,7 +49,8 @@ namespace Enemy {
 		
 		void updateMovementPattern();
 		void updateShootingPattern();
-        void attack();
+        ShootingPattern::ShootingPattern* chooseShootingPattern();
+        void shooting();
     };
 };
 #endif // ENEMY_HPP

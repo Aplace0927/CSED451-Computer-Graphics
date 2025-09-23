@@ -18,7 +18,7 @@ namespace Object {
             // Update to actual position (also initializes bounding box) 
             active = true;
             boundingBox = shape.move(_position);
-            update_ptr = GraphicsManager::GraphicsManager::getInstance().registerHandler([this](time_t time) {this->update(time);});
+            update_ptr = GraphicsManager::GraphicsManager::getInstance().registerHandler([this](float time) {this->update(time);});
             fixedUpdate_ptr = PhysicsManager::PhysicsManager::getInstance().registerHandler([this]() {this->fixedUpdate();});
         }
         ~Object() {
@@ -115,19 +115,19 @@ namespace Object {
             return boundingBox;
         }
 
-        virtual void update(time_t time);
+        virtual void update(float time);
         virtual void fixedUpdate();
     private:
         bool active;
         Shape::Shape<T, C> shape;
         BoundingBox::BoundingBox<T> boundingBox;
-        std::shared_ptr<std::function<void(time_t)>> update_ptr;
+        std::shared_ptr<std::function<void(float)>> update_ptr;
         std::shared_ptr<std::function<void()>> fixedUpdate_ptr;
         std::function<void()> releaseFunc;
     };
 
     template <typename T, typename C>
-    void Object<T, C>::update(time_t time) {
+    void Object<T, C>::update(float time) {
         // Default implementation does nothing
     }
 

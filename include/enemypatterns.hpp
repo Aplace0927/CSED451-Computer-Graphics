@@ -5,68 +5,61 @@
 #include <memory>
 #include <cmath>
 #include <cstdlib>
+#include <random>
 #include "bullet.hpp"
 #include "objectpool.hpp"
 
 namespace MovementPattern {
-    class IMovementPattern {
+    class MovementPattern {
+    protected:
+		glm::vec3 direction = glm::vec3(1.0f, 0.0f, 0.0f);
+        float speed = 10.0f;
     public:
-        float speed = 0.001f;
-        virtual ~IMovementPattern() = default;
-        virtual std::vector<std::function<glm::vec3(glm::vec3, time_t)>> move() = 0;
+        virtual ~MovementPattern() = default;
+        virtual glm::vec3 move(glm::vec3 origin, float time) = 0;
     };
 
-    class HorizonPattern : public IMovementPattern {
-        int numBullets;
+    class HorizonPattern : public MovementPattern {
     public:
-        HorizonPattern();
-        std::vector<std::function<glm::vec3(glm::vec3, time_t)>> move() override;
+        HorizonPattern(float s);
+        glm::vec3 move(glm::vec3 origin, float time) override;
     };
 }
 
 namespace ShootingPattern {
-    class IShootingPattern {
+    class ShootingPattern {
     public:
         int fireCount = 10;
 		int maxFireCount = 10;
 		float cooldown = 0.2;
 		float timeSinceLastFire = 0.0f;
-		float speed = 0.001f;
-        virtual ~IShootingPattern() = default;
-        virtual std::vector<std::function<glm::vec3(glm::vec3, time_t)>> fire() = 0;
+		float speed = 1.0f;
+        virtual ~ShootingPattern() = default;
+        virtual std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() = 0;
     };
 
-    class CirclePattern : public IShootingPattern {
+    class CirclePattern : public ShootingPattern {
         int numBullets;
     public:
-        CirclePattern(int num);
-        std::vector<std::function<glm::vec3(glm::vec3, time_t)>> fire() override;
+        CirclePattern(float s, int num);
+        std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() override;
     };
 
-    class SpiralPattern : public IShootingPattern {
-        float speed;
+    class SpiralPattern : public ShootingPattern {
         float angle;
         float angleStep;
     public:
         SpiralPattern(float s, float step);
-        std::vector<std::function<glm::vec3(glm::vec3, time_t)>> fire() override;
+        std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() override;
     };
 
-    class WavePattern : public IShootingPattern {
-        float speed;
-        float freq;
-        float amp;
-    public:
-        WavePattern(float s, float f, float a);
-        std::vector<std::function<glm::vec3(glm::vec3, time_t)>> fire() override;
-    };
-
-    class RandomBurstPattern : public IShootingPattern {
-        float speed;
+    class RandomBurstPattern : public ShootingPattern {
         int count;
+        std::mt19937 rng; 
+        std::uniform_real_distribution<float> dist;
     public:
         RandomBurstPattern(float s, int c);
-        std::vector<std::function<glm::vec3(glm::vec3, time_t)>> fire() override;
+        std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() override;
     };
 }
 

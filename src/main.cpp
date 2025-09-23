@@ -16,25 +16,26 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(GameConfig::WINDOW_WIDTH, GameConfig::WINDOW_HEIGHT);
     glutCreateWindow(GameConfig::WINDOW_TITLE);
-    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
     glewInit();
-
-    glUniformMatrix4fv(0, 1, GL_FALSE, glm::value_ptr(glm::ortho(
-        0.0f, static_cast<float>(GameConfig::WINDOW_HEIGHT),
-        0.0f, static_cast<float>(GameConfig::WINDOW_WIDTH),
-        -1.0f, 1.0f
-    )));
+    
+    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 
     glEnable(GL_DEPTH_TEST);
+    
+    glutReshapeFunc([](int x, int y) {
+        GraphicsManager::GraphicsManager::getInstance().reshape(x,y);
+        });
+    
+
     glutDisplayFunc([]() {
-		GraphicsManager::GraphicsManager::getInstance().update();
-    });
+        GraphicsManager::GraphicsManager::getInstance().update();
+        });
     glutKeyboardFunc([](unsigned char key, int x, int y) {
         game.keyEvent(key, x, y);
-    });
+        });
 
     glutKeyboardUpFunc([](unsigned char key, int x, int y) {
         game.keyUpEvent(key, x, y);
-    });
+        });
     glutMainLoop();
-}  
+}

@@ -80,7 +80,7 @@ int HealthBar::HealthBar::getMaxHealth() const {
     return maxHealth;
 }
 
-void HealthBar::HealthBar::update(time_t time) {
+void HealthBar::HealthBar::update(float time) {
     draw();
 }
 
