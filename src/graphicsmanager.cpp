@@ -46,8 +46,8 @@ namespace GraphicsManager {
     }
 
     void GraphicsManager::applyCameraShake() const {
-        float offsetX = sin(shakeTimer * shakeSpeed) * shakeMagnitude;
-        float offsetY = cos(shakeTimer * shakeSpeed * 1.3f) * shakeMagnitude;
+        float offsetX = glm::sin(shakeTimer * shakeSpeed) * shakeMagnitude;
+        float offsetY = glm::cos(shakeTimer * shakeSpeed * 1.3f) * shakeMagnitude;
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();

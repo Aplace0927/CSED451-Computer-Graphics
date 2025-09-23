@@ -47,13 +47,38 @@ elseif(APPLE)
     add_library(glm INTERFACE)
     target_include_directories(glm INTERFACE "${CMAKE_SOURCE_DIR}/include/glm")
 elseif(UNIX)
+    add_library(GLUT SHARED IMPORTED)
+    set_target_properties(GLUT PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/bin/linux/libglut.so.3.12.0"
+        INTERFACE_LINK_OPTIONS "-lglut"
+    )
+
+    add_library(glew SHARED IMPORTED)
+    set_target_properties(glew PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/bin/linux/libGLEW.so.2.2.0"
+        INTERFACE_LINK_OPTIONS "-lGLEW"
+    )
+
+    add_library(glu SHARED IMPORTED)
+    set_target_properties(glu PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/bin/linux/libGLU.so.1.3.1"
+        INTERFACE_LINK_OPTIONS "-lGLU"
+    )
+    
+    add_library(glm INTERFACE)
+    target_include_directories(glm INTERFACE "${CMAKE_SOURCE_DIR}/include/glm")
+
     link_directories("${CMAKE_SOURCE_DIR}/lib/linux")
     set(SHARED_PATH "${CMAKE_SOURCE_DIR}/bin/linux")
 endif()
 
 function(add_gl_executable_single_file exec_name source_file)
   add_executable(${exec_name} ${source_file})
-  target_link_libraries(${exec_name} OpenGL::GL GLUT glew)
+  if(UNIX)
+    target_link_libraries(${exec_name} OpenGL::GL GLUT glew glu)
+  else()
+    target_link_libraries(${exec_name} OpenGL::GL GLUT glew)
+  endif()
   target_compile_definitions(${exec_name} PRIVATE GL_SILENCE_DEPRECATION)
   if(DEFINED GLM_INCLUDE_DIR)
     target_include_directories(${exec_name} PRIVATE ${GLM_INCLUDE_DIR})

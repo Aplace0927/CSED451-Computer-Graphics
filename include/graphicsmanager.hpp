@@ -8,6 +8,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <chrono>
+#include <glm/glm.hpp>
 
 #include "singleton.hpp"
 #include "config.hpp"
