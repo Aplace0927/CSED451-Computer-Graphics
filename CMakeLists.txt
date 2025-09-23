@@ -74,7 +74,7 @@ endif()
 
 function(add_gl_executable_single_file exec_name source_file)
   add_executable(${exec_name} ${source_file})
-  if(UNIX)
+  if(UNIX and NOT APPLE)
     target_link_libraries(${exec_name} OpenGL::GL GLUT glew glu)
   else()
     target_link_libraries(${exec_name} OpenGL::GL GLUT glew)
