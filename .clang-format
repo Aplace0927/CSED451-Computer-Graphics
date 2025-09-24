@@ -1,0 +1,6 @@
+# .clang-format
+BasedOnStyle: LLVM
+
+# Prevent reordering of #includes
+SortIncludes: false
+IncludeBlocks: Preserve

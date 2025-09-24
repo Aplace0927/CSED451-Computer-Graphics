@@ -16,18 +16,19 @@
 #include "objectpool.hpp"
 
 namespace Game {
-    class Game : public Singleton::Singleton<Game> {
-    public:
-        Game();
-		~Game();
-        void keyEvent(unsigned char key, int x, int y);
-        void keyUpEvent(unsigned char key, int x, int y);
-    private:
-        Player::Player player;
-        glm::vec3 playerMoveVec;
+class Game : public Singleton::Singleton<Game> {
+public:
+  Game();
+  ~Game();
+  void keyEvent(unsigned char key, int x, int y);
+  void keyUpEvent(unsigned char key, int x, int y);
 
-        Enemy::Enemy enemy;
-    };
+private:
+  Player::Player player;
+  glm::vec3 playerMoveVec;
+
+  Enemy::Enemy enemy;
 };
+}; // namespace Game
 
 #endif // GAME_HPP
