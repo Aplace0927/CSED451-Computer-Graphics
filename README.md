@@ -39,24 +39,11 @@
 | `utility.hpp` | - | Utility functions for graphics calculation |
 
 ## How to build
-
-### Prerequisites
-  - CMake 3.8 or higher
-  - Proper OpenGL development environment
-    - MacOS: `glew`, `freeglut`
-    - Linux: `libgl1-mesa-dev`, `libglu1-mesa-dev`, `freeglut3-dev`
-    - Windows: Visual Studio **with C++ and CMake support**
-
-- Windows (build CMake with Visual Studio)
-  1. Open project with Visual Studio
-  2. Set build type to **`x64 Release`**
-  3. Build solution (`Ctrl + Shift + B`)
-  
-- MacOS / Linux (using CMake on terminal)
+- Using CMake
     ```
     mkdir out && cd out
     cmake ..
     make
     ./build/touhou-postech
     ```
-
+- Using Visual Studio
