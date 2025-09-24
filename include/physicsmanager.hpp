@@ -4,6 +4,7 @@
 #include <vector>
 #include <functional>
 #include <thread>
+#include <memory>
 #include <atomic>
 #include "singleton.hpp"
 

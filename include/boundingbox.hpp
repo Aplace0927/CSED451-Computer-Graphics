@@ -2,6 +2,7 @@
 #define BOUNDINGBOX_HPP
 
 #include <cstddef>
+#include <stdexcept>
 #include <array>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
