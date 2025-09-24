@@ -1,17 +1,16 @@
 #ifndef DIGIT_HPP
 #define DIGIT_HPP
 
-#include "config.hpp"
-#include "shape.hpp"
+#include <vector>
 #include <glm/glm.hpp>
 #include <stdexcept>
-#include <vector>
+#include "shape.hpp"
+#include "config.hpp"
 
 namespace Digit {
-std::vector<glm::vec3> getDigitVertices(int digit);
-std::vector<Shape::RGBColor> getDigitColors(int digit,
-                                            const Shape::RGBColor &color);
-} // namespace Digit
+    std::vector<glm::vec3> getDigitVertices(int digit);
+    std::vector<Shape::RGBColor> getDigitColors(int digit, const Shape::RGBColor& color);
+}
 
 Shape::Shape<glm::vec3, Shape::RGBColor> getWinVertices();
 Shape::Shape<glm::vec3, Shape::RGBColor> getLoseVertices();

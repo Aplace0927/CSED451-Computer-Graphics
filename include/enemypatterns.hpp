@@ -1,74 +1,70 @@
 #ifndef ENEMYPATTERNS_HPP
 #define ENEMYPATTERNS_HPP
 
-#include "bullet.hpp"
-#include "objectpool.hpp"
+#include <vector>
+#include <memory>
 #include <cmath>
 #include <cstdlib>
-#include <memory>
 #include <random>
-#include <vector>
+#include "bullet.hpp"
+#include "objectpool.hpp"
 
 namespace MovementPattern {
-class MovementPattern {
-protected:
-  glm::vec3 direction = glm::vec3(1.0f, 0.0f, 0.0f);
-  float speed = 10.0f;
+    class MovementPattern {
+    protected:
+		glm::vec3 direction = glm::vec3(1.0f, 0.0f, 0.0f);
+        float speed = 10.0f;
+    public:
+        virtual ~MovementPattern() = default;
+        virtual glm::vec3 move(glm::vec3 origin, float time) = 0;
+    };
 
-public:
-  virtual ~MovementPattern() = default;
-  virtual glm::vec3 move(glm::vec3 origin, float time) = 0;
-};
-
-class HorizonPattern : public MovementPattern {
-public:
-  HorizonPattern(float s);
-  glm::vec3 move(glm::vec3 origin, float time) override;
-};
-} // namespace MovementPattern
+    class HorizonPattern : public MovementPattern {
+    public:
+        HorizonPattern(float s);
+        glm::vec3 move(glm::vec3 origin, float time) override;
+    };
+}
 
 namespace ShootingPattern {
-class ShootingPattern {
-public:
-  int fireCount = 10;
-  int maxFireCount = 10;
-  float cooldown = 0.2;
-  float timeSinceLastFire = 0.0f;
-  float speed = 1.0f;
-  void Init() {
-    fireCount = maxFireCount;
-    timeSinceLastFire = cooldown;
-  }
-  virtual ~ShootingPattern() = default;
-  virtual std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() = 0;
-};
+    class ShootingPattern {
+    public:
+        int fireCount = 10;
+		int maxFireCount = 10;
+		float cooldown = 0.2;
+		float timeSinceLastFire = 0.0f;
+		float speed = 1.0f;
+        void Init() {
+            fireCount = maxFireCount;
+            timeSinceLastFire = cooldown;
+		}
+        virtual ~ShootingPattern() = default;
+        virtual std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() = 0;
+    };
 
-class CirclePattern : public ShootingPattern {
-  int numBullets;
+    class CirclePattern : public ShootingPattern {
+        int numBullets;
+    public:
+        CirclePattern(float s, int num);
+        std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() override;
+    };
 
-public:
-  CirclePattern(float s, int num);
-  std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() override;
-};
+    class SpiralPattern : public ShootingPattern {
+        float angle;
+        float angleStep;
+    public:
+        SpiralPattern(float s, float step);
+        std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() override;
+    };
 
-class SpiralPattern : public ShootingPattern {
-  float angle;
-  float angleStep;
-
-public:
-  SpiralPattern(float s, float step);
-  std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() override;
-};
-
-class RandomBurstPattern : public ShootingPattern {
-  int count;
-  std::mt19937 rng;
-  std::uniform_real_distribution<float> dist;
-
-public:
-  RandomBurstPattern(float s, int c);
-  std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() override;
-};
-} // namespace ShootingPattern
+    class RandomBurstPattern : public ShootingPattern {
+        int count;
+        std::mt19937 rng; 
+        std::uniform_real_distribution<float> dist;
+    public:
+        RandomBurstPattern(float s, int c);
+        std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() override;
+    };
+}
 
 #endif // ENEMYPATTERNS_HPP

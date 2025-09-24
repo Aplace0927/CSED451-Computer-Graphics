@@ -1,34 +1,33 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include <GL/freeglut.h>
-#include <GL/glew.h>
-#include <chrono>
-#include <functional>
-#include <glm/glm.hpp>
 #include <iostream>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+#include <glm/glm.hpp>
+#include <functional>
+#include <chrono>
 
-#include "bullet.hpp"
-#include "enemy.hpp"
-#include "objectpool.hpp"
 #include "player.hpp"
-#include "singleton.hpp"
+#include "enemy.hpp"
 #include "utility.hpp"
+#include "bullet.hpp"
+#include "singleton.hpp"
+#include "objectpool.hpp"
 
 namespace Game {
-class Game : public Singleton::Singleton<Game> {
-public:
-  Game();
-  ~Game();
-  void keyEvent(unsigned char key, int x, int y);
-  void keyUpEvent(unsigned char key, int x, int y);
+    class Game : public Singleton::Singleton<Game> {
+    public:
+        Game();
+		~Game();
+        void keyEvent(unsigned char key, int x, int y);
+        void keyUpEvent(unsigned char key, int x, int y);
+    private:
+        Player::Player player;
+        glm::vec3 playerMoveVec;
 
-private:
-  Player::Player player;
-  glm::vec3 playerMoveVec;
-
-  Enemy::Enemy enemy;
+        Enemy::Enemy enemy;
+    };
 };
-}; // namespace Game
 
 #endif // GAME_HPP

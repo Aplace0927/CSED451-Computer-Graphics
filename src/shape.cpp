@@ -1,3 +1,5 @@
 #include "shape.hpp"
 
-namespace Shape {}
+namespace Shape {
+
+}
