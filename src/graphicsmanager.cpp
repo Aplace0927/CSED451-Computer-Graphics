@@ -35,6 +35,7 @@ namespace GraphicsManager {
             shakeTimer += deltaTime;
             if (shakeTimer >= shakeDuration) {
                 shaking = false;
+                resetCamera();
             }
             else {
                 applyCameraShake();
@@ -43,6 +44,18 @@ namespace GraphicsManager {
 
         glutSwapBuffers();
         glutPostRedisplay();
+    }
+
+    void GraphicsManager::resetCamera() const {
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+
+        float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
+        float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
+        gluOrtho2D(-halfWidth, halfWidth, -halfHeight, halfHeight);
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
     }
 
     void GraphicsManager::applyCameraShake() const {

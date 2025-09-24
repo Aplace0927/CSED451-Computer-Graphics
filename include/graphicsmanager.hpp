@@ -19,6 +19,7 @@ namespace GraphicsManager {
         GraphicsManager(const GraphicsManager&) = delete;
         GraphicsManager& operator=(const GraphicsManager&) = delete;
 
+        void resetCamera() const;
         void applyCameraShake() const;
 
         std::vector<std::shared_ptr<std::function<void(float)>>> handlers;
