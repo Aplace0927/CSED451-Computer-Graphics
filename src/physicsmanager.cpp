@@ -1,6 +1,4 @@
 #include "physicsmanager.hpp"
-#include "config.hpp"
-#include <chrono>
 
 namespace PhysicsManager {
 PhysicsManager::PhysicsManager() { start(); }
@@ -10,17 +8,20 @@ PhysicsManager::~PhysicsManager() { stop(); }
 std::shared_ptr<std::function<void()>>
 PhysicsManager::registerHandler(std::function<void()> func) {
   auto ptr = std::make_shared<std::function<void()>>(func);
+  std::lock_guard<std::recursive_mutex> lock(handlerMutex);
   handlers.push_back(ptr);
   return ptr;
 }
 
 void PhysicsManager::unregisterHandler(
     std::shared_ptr<std::function<void()>> ptr) {
+  std::lock_guard<std::recursive_mutex> lock(handlerMutex);
   handlers.erase(std::remove(handlers.begin(), handlers.end(), ptr),
                  handlers.end());
 }
 
 void PhysicsManager::fixedUpdate() {
+  std::lock_guard<std::recursive_mutex> lock(handlerMutex);
   if (handlers.empty()) {
     return;
   }
