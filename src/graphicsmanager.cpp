@@ -3,6 +3,7 @@
 namespace GraphicsManager {
 std::shared_ptr<std::function<void(float)>>
 GraphicsManager::registerHandler(std::function<void(float)> func) {
+  std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
   auto ptr = std::make_shared<std::function<void(float)>>(func);
   handlers.push_back(ptr);
   return ptr;
@@ -10,21 +11,27 @@ GraphicsManager::registerHandler(std::function<void(float)> func) {
 
 void GraphicsManager::unregisterHandler(
     std::shared_ptr<std::function<void(float)>> ptr) {
+  std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
   handlers.erase(std::remove(handlers.begin(), handlers.end(), ptr),
                  handlers.end());
 }
 
 void GraphicsManager::update() {
+  std::vector<std::shared_ptr<std::function<void(float)>>> updateHandlerCopy;
+  {
+    std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
+    updateHandlerCopy = handlers; // Create a copy to avoid holding the lock
+  }
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   auto now = std::chrono::high_resolution_clock::now();
   float deltaTime = std::chrono::duration<float>(now - lastFrame).count();
   lastFrame = now;
 
-  if (handlers.empty()) {
+  if (updateHandlerCopy.empty()) {
     return;
   }
-  for (auto &handler : handlers) {
+  for (auto &handler : updateHandlerCopy) {
     if (handler == nullptr) {
       continue;
     }

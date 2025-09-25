@@ -8,24 +8,29 @@ PhysicsManager::~PhysicsManager() { stop(); }
 std::shared_ptr<std::function<void()>>
 PhysicsManager::registerHandler(std::function<void()> func) {
   auto ptr = std::make_shared<std::function<void()>>(func);
-  std::lock_guard<std::recursive_mutex> lock(handlerMutex);
+  std::lock_guard<std::recursive_mutex> lock(fixedUpdateHandlerMutex);
   handlers.push_back(ptr);
   return ptr;
 }
 
 void PhysicsManager::unregisterHandler(
     std::shared_ptr<std::function<void()>> ptr) {
-  std::lock_guard<std::recursive_mutex> lock(handlerMutex);
+  std::lock_guard<std::recursive_mutex> lock(fixedUpdateHandlerMutex);
   handlers.erase(std::remove(handlers.begin(), handlers.end(), ptr),
                  handlers.end());
 }
 
 void PhysicsManager::fixedUpdate() {
-  std::lock_guard<std::recursive_mutex> lock(handlerMutex);
-  if (handlers.empty()) {
+  std::vector<std::shared_ptr<std::function<void()>>> fixedUpdatesCopy;
+  {
+    std::lock_guard<std::recursive_mutex> lock(fixedUpdateHandlerMutex);
+    fixedUpdatesCopy = handlers; // Create a copy to avoid holding the lock
+  }
+
+  if (fixedUpdatesCopy.empty()) {
     return;
   }
-  for (auto &handler : handlers) {
+  for (auto &handler : fixedUpdatesCopy) {
     if (handler == nullptr) {
       continue;
     }

@@ -32,7 +32,7 @@ private:
 
   std::atomic<bool> running{false};
   std::thread loopThread;
-  std::recursive_mutex handlerMutex;
+  std::recursive_mutex fixedUpdateHandlerMutex;
 
   void start();
   void stop();

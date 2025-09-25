@@ -24,6 +24,7 @@ private:
   void applyCameraShake() const;
 
   std::vector<std::shared_ptr<std::function<void(float)>>> handlers;
+  std::recursive_mutex updateHandlerMutex;
   bool shaking = false;
   float shakeDuration = 0.0f;
   float shakeTimer = 0.0f;
