@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <mutex>
 #include <algorithm>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
