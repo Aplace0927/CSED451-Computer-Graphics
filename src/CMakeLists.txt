@@ -13,6 +13,7 @@ add_executable(
 	"enemypatterns.cpp"
 	"digit.cpp"
 	"healthbar.cpp"
+	"dialoguebox.cpp"
 )
 if (UNIX AND NOT APPLE)
 	target_link_libraries(touhou_postech

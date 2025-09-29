@@ -7,9 +7,11 @@
 
 #include "config.hpp"
 #include "game.hpp"
+#include "gamestate.hpp"
 #include "graphicsmanager.hpp"
 
 Game::Game game;
+GameState::GameState gameState;
 
 int main(int argc, char **argv) {
   glutInit(&argc, argv);

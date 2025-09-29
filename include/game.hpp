@@ -10,10 +10,14 @@
 
 #include "player.hpp"
 #include "enemy.hpp"
+#include "dialoguebox.hpp"
 #include "utility.hpp"
 #include "bullet.hpp"
 #include "singleton.hpp"
 #include "objectpool.hpp"
+#include "gamestate.hpp"
+
+extern GameState::GameState gameState;
 
 namespace Game {
 class Game : public Singleton::Singleton<Game> {
@@ -28,6 +32,7 @@ private:
   glm::vec3 playerMoveVec;
 
   Enemy::Enemy enemy;
+  DialogueBox::DialogueBox dialogueBox;
 };
 }; // namespace Game
 

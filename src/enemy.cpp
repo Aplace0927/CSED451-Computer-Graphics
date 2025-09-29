@@ -39,11 +39,16 @@ Enemy::Enemy()
 }
 
 void Enemy::update(float time) {
-  if (!getStatus()) {
-    changeShape(getWinVertices());
-    setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+  if (gameState == GameState::GameState::WIN) {
+    this->setStatus(false);
+    healthBar.setStatus(false);
+    return;
   }
-  draw();
+
+  if (getStatus()) {
+    draw();
+  }
+  return;
 }
 
 void Enemy::fixedUpdate() {

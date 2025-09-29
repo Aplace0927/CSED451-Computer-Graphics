@@ -30,15 +30,21 @@ Player::Player()
 }
 
 void Player::update(float time) {
-  if (!getStatus()) {
-    changeShape(getLoseVertices());
-    setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-    draw();
+  if (gameState == GameState::GameState::LOSE) {
+    this->setStatus(false);
+    healthBar.setStatus(false);
     return;
   }
 
   shootingCooldown += time;
-  if (isShooting && shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_MS) {
+  reviveCooldown += time;
+
+  if (!getStatus() && reviveCooldown >= GameConfig::REVIVE_COOLDOWN_TIME_SEC) {
+    this->setStatus(true);
+  }
+
+  if (isShooting &&
+      shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_TIME_SEC) {
     Bullet::PlayerBullet *newBullet = bullets.acquire();
     newBullet->activate(
         getCenter() + glm::vec3(0.0f, 17.3f, 0.0f),
@@ -49,7 +55,9 @@ void Player::update(float time) {
     shootingCooldown = 0;
   }
 
-  draw();
+  if (this->getStatus()) {
+    draw();
+  }
 }
 
 void Player::fixedUpdate() {

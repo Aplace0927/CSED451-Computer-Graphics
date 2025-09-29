@@ -21,7 +21,8 @@ inline constexpr float GAME_RENDER_RIGHT_LIMIT = WINDOW_WIDTH;
 
 inline constexpr size_t DEFAULT_POOL_SIZE = 0x10;
 
-inline constexpr float SHOOTING_COOLDOWN_MS = 0.05;
+inline constexpr float SHOOTING_COOLDOWN_TIME_SEC = 0.05;
+inline constexpr float REVIVE_COOLDOWN_TIME_SEC = 0.3;
 
 inline constexpr float FONT_DIGIT_SIZE = 2.0f;
 inline constexpr float BIG_FONT_SIZE = 8.0f;

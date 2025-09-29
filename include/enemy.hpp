@@ -8,6 +8,9 @@
 #include "bullet.hpp"
 #include "enemypatterns.hpp"
 #include "healthbar.hpp"
+#include "gamestate.hpp"
+
+extern GameState::GameState gameState;
 
 namespace Enemy {
 class Enemy : public Object::Object<glm::vec3, Shape::RGBColor> {
@@ -26,11 +29,13 @@ public:
 
   std::function<void()> getBulletHitDetectHandlerFunction() {
     return [this]() {
+      if (!this->getStatus() || gameState != GameState::GameState::PLAYING) {
+        return;
+      }
       enemyHealth = glm::max(0, enemyHealth - 1);
       healthBar.setCurrentHealth(enemyHealth);
       if (enemyHealth == 0) {
-        this->setStatus(false);
-        healthBar.setStatus(false);
+        gameState = GameState::GameState::WIN;
       }
     };
   }

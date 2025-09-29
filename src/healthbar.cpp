@@ -67,7 +67,11 @@ int HealthBar::HealthBar::getCurrentHealth() const { return currentHealth; }
 
 int HealthBar::HealthBar::getMaxHealth() const { return maxHealth; }
 
-void HealthBar::HealthBar::update(float time) { draw(); }
+void HealthBar::HealthBar::update(float time) {
+  if (getStatus()) {
+    draw();
+  }
+}
 
 void HealthBar::HealthBar::fixedUpdate() { return; }
 
