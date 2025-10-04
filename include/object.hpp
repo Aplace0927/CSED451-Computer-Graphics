@@ -9,12 +9,12 @@
 namespace Object {
 template <typename T, typename C> class Object {
 public:
-  Object(const T &_position, const Shape::Shape<T, C> &_shape,
+  Object(const T &_position, const SceneGraph::SceneGraph<T, C> *_scenegraph,
          std::function<void()> releaseFunc = nullptr)
-      : shape(_shape), releaseFunc(releaseFunc) {
+      : scenegraph(_scenegraph), releaseFunc(releaseFunc) {
     // Update to actual position (also initializes bounding box)
     active = true;
-    boundingBox = shape.move(_position);
+    boundingBox = scenegraph->getBoundingBox();
     update_ptr =
         GraphicsManager::GraphicsManager::getInstance().registerHandler(
             [this](float time) { this->update(time); });
@@ -31,10 +31,10 @@ public:
 
   void setPosition(const T &position) {
     // Move by the difference between current center and new position
-    boundingBox = shape.move(position - shape.getCenter());
+    boundingBox = scenegraph.move(position - shape.getCenter());
   }
 
-  void move(const T &displacement) { boundingBox = shape.move(displacement); }
+  void move(const T &displacement) { boundingBox = scenegraph.move(displacement); }
 
   void rotate(const T &angles, const T &pivot) {
     boundingBox = shape.rotate(angles, pivot);
@@ -42,8 +42,8 @@ public:
 
   T getCenter() const { return shape.getCenter(); }
 
-  void draw() {
-    shape.draw();
+  void draw(time_t currentTime) {
+    scenegraph->draw(currentTime);
     // #ifdef BOUNDING_BOX_DEBUG
     // boundingBox.draw();
     // #endif
@@ -70,33 +70,7 @@ public:
     }
   }
 
-  void changeShape(const Shape::Shape<T, C> &newShape) {
-    shape = newShape;
-    boundingBox = shape.move(T(0));
-  }
-
-  bool checkSubShapeEmpty() const { return shape.checkSubShapeEmpty(); }
-
-  void popSubShape() {
-    shape.popSubShape();
-    boundingBox = shape.move(T(0));
-  }
-
-  void clearSubShapes() { shape.clearSubShapes(); }
-
-  int getSubShapeCount() const { return shape.getSubShapeCount(); }
-
-  int getColorCount() const { return shape.getColorCount(); }
-
-  int getMethodCount() const { return shape.getMethodCount(); }
-
-  void addSubShape(const std::vector<T> &vertices, const std::vector<C> &colors,
-                   unsigned int drawMethod) {
-    shape.addSubShape(vertices, colors, drawMethod);
-    boundingBox = shape.move(T(0));
-  }
-
-  Shape::Shape<T, C> getShape() const { return shape; }
+  SceneGraph::SceneGraph<T, C>* getSceneGraph() const { return scenegraph; }
 
   BoundingBox::BoundingBox<T> getBoundingBox() const { return boundingBox; }
 
@@ -105,7 +79,7 @@ public:
 
 private:
   bool active;
-  Shape::Shape<T, C> shape;
+  SceneGraph::SceneGraph<T, C>* scenegraph;
   BoundingBox::BoundingBox<T> boundingBox;
   std::shared_ptr<std::function<void(float)>> update_ptr;
   std::shared_ptr<std::function<void()>> fixedUpdate_ptr;
