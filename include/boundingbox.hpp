@@ -37,9 +37,14 @@ public:
     return *this;
   }
 
-  bool operator&(const BoundingBox<T> &other) const {
+  bool operator&&(const BoundingBox<T> &other) const {
     throw std::runtime_error("Collision detection operator not implemented for "
                              "this BoundingBox specialization");
+  }
+  
+  BoundingBox<T> operator|(const BoundingBox<T> &other) const {
+    throw std::runtime_error("Union operator not implemented for this "
+                             "BoundingBox specialization");
   }
 
   void draw() {
@@ -62,14 +67,24 @@ template <> inline BoundingBox<glm::vec3>::BoundingBox() {
   end = glm::vec3(min, min, min);
 }
 
-template <>
-inline bool
-BoundingBox<glm::vec3>::operator&(const BoundingBox<glm::vec3> &other) const {
+template <> inline
+bool BoundingBox<glm::vec3>::operator&&(
+  const BoundingBox<glm::vec3> &other
+) const {
   if (start.x <= other.end.x && end.x >= other.start.x &&
       start.y <= other.end.y && end.y >= other.start.y) {
     return true; // Collision in all dimensions
   }
   return false; // No collision in any dimension
+}
+
+template <> inline
+BoundingBox<glm::vec3> BoundingBox<glm::vec3>::operator|(
+    const BoundingBox<glm::vec3> &other
+) const {
+  glm::vec3 newStart(std::min(start.x, other.start.x), std::min(start.y, other.start.y), 0.0f);
+  glm::vec3 newEnd(std::max(end.x, other.end.x), std::max(end.y, other.end.y), 0.0f);
+  return BoundingBox<glm::vec3>(newStart, newEnd);
 }
 
 template <> inline void BoundingBox<glm::vec3>::draw() {
