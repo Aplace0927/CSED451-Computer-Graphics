@@ -41,7 +41,7 @@ public:
     throw std::runtime_error("Collision detection operator not implemented for "
                              "this BoundingBox specialization");
   }
-  
+
   BoundingBox<T> operator|(const BoundingBox<T> &other) const {
     throw std::runtime_error("Union operator not implemented for this "
                              "BoundingBox specialization");
@@ -52,8 +52,6 @@ public:
         "draw() not implemented for this BoundingBox specialization");
   }
 
-private:
-  // Add bounding box state variables here
   T start;
   T end;
 };

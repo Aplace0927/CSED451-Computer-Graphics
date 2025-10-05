@@ -2,19 +2,21 @@
 #define OBJECT_HPP
 
 #include "shape.hpp"
+#include "scenegraph.hpp"
 #include "boundingbox.hpp"
 #include "graphicsmanager.hpp"
 #include "physicsmanager.hpp"
+#include "utility.hpp"
 
 namespace Object {
 template <typename T, typename C> class Object {
 public:
-  Object(const T &_position, const SceneGraph::SceneGraph<T, C> *_scenegraph,
+  Object(const T &_position, SceneGraph::SceneGraph<T, C> *_scenegraph,
          std::function<void()> releaseFunc = nullptr)
       : scenegraph(_scenegraph), releaseFunc(releaseFunc) {
     // Update to actual position (also initializes bounding box)
     active = true;
-    boundingBox = scenegraph->getBoundingBox();
+    boundingBox = scenegraph->getBoundingBox(Utility::getCurrentTimeMS());
     update_ptr =
         GraphicsManager::GraphicsManager::getInstance().registerHandler(
             [this](float time) { this->update(time); });
@@ -31,16 +33,25 @@ public:
 
   void setPosition(const T &position) {
     // Move by the difference between current center and new position
-    boundingBox = scenegraph.move(position - shape.getCenter());
+    getSceneGraph()->transformMatrix = glm::translate(getSceneGraph()->transformMatrix, glm::vec3(position - getCenter()));
+    boundingBox = scenegraph->getBoundingBox(Utility::getCurrentTimeMS());
   }
 
-  void move(const T &displacement) { boundingBox = scenegraph.move(displacement); }
+  void move(const T &displacement) { 
+    getSceneGraph()->transformMatrix = glm::translate(getSceneGraph()->transformMatrix, glm::vec3(displacement));
+    boundingBox = scenegraph->getBoundingBox(Utility::getCurrentTimeMS());
+  }
 
   void rotate(const T &angles, const T &pivot) {
-    boundingBox = shape.rotate(angles, pivot);
+    getSceneGraph()->transformMatrix = glm::translate(getSceneGraph()->transformMatrix, glm::vec3(pivot));
+    getSceneGraph()->transformMatrix = glm::rotate(getSceneGraph()->transformMatrix, glm::radians(angles.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    getSceneGraph()->transformMatrix = glm::rotate(getSceneGraph()->transformMatrix, glm::radians(angles.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    getSceneGraph()->transformMatrix = glm::rotate(getSceneGraph()->transformMatrix, glm::radians(angles.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    getSceneGraph()->transformMatrix = glm::translate(getSceneGraph()->transformMatrix, glm::vec3(-pivot));
+    boundingBox = scenegraph->getBoundingBox(Utility::getCurrentTimeMS());
   }
 
-  T getCenter() const { return shape.getCenter(); }
+  T getCenter() const { return scenegraph->getCenter(); }
 
   void draw(time_t currentTime) {
     scenegraph->draw(currentTime);
@@ -58,7 +69,7 @@ public:
       if (!this->active) {
         return false;
       }
-      return this->boundingBox & other;
+      return this->boundingBox && other;
     };
   }
 

@@ -3,18 +3,10 @@
 
 namespace Bullet {
 Bullet::Bullet(Shape::RGBColor color)
-    : Object::Object(glm::vec3(0.0f, 0.0f, 0.0f),
-                     Shape::Shape<glm::vec3, Shape::RGBColor>(
-                         std::vector<std::vector<glm::vec3>>{{
-                             glm::vec3(-2.0f, 2.0f, 0.0f),
-                             glm::vec3(2.0f, 2.0f, 0.0f),
-                             glm::vec3(2.0f, -2.0f, 0.0f),
-                             glm::vec3(-2.0f, -2.0f, 0.0f),
-                             glm::vec3(-2.0f, 2.0f, 0.0f),
-                         }},
-                         std::vector<std::vector<Shape::RGBColor>>{
-                             {color, color, color, color, color}},
-                         std::vector<unsigned int>{GL_TRIANGLE_FAN})),
+    : Object::Object(
+      glm::vec3(0.0f, 0.0f, 0.0f),
+      SceneGraph::createBullet(color)   
+    ),
       bullet_origin(glm::vec3(0.0f, 0.0f, 0.0f)),
       movement_pattern(BulletPattern::empty()),
       bullet_shooter(BulletType::NONE) {
@@ -51,7 +43,7 @@ void Bullet::update(float time) {
   if (!Object::getStatus()) {
     return;
   }
-  Object::draw();
+  Object::draw(time);
 }
 
 void Bullet::fixedUpdate() {

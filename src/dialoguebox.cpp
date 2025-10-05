@@ -2,25 +2,23 @@
 
 namespace DialogueBox {
 DialogueBox::DialogueBox()
-    : Object::Object(glm::vec3(0.0f, 0.0f, 0.0f),
-                     Shape::Shape<glm::vec3, Shape::RGBColor>(
-                         std::vector<std::vector<glm::vec3>>{{}},
-                         std::vector<std::vector<Shape::RGBColor>>{{}},
-                         std::vector<unsigned int>{})) {
+    : Object::Object(
+      glm::vec3(0.0f, 0.0f, 0.0f),
+      new SceneGraph::SceneGraph<glm::vec3, Shape::RGBColor>(getWinVertices())) {
   setStatus(false);
 }
 
 void DialogueBox::update(float time __unused) {
   if (gameState == GameState::GameState::WIN) {
     setStatus(true);
-    changeShape(getWinVertices());
+    getSceneGraph()->changeShape(getWinVertices());
   } else if (gameState == GameState::GameState::LOSE) {
     setStatus(true);
-    changeShape(getLoseVertices());
+    getSceneGraph()->changeShape(getLoseVertices());
   }
 
   if (getStatus()) {
-    draw();
+    draw(Utility::getCurrentTimeMS());
   }
   return;
 }

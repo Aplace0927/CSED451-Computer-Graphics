@@ -6,6 +6,7 @@
 #include "object.hpp"
 #include "gamestate.hpp"
 #include "digit.hpp"
+#include "utility.hpp"
 
 extern GameState::GameState gameState;
 

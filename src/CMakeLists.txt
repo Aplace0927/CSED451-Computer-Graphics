@@ -12,7 +12,8 @@ add_executable(
 	"objectpool.cpp"
 	"enemypatterns.cpp"
 	"digit.cpp"
-	"healthbar.cpp"
+	#"healthbar.cpp"
+	"scenegraph.cpp"
 	"dialoguebox.cpp"
 )
 if (UNIX AND NOT APPLE)

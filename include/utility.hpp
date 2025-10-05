@@ -19,5 +19,11 @@ inline bool isInRenderBounds(const glm::vec3 &pos) {
           pos.y > GameConfig::GAME_RENDER_LOWER_LIMIT &&
           pos.y < GameConfig::GAME_RENDER_UPPER_LIMIT);
 }
+
+inline time_t getCurrentTimeMS() {
+  return std::chrono::duration_cast<std::chrono::milliseconds>(
+             std::chrono::system_clock::now().time_since_epoch())
+      .count();
+}
 }; // namespace Utility
 #endif // UTILITY_HPP

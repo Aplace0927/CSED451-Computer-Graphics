@@ -7,7 +7,7 @@
 #include "objectpool.hpp"
 #include "bullet.hpp"
 #include "enemypatterns.hpp"
-#include "healthbar.hpp"
+//#include "healthbar.hpp"
 #include "gamestate.hpp"
 
 extern GameState::GameState gameState;
@@ -33,7 +33,7 @@ public:
         return;
       }
       enemyHealth = glm::max(0, enemyHealth - 1);
-      healthBar.setCurrentHealth(enemyHealth);
+      //healthBar.setCurrentHealth(enemyHealth);
       if (enemyHealth == 0) {
         gameState = GameState::GameState::WIN;
       }
@@ -43,7 +43,7 @@ public:
 private:
   int enemyHealth;
   ObjectPool::ObjectPool<Bullet::EnemyBullet> bullets;
-  HealthBar::HealthBar healthBar;
+  //HealthBar::HealthBar healthBar;
 
   MovementPattern::MovementPattern *movementPattern;
   ShootingPattern::ShootingPattern *shootingPattern;

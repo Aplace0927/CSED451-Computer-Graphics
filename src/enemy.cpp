@@ -2,34 +2,18 @@
 
 namespace Enemy {
 Enemy::Enemy()
-    : Object::Object(glm::vec3(0.0f, GameConfig::WINDOW_HEIGHT / 4, 0.0f),
-                     Shape::Shape<glm::vec3, Shape::RGBColor>(
-                         std::vector<std::vector<glm::vec3>>{{
-                             glm::vec3(-40.0f, 0.0f, 0.0f),
-                             glm::vec3(-20.0f, 34.6f, 0.0f),
-                             glm::vec3(20.0f, 34.6f, 0.0f),
-                             glm::vec3(40.0f, 0.0f, 0.0f),
-                             glm::vec3(20.0f, -34.6f, 0.0f),
-                             glm::vec3(-20.0f, -34.6f, 0.0f),
-                             glm::vec3(-40.0f, 0.0f, 0.0f),
-                         }},
-                         std::vector<std::vector<Shape::RGBColor>>{{
-                             Shape::RGBColor(1.0f, 0.0f, 0.0f),
-                             Shape::RGBColor(1.0f, 0.0f, 0.0f),
-                             Shape::RGBColor(1.0f, 0.0f, 0.0f),
-                             Shape::RGBColor(1.0f, 0.0f, 0.0f),
-                             Shape::RGBColor(1.0f, 0.0f, 0.0f),
-                             Shape::RGBColor(1.0f, 0.0f, 0.0f),
-                             Shape::RGBColor(1.0f, 0.0f, 0.0f),
-                         }},
-                         std::vector<unsigned int>{GL_TRIANGLE_FAN})),
-      enemyHealth(GameConfig::ENEMY_LIFE),
-      healthBar(
-          glm::vec3(GameConfig::ENEMY_DIGIT_X, GameConfig::ENEMY_DIGIT_Y, 0.0f),
-          GameConfig::FONT_DIGIT_SIZE,
-          glm::vec3(GameConfig::ENEMY_GAUGE_X, GameConfig::ENEMY_GAUGE_Y, 0.0f),
-          GameConfig::ENEMY_GAUGE_WIDTH, GameConfig::ENEMY_GAUGE_HEIGHT,
-          enemyHealth) {
+    : Object::Object(
+      glm::vec3(0.0f, GameConfig::WINDOW_HEIGHT / 4, 0.0f),
+      SceneGraph::createEnemy()
+    ),
+      enemyHealth(GameConfig::ENEMY_LIFE)
+      // healthBar(
+      //     glm::vec3(GameConfig::ENEMY_DIGIT_X, GameConfig::ENEMY_DIGIT_Y, 0.0f),
+      //     GameConfig::FONT_DIGIT_SIZE,
+      //     glm::vec3(GameConfig::ENEMY_GAUGE_X, GameConfig::ENEMY_GAUGE_Y, 0.0f),
+      //     GameConfig::ENEMY_GAUGE_WIDTH, GameConfig::ENEMY_GAUGE_HEIGHT,
+      //     enemyHealth)
+          {
   bullets = ObjectPool::ObjectPool<Bullet::EnemyBullet>();
   shootingPatterns = {new ShootingPattern::CirclePattern(200.0f, 12),
                       new ShootingPattern::SpiralPattern(200.0f, 20.0f),
@@ -41,12 +25,12 @@ Enemy::Enemy()
 void Enemy::update(float time) {
   if (gameState == GameState::GameState::WIN) {
     this->setStatus(false);
-    healthBar.setStatus(false);
+    //healthBar.setStatus(false);
     return;
   }
 
   if (getStatus()) {
-    draw();
+    draw(Utility::getCurrentTimeMS());
   }
   return;
 }

@@ -63,17 +63,16 @@ public:
 
   int getColorCount() const { return colors.size(); }
   int getMethodCount() const { return drawMethod.size(); }
-
+  
+  BoundingBox::BoundingBox<T> getBoundingBox() const {
+    throw std::runtime_error(
+        "getBoundingBox() not implemented for this Shape specialization");
+  }
 private:
   T center;
   std::vector<std::vector<T>> subshapes;
   std::vector<std::vector<C>> colors;
   std::vector<unsigned int> drawMethod;
-
-  BoundingBox::BoundingBox<T> getBoundingBox() const {
-    throw std::runtime_error(
-        "getBoundingBox() not implemented for this Shape specialization");
-  }
 };
 
 // Explicit specialization for Shape<glm::vec3, RGBColor>

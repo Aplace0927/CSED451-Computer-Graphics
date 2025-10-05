@@ -5,7 +5,7 @@
 #include "config.hpp"
 #include "objectpool.hpp"
 #include "bullet.hpp"
-#include "healthbar.hpp"
+//#include "healthbar.hpp"
 #include "graphicsmanager.hpp"
 #include "gamestate.hpp"
 
@@ -42,7 +42,7 @@ public:
       GraphicsManager::GraphicsManager::getInstance().startCameraShake(
           0.5f, 10.0f, 20.0f);
       playerHealth = glm::max(0, playerHealth - 1);
-      healthBar.setCurrentHealth(playerHealth);
+      //healthBar.setCurrentHealth(playerHealth);
       if (playerHealth == 0) {
         gameState = GameState::GameState::LOSE;
       } else {
@@ -60,7 +60,7 @@ private:
   float shootingCooldown;
   float reviveCooldown;
 
-  HealthBar::HealthBar healthBar;
+  //HealthBar::HealthBar healthBar;
   ObjectPool::ObjectPool<Bullet::PlayerBullet> bullets;
   std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
       bulletHitDetectFunction;

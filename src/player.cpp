@@ -2,26 +2,19 @@
 
 namespace Player {
 Player::Player()
-    : Object::Object(glm::vec3(0.0f, -GameConfig::WINDOW_HEIGHT / 4, 0.0f),
-                     Shape::Shape<glm::vec3, Shape::RGBColor>(
-                         std::vector<std::vector<glm::vec3>>{
-                             {glm::vec3(0.0f, 17.3f, 0.0f),
-                              glm::vec3(-17.3f, -10.0f, 0.0f),
-                              glm::vec3(17.3f, -10.0f, 0.0f)}},
-                         std::vector<std::vector<Shape::RGBColor>>{
-                             {Shape::RGBColor(1.0f, 1.0f, 0.0f),
-                              Shape::RGBColor(0.0f, 1.0f, 1.0f),
-                              Shape::RGBColor(1.0f, 0.0f, 1.0f)}},
-                         // drawMethod: vector of draw methods for each subshape
-                         std::vector<unsigned int>{GL_TRIANGLES})),
-      playerHealth(GameConfig::PLAYER_LIFE), isShooting(false),
-      healthBar(glm::vec3(GameConfig::PLAYER_DIGIT_X,
-                          GameConfig::PLAYER_DIGIT_Y, 0.0f),
-                GameConfig::FONT_DIGIT_SIZE,
-                glm::vec3(GameConfig::PLAYER_GAUGE_X,
-                          GameConfig::PLAYER_GAUGE_Y, 0.0f),
-                GameConfig::PLAYER_GAUGE_WIDTH, GameConfig::PLAYER_GAUGE_HEIGHT,
-                playerHealth) {
+    : Object::Object(
+      glm::vec3(0.0f, -GameConfig::WINDOW_HEIGHT / 4, 0.0f),
+      SceneGraph::createPlayer()
+  )
+      // playerHealth(GameConfig::PLAYER_LIFE), isShooting(false),
+      // healthBar(glm::vec3(GameConfig::PLAYER_DIGIT_X,
+      //                     GameConfig::PLAYER_DIGIT_Y, 0.0f),
+      //           GameConfig::FONT_DIGIT_SIZE,
+      //           glm::vec3(GameConfig::PLAYER_GAUGE_X,
+      //                     GameConfig::PLAYER_GAUGE_Y, 0.0f),
+      //           GameConfig::PLAYER_GAUGE_WIDTH, GameConfig::PLAYER_GAUGE_HEIGHT,
+      //           playerHealth)
+                {
   shootingCooldown = 0;
   bullets = ObjectPool::ObjectPool<Bullet::PlayerBullet>();
   playerHealth = GameConfig::PLAYER_LIFE;
@@ -32,7 +25,7 @@ Player::Player()
 void Player::update(float time) {
   if (gameState == GameState::GameState::LOSE) {
     this->setStatus(false);
-    healthBar.setStatus(false);
+    //healthBar.setStatus(false);
     return;
   }
 
@@ -56,7 +49,7 @@ void Player::update(float time) {
   }
 
   if (this->getStatus()) {
-    draw();
+    draw(Utility::getCurrentTimeMS());
   }
 }
 
