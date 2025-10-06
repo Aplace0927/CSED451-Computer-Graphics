@@ -3,7 +3,6 @@
 namespace Player {
 Player::Player()
     : Object::Object(
-      glm::vec3(0.0f, -GameConfig::WINDOW_HEIGHT / 4, 0.0f),
       SceneGraph::createPlayer()
   )
       // playerHealth(GameConfig::PLAYER_LIFE), isShooting(false),

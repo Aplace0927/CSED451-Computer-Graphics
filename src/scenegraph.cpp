@@ -17,7 +17,10 @@ namespace SceneGraph {
             std::vector<unsigned int>{GL_TRIANGLES}
         );
         SceneGraph<glm::vec3, Shape::RGBColor>* playerSceneGraph = new SceneGraph<glm::vec3, Shape::RGBColor>(playerShape);
-        playerSceneGraph->transformMatrix = glm::identity<glm::mat4>();
+        playerSceneGraph->transformMatrix = glm::translate(
+            glm::identity<glm::mat4>(),
+            glm::vec3(0.0f, -GameConfig::WINDOW_HEIGHT / 4, 0.0f)
+        );
         playerSceneGraph->transformAnimateMatrix = [](time_t) { return glm::identity<glm::mat4>(); };
         return playerSceneGraph;
     }
@@ -45,7 +48,11 @@ namespace SceneGraph {
             std::vector<unsigned int>{GL_TRIANGLE_FAN}
         );
         SceneGraph<glm::vec3, Shape::RGBColor>* enemySceneGraph = new SceneGraph<glm::vec3, Shape::RGBColor>(enemyShape);
-        enemySceneGraph->transformMatrix = glm::identity<glm::mat4>();
+        enemySceneGraph->transformMatrix = glm::translate(
+            glm::identity<glm::mat4>(),
+            glm::vec3(0.0f, GameConfig::WINDOW_HEIGHT / 4, 0.0f)
+        );
+        
         enemySceneGraph->transformAnimateMatrix = [](time_t time) { return glm::identity<glm::mat4>(); };
         return enemySceneGraph;
     }
@@ -64,7 +71,10 @@ namespace SceneGraph {
             std::vector<unsigned int>{GL_TRIANGLE_FAN}
         );
         SceneGraph<glm::vec3, Shape::RGBColor>* bulletSceneGraph = new SceneGraph<glm::vec3, Shape::RGBColor>(bulletShape);
-        bulletSceneGraph->transformMatrix = glm::identity<glm::mat4>();
+        bulletSceneGraph->transformMatrix = glm::translate(
+            glm::identity<glm::mat4>(),
+            glm::vec3(0.0f, 0.0f, 0.0f)
+        );
         bulletSceneGraph->transformAnimateMatrix = [](time_t time) { return glm::identity<glm::mat4>(); };
         return bulletSceneGraph;
     }

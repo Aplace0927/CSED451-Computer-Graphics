@@ -3,7 +3,6 @@
 namespace DialogueBox {
 DialogueBox::DialogueBox()
     : Object::Object(
-      glm::vec3(0.0f, 0.0f, 0.0f),
       new SceneGraph::SceneGraph<glm::vec3, Shape::RGBColor>(getWinVertices())) {
   setStatus(false);
 }

@@ -11,7 +11,7 @@
 namespace Object {
 template <typename T, typename C> class Object {
 public:
-  Object(const T &_position, SceneGraph::SceneGraph<T, C> *_scenegraph,
+  Object(SceneGraph::SceneGraph<T, C> *_scenegraph,
          std::function<void()> releaseFunc = nullptr)
       : scenegraph(_scenegraph), releaseFunc(releaseFunc) {
     // Update to actual position (also initializes bounding box)

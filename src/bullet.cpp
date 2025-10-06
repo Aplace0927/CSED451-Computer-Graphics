@@ -4,7 +4,6 @@
 namespace Bullet {
 Bullet::Bullet(Shape::RGBColor color)
     : Object::Object(
-      glm::vec3(0.0f, 0.0f, 0.0f),
       SceneGraph::createBullet(color)   
     ),
       bullet_origin(glm::vec3(0.0f, 0.0f, 0.0f)),
@@ -37,6 +36,12 @@ void Bullet::activate(
   hitEventFunction = hitEventFunc;
   Object::setStatus(true);
   setPosition(movement_pattern(bullet_origin, 0));
+  
+  // We should patch the code pattern like following:
+  getSceneGraph()->transformMatrix = glm::translate(
+      glm::identity<glm::mat4>(),
+      glm::vec3(bullet_origin)
+  );
 }
 
 void Bullet::update(float time) {

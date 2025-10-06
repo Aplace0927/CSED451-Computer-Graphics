@@ -3,7 +3,6 @@
 namespace Enemy {
 Enemy::Enemy()
     : Object::Object(
-      glm::vec3(0.0f, GameConfig::WINDOW_HEIGHT / 4, 0.0f),
       SceneGraph::createEnemy()
     ),
       enemyHealth(GameConfig::ENEMY_LIFE)
