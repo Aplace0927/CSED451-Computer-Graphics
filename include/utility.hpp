@@ -2,6 +2,7 @@
 #define UTILITY_HPP
 
 #include <glm/glm.hpp>
+#include <chrono>
 #include "config.hpp"
 
 namespace Utility {

@@ -7,7 +7,7 @@ DialogueBox::DialogueBox()
   setStatus(false);
 }
 
-void DialogueBox::update(float time __unused) {
+void DialogueBox::update(float time) {
   if (gameState == GameState::GameState::WIN) {
     setStatus(true);
     getSceneGraph()->changeShape(getWinVertices());
