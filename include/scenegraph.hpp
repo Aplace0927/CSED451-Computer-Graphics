@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 
+#include "utility.hpp"
 #include "shape.hpp"
 
 
@@ -136,8 +137,14 @@ namespace SceneGraph {
             }
 
             T getCenter() const {
-                return (shape.getBoundingBox().start + shape.getBoundingBox().end) / static_cast<typename T::value_type>(2);
+                glm::mat4 M = transformMatrix * transformAnimateMatrix(Utility::getCurrentTimeMS());
+                T thisCenter = M * glm::vec4(shape.getCenter(), 1.0f);
+                for (SceneGraph<T, C>* child : children) {
+                    thisCenter += M * glm::vec4(child->getCenter(), 1.0f);
+                }
+                return thisCenter / static_cast<float>(children.size() + 1);
             }
+
             std::function<glm::mat4(time_t)> transformAnimateMatrix;
             glm::mat4 transformMatrix;
 

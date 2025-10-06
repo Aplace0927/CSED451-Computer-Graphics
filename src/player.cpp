@@ -57,8 +57,9 @@ void Player::fixedUpdate() {
     return;
   }
   move(direction);
+  glm::vec3 currentPos = getSceneGraph()->getCenter();
+  BoundingBox::BoundingBox<glm::vec3> bdbx = getSceneGraph()->getBoundingBox(Utility::getCurrentTimeMS());
 
-  glm::vec3 currentPos = getCenter();
   setPosition(
       glm::vec3(glm::clamp(currentPos.x, GameConfig::POSITION_LEFT_LIMIT,
                            GameConfig::POSITION_RIGHT_LIMIT),
