@@ -16,13 +16,13 @@ namespace Transform {
             // drawMethod: vector of draw methods for each subshape
             std::vector<unsigned int>{GL_TRIANGLES}
         );
-        Transform<glm::vec3, Shape::RGBColor>* playerSceneGraph = new Transform<glm::vec3, Shape::RGBColor>(playerShape);
-        playerSceneGraph->transformMatrix = glm::translate(
+        Transform<glm::vec3, Shape::RGBColor>* playerTransform = new Transform<glm::vec3, Shape::RGBColor>(playerShape);
+        playerTransform->transformMatrix = glm::translate(
             glm::identity<glm::mat4>(),
             glm::vec3(0.0f, -GameConfig::WINDOW_HEIGHT / 4, 0.0f)
         );
-        playerSceneGraph->transformAnimateMatrix = [](time_t) { return glm::identity<glm::mat4>(); };
-        return playerSceneGraph;
+        playerTransform->transformAnimateMatrix = [](time_t) { return glm::identity<glm::mat4>(); };
+        return playerTransform;
     }
 
     Transform<glm::vec3, Shape::RGBColor>* createEnemy() {
@@ -47,13 +47,13 @@ namespace Transform {
             }},
             std::vector<unsigned int>{GL_TRIANGLE_FAN}
         );
-        Transform<glm::vec3, Shape::RGBColor>* enemySceneGraph = new Transform<glm::vec3, Shape::RGBColor>(enemyShape);
-        enemySceneGraph->transformMatrix = glm::translate(
+        Transform<glm::vec3, Shape::RGBColor>* enemyTransform = new Transform<glm::vec3, Shape::RGBColor>(enemyShape);
+        enemyTransform->transformMatrix = glm::translate(
             glm::identity<glm::mat4>(),
             glm::vec3(0.0f, GameConfig::WINDOW_HEIGHT / 4, 0.0f)
         );
         
-        enemySceneGraph->transformAnimateMatrix = [](time_t time) { return glm::identity<glm::mat4>(); };
+        enemyTransform->transformAnimateMatrix = [](time_t time) { return glm::identity<glm::mat4>(); };
 
         Shape::Shape<glm::vec3, Shape::RGBColor> enemyLeg(
             std::vector<std::vector<glm::vec3>>{{
@@ -73,20 +73,20 @@ namespace Transform {
             std::vector<unsigned int>{GL_TRIANGLE_FAN}
         );
 
-        SceneGraph<glm::vec3, Shape::RGBColor>* enemyLegSceneGraph_1 = new SceneGraph<glm::vec3, Shape::RGBColor>(enemyLeg);
-        enemyLegSceneGraph_1->transformMatrix = glm::translate(
+        Transform<glm::vec3, Shape::RGBColor>* enemyLegTransform_1 = new Transform<glm::vec3, Shape::RGBColor>(enemyLeg);
+        enemyLegTransform_1->transformMatrix = glm::translate(
             glm::identity<glm::mat4>(),
             glm::vec3(20.0f, 0.0f, 0.2f)
         );
-        enemyLegSceneGraph_1->transformAnimateMatrix = [](time_t time) {
+        enemyLegTransform_1->transformAnimateMatrix = [](time_t time) {
             return glm::translate(
                 glm::identity<glm::mat4>(),
                 glm::vec3(glm::cos(time), glm::sin(time), 0.0f)
             );
         };
 
-        SceneGraph<glm::vec3, Shape::RGBColor>* enemyLegSceneGraph_2 = new SceneGraph<glm::vec3, Shape::RGBColor>(enemyLeg);
-        enemyLegSceneGraph_2->transformMatrix = glm::rotate(
+        Transform<glm::vec3, Shape::RGBColor>* enemyLegTransform_2 = new Transform<glm::vec3, Shape::RGBColor>(enemyLeg);
+        enemyLegTransform_2->transformMatrix = glm::rotate(
             glm::identity<glm::mat4>(),
             glm::radians(120.0f),
             glm::vec3(0.0f, 0.0f, 1.0f)
@@ -94,7 +94,7 @@ namespace Transform {
             glm::identity<glm::mat4>(),
             glm::vec3(0.0f, 20.0f, 0.2f)
         );
-        enemyLegSceneGraph_2->transformAnimateMatrix = [](time_t time) {
+        enemyLegTransform_2->transformAnimateMatrix = [](time_t time) {
             return glm::translate(
                 glm::identity<glm::mat4>(),
                 glm::vec3(glm::cos(time), glm::sin(time), 0.0f)
@@ -102,8 +102,8 @@ namespace Transform {
         };
 
         
-        enemySceneGraph->addChild(enemyLegSceneGraph_1);
-        enemySceneGraph->addChild(enemyLegSceneGraph_2);
+        enemyTransform->addChild(enemyLegTransform_1);
+        enemyTransform->addChild(enemyLegTransform_2);
 
         Shape::Shape<glm::vec3, Shape::RGBColor> enemyEye(
             std::vector<std::vector<glm::vec3>>{{
@@ -122,12 +122,12 @@ namespace Transform {
             }},
             std::vector<unsigned int>{GL_TRIANGLE_FAN}
         );
-        SceneGraph<glm::vec3, Shape::RGBColor>* enemyEyeSceneGraph_1 = new SceneGraph<glm::vec3, Shape::RGBColor>(enemyEye);
-        enemyEyeSceneGraph_1->transformMatrix = glm::identity<glm::mat4>();
-        enemyEyeSceneGraph_1->transformAnimateMatrix = [](time_t) { return glm::identity<glm::mat4>(); };
+        Transform<glm::vec3, Shape::RGBColor>* enemyEyeTransform_1 = new Transform<glm::vec3, Shape::RGBColor>(enemyEye);
+        enemyEyeTransform_1->transformMatrix = glm::identity<glm::mat4>();
+        enemyEyeTransform_1->transformAnimateMatrix = [](time_t) { return glm::identity<glm::mat4>(); };
 
-        enemyLegSceneGraph_1->addChild(enemyEyeSceneGraph_1);
-        return enemySceneGraph;
+        enemyLegTransform_1->addChild(enemyEyeTransform_1);
+        return enemyTransform;
     }
 
     Transform<glm::vec3, Shape::RGBColor>* createBullet(Shape::RGBColor color) {
@@ -143,12 +143,12 @@ namespace Transform {
                 {color, color, color, color, color}},
             std::vector<unsigned int>{GL_TRIANGLE_FAN}
         );
-        Transform<glm::vec3, Shape::RGBColor>* bulletSceneGraph = new Transform<glm::vec3, Shape::RGBColor>(bulletShape);
-        bulletSceneGraph->transformMatrix = glm::translate(
+        Transform<glm::vec3, Shape::RGBColor>* bulletTransform = new Transform<glm::vec3, Shape::RGBColor>(bulletShape);
+        bulletTransform->transformMatrix = glm::translate(
             glm::identity<glm::mat4>(),
             glm::vec3(0.0f, 0.0f, 0.0f)
         );
-        bulletSceneGraph->transformAnimateMatrix = [](time_t time) { return glm::identity<glm::mat4>(); };
-        return bulletSceneGraph;
+        bulletTransform->transformAnimateMatrix = [](time_t time) { return glm::identity<glm::mat4>(); };
+        return bulletTransform;
     }
 }
