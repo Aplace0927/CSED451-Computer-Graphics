@@ -9,14 +9,13 @@
 #include "utility.hpp"
 #include "shape.hpp"
 
-
-namespace SceneGraph {
+namespace Transform {
     template <typename T, typename C>
-    class SceneGraph {
+    class Transform {
         public:
-            SceneGraph(Shape::Shape<T, C> shape) : shape(shape), transformAnimateMatrix([](time_t) { return glm::mat4(1.0f); }), transformMatrix(glm::mat4(1.0f)) {}
-            ~SceneGraph<T, C>() {
-                for (SceneGraph<T, C>* child : children) {
+            Transform(Shape::Shape<T, C> shape) : shape(shape), transformAnimateMatrix([](time_t) { return glm::mat4(1.0f); }), transformMatrix(glm::mat4(1.0f)) {}
+            ~Transform<T, C>() {
+                for (Transform<T, C>* child : children) {
                     delete child;
                 }
             }
@@ -26,7 +25,7 @@ namespace SceneGraph {
              * @param currentTime
              * 
              * @brief Draw the Shape with transformation matrix applied.
-             * Recursively draws the child SceneGraph nodes as well.
+             * Recursively draws the child Transform nodes as well.
              * Since the transformation matrix is time-dependent (for animation), the matrix is passed as a function of time.
              */
             void draw(time_t currentTime) {
@@ -36,27 +35,27 @@ namespace SceneGraph {
                 glMultMatrixf(glm::value_ptr(transformMatrix));  // Static
                 shape.draw();
                 // Recursively draw children
-                for (SceneGraph<T, C>* child : children) {
+                for (Transform<T, C>* child : children) {
                     child->draw(currentTime);
                 }
                 glPopMatrix();
             }
 
             /**
-             * @brief Adding/Deleting/Accessing child SceneGraph nodes.
-             * If removing a child SceneGraph node, it will delete the descendants as well.
+             * @brief Adding/Deleting/Accessing child Transform nodes.
+             * If removing a child Transform node, it will delete the descendants as well.
              * 
              * @fn addChild
              * @fn removeChild
              * @fn getNthChild
              */
-            void addChild(SceneGraph<T, C>* child) {
+            void addChild(Transform<T, C>* child) {
                 children.push_back(child);
             }
-            void removeChild(SceneGraph<T, C>* child) {
+            void removeChild(Transform<T, C>* child) {
                 children.erase(std::remove(children.begin(), children.end(), child), children.end());
             }
-            SceneGraph<T, C>* getNthChild(size_t n) const {
+            Transform<T, C>* getNthChild(size_t n) const {
                 if (n < children.size()) {
                     return children[n];
                 }
@@ -70,8 +69,8 @@ namespace SceneGraph {
              * @fn clearSubShapes
              * @fn addSubShape
              * 
-             * Since sceneGraph object is NOT storing the BoundingBox, changing the shape will NOT update the bounding box.
-             * Use @fn SceneGraph::getBoundingBox() to get the updated bounding box.
+             * Since Transform object is NOT storing the BoundingBox, changing the shape will NOT update the bounding box.
+             * Use @fn Transform::getBoundingBox() to get the updated bounding box.
              */
             void changeShape(const Shape::Shape<T, C> &newShape) {
                 shape = newShape;
@@ -93,12 +92,12 @@ namespace SceneGraph {
             /**
              * @fn getBoundingBox
              * 
-             * @brief Get the bounding box of the shape. Recursively merges the bounding boxes of child SceneGraph nodes.
+             * @brief Get the bounding box of the shape. Recursively merges the bounding boxes of child Transform nodes.
              * Since the transformation matrix is time-dependent (for animation), the matrix is applied to the bounding box as well.
              */
             BoundingBox::BoundingBox<T> getBoundingBox(time_t time) const {
                 BoundingBox::BoundingBox<T> bbox = shape.getBoundingBox();
-                for(SceneGraph<T, C>* child : children) {
+                for(Transform<T, C>* child : children) {
                     bbox = bbox | child->getBoundingBox(time);
                 }
 
@@ -139,7 +138,7 @@ namespace SceneGraph {
             T getCenter() const {
                 glm::mat4 M = transformMatrix * transformAnimateMatrix(Utility::getCurrentTimeMS());
                 T thisCenter = M * glm::vec4(shape.getCenter(), 1.0f);
-                for (SceneGraph<T, C>* child : children) {
+                for (Transform<T, C>* child : children) {
                     thisCenter += M * glm::vec4(child->getCenter(), 1.0f);
                 }
                 return thisCenter / static_cast<float>(children.size() + 1);
@@ -150,11 +149,12 @@ namespace SceneGraph {
 
         private:
             Shape::Shape<T, C> shape;
-            std::vector<SceneGraph<T, C>*> children;
+            Transform<T, C>* parent;
+            std::vector<Transform<T, C>*> children;
     };
 
-    SceneGraph<glm::vec3, Shape::RGBColor>* createPlayer();
-    SceneGraph<glm::vec3, Shape::RGBColor>* createEnemy();
-    SceneGraph<glm::vec3, Shape::RGBColor>* createBullet(Shape::RGBColor color);
-} // namespace SceneGraph
+    Transform<glm::vec3, Shape::RGBColor>* createPlayer();
+    Transform<glm::vec3, Shape::RGBColor>* createEnemy();
+    Transform<glm::vec3, Shape::RGBColor>* createBullet(Shape::RGBColor color);
+} // namespace Transform
 #endif // SCENEGRAPH_HPP
