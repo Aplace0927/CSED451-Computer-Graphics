@@ -29,17 +29,23 @@ namespace SceneGraph {
              * Recursively draws the child SceneGraph nodes as well.
              * Since the transformation matrix is time-dependent (for animation), the matrix is passed as a function of time.
              */
-            void draw(time_t currentTime) {
+            void _draw(time_t currentTime) {
                 glPushMatrix(); // Save current matrix
                 // Apply transformation matrix for current time
-                glMultMatrixf(glm::value_ptr(transformAnimateMatrix(currentTime)));  // Animate
-                glMultMatrixf(glm::value_ptr(transformMatrix));  // Static
+                glm::mat4 M = transformMatrix * transformAnimateMatrix(currentTime);
+                glMultMatrixf(glm::value_ptr(M));
                 shape.draw();
                 // Recursively draw children
                 for (SceneGraph<T, C>* child : children) {
-                    child->draw(currentTime);
+                    child->_draw(currentTime);
                 }
                 glPopMatrix();
+            }
+
+            void draw(time_t currentTime) {
+                glMatrixMode(GL_MODELVIEW);
+                glLoadIdentity();
+                _draw(currentTime);
             }
 
             /**
@@ -61,6 +67,9 @@ namespace SceneGraph {
                     return children[n];
                 }
                 return nullptr;
+            }
+            size_t getChildCount() const {
+                return children.size();
             }
 
             /**
