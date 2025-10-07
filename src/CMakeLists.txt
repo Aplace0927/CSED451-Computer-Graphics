@@ -13,7 +13,7 @@ add_executable(
 	"enemypatterns.cpp"
 	"digit.cpp"
 	#"healthbar.cpp"
-	"scenegraph.cpp"
+	"transform.cpp"
 	"dialoguebox.cpp"
 )
 if (UNIX AND NOT APPLE)

@@ -3,7 +3,7 @@
 namespace Enemy {
 Enemy::Enemy()
     : Object::Object(
-      SceneGraph::createEnemy()
+      Transform::createEnemy()
     ),
       enemyHealth(GameConfig::ENEMY_LIFE)
       // healthBar(

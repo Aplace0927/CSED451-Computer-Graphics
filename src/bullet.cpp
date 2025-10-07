@@ -4,7 +4,7 @@
 namespace Bullet {
 Bullet::Bullet(Shape::RGBColor color)
     : Object::Object(
-      SceneGraph::createBullet(color)   
+      Transform::createBullet(color)   
     ),
       bullet_origin(glm::vec3(0.0f, 0.0f, 0.0f)),
       movement_pattern(BulletPattern::empty()),

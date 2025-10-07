@@ -3,7 +3,7 @@
 namespace Player {
 Player::Player()
     : Object::Object(
-      SceneGraph::createPlayer()
+      Transform::createPlayer()
   )
       // playerHealth(GameConfig::PLAYER_LIFE), isShooting(false),
       // healthBar(glm::vec3(GameConfig::PLAYER_DIGIT_X,

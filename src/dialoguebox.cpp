@@ -3,11 +3,11 @@
 namespace DialogueBox {
 DialogueBox::DialogueBox()
     : Object::Object(
-      new SceneGraph::SceneGraph<glm::vec3, Shape::RGBColor>(getWinVertices())) {
+      new Transform::Transform<glm::vec3, Shape::RGBColor>(getWinVertices())) {
   setStatus(false);
 }
 
-void DialogueBox::update(float time __unused) {
+void DialogueBox::update(float time) {
   if (gameState == GameState::GameState::WIN) {
     setStatus(true);
     getSceneGraph()->changeShape(getWinVertices());
