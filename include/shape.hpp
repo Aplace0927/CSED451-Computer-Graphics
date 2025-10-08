@@ -10,11 +10,11 @@
 #include "boundingbox.hpp"
 #include "config.hpp"
 
-namespace Shape {
+namespace Component {
 typedef glm::vec3 RGBColor;
 typedef glm::vec4 RGBAColor;
 
-template <typename T, typename C> class Shape {
+template <typename T, typename C> class Shape : public Component {
 public:
   Shape(const std::vector<std::vector<T>> &_subshapes,
         const std::vector<std::vector<C>> &_colors,

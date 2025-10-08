@@ -12,8 +12,7 @@
 #include "singleton.hpp"
 #include "config.hpp"
 
-namespace PhysicsManager {
-
+namespace EngineManager {
 class PhysicsManager : public Singleton::Singleton<PhysicsManager> {
 
 public:

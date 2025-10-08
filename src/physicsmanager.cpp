@@ -1,6 +1,6 @@
 #include "physicsmanager.hpp"
 
-namespace PhysicsManager {
+namespace EngineManager {
 PhysicsManager::PhysicsManager() { start(); }
 
 PhysicsManager::~PhysicsManager() { stop(); }

@@ -7,10 +7,13 @@ namespace Component {
 class Component {
 public:
   GameObject::GameObject *gameObject;
+  Transform *transform;
+
   virtual ~Component() = default;
 
 protected:
-  explicit Component(GameObject::GameObject *owner) : gameObject(owner) {}
+  explicit Component(GameObject::GameObject *owner)
+      : gameObject(owner), transform(owner->transform) {}
 
   friend class GameObject::GameObject;
   virtual void fixedUpdate() {}
@@ -18,6 +21,6 @@ protected:
   virtual void lateUpdate() {}
   virtual void renderUpdate() {}
 };
-} // namespace GameObject
+} // namespace Component
 
 #endif // COMPONENT_HPP

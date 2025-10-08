@@ -14,7 +14,7 @@
 #include "singleton.hpp"
 #include "config.hpp"
 
-namespace GraphicsManager {
+namespace EngineManager {
 typedef std::function<void()> GraphicsManagerFunc;
 
 class GraphicsManager : public Singleton::Singleton<GraphicsManager> {

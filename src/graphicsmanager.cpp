@@ -1,23 +1,23 @@
 #include "graphicsmanager.hpp"
 
-namespace GraphicsManager {
-std::shared_ptr<std::function<void(float)>>
-GraphicsManager::registerHandler(std::function<void(float)> func) {
+namespace EngineManager {
+std::shared_ptr<GraphicsManagerFunc>
+GraphicsManager::registerHandler(GraphicsManagerFunc func) {
   std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
-  auto ptr = std::make_shared<std::function<void(float)>>(func);
+  auto ptr = std::make_shared<GraphicsManagerFunc>(func);
   handlers.push_back(ptr);
   return ptr;
 }
 
 void GraphicsManager::unregisterHandler(
-    std::shared_ptr<std::function<void(float)>> ptr) {
+    std::shared_ptr<GraphicsManagerFunc> ptr) {
   std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
   handlers.erase(std::remove(handlers.begin(), handlers.end(), ptr),
                  handlers.end());
 }
 
 void GraphicsManager::update() {
-  std::vector<std::shared_ptr<std::function<void(float)>>> updateHandlerCopy;
+  std::vector<std::shared_ptr<GraphicsManagerFunc>> updateHandlerCopy;
   {
     std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
     updateHandlerCopy = handlers; // Create a copy to avoid holding the lock
