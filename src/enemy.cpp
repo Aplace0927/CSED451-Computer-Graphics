@@ -2,7 +2,7 @@
 
 namespace Enemy {
 Enemy::Enemy()
-    : Object::Object(
+    : GameObject::GameObject(
       Transform::createEnemy()
     ),
       enemyHealth(GameConfig::ENEMY_LIFE)

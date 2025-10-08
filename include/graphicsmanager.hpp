@@ -15,7 +15,7 @@
 #include "config.hpp"
 
 namespace GraphicsManager {
-typedef std::function<void(float)> GraphicsManagerFunc;
+typedef std::function<void()> GraphicsManagerFunc;
 
 class GraphicsManager : public Singleton::Singleton<GraphicsManager> {
 private:
@@ -38,8 +38,7 @@ public:
   GraphicsManager() { lastFrame = std::chrono::high_resolution_clock::now(); };
   ~GraphicsManager() = default;
 
-  std::shared_ptr<GraphicsManagerFunc>
-  registerHandler(GraphicsManagerFunc func);
+  std::shared_ptr<GraphicsManagerFunc> registerHandler(GraphicsManagerFunc func);
   void unregisterHandler(std::shared_ptr<GraphicsManagerFunc> ptr);
 
   void startCameraShake(float duration, float magnitude, float speed);

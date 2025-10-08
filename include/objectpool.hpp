@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "config.hpp"
-#include "object.hpp"
+#include "gameobject.hpp"
 
 namespace ObjectPool {
 template <typename T> class ObjectPool {

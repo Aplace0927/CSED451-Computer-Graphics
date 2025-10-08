@@ -1,7 +1,7 @@
-#ifndef BULLET_HPP
+#ifndef BULLET_HPP 
 #define BULLET_HPP
 
-#include "object.hpp"
+#include "gameobject.hpp"
 #include "utility.hpp"
 #include <functional>
 #include <iostream>
@@ -9,7 +9,7 @@
 namespace Bullet {
 enum class BulletType { PLAYER, ENEMY, NONE };
 
-class Bullet : public Object::Object<glm::vec3, Shape::RGBColor> {
+class Bullet : public GameObject::GameObject<glm::vec3, Shape::RGBColor> {
 public:
   Bullet(Shape::RGBColor color);
   void update(float time) override;

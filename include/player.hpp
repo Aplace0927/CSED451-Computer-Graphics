@@ -1,18 +1,18 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include "object.hpp"
 #include "config.hpp"
 #include "objectpool.hpp"
 #include "bullet.hpp"
 //#include "healthbar.hpp"
 #include "graphicsmanager.hpp"
 #include "gamestate.hpp"
+#include "gameobject.hpp"
 
 extern GameState::GameState gameState;
 
 namespace Player {
-class Player : public Object::Object<glm::vec3, Shape::RGBColor> {
+class Player : public GameObject::GameObject<glm::vec3, Shape::RGBColor> {
 public:
   Player();
   void update(float time) override;

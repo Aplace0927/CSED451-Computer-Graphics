@@ -28,9 +28,9 @@
 | `enemy.hpp` | `enemy.cpp` | Enemy class and behavior |
 | `enemypatternss.hpp` | `enemypatternss.cpp` | Enemy attack patterns |
 | `game.hpp` | `game.cpp` | Game class and callback registration |
-| `graphicsmanager.hpp` | `graphicsmanager.cpp` | Object rendering management |
+| `graphicsmanager.hpp` | `graphicsmanager.cpp` | GameObject rendering management |
 | `healthbar.hpp` | `healthbar.cpp` | Health bar and digit font rendering |
-| `object.hpp` | - | Base class of game entities |
+| `gameobject.hpp` | - | Base class of game entities |
 | `objectpool.hpp` | `objectpool.cpp` | Optimization helper for multiple homogenous objects |
 | `physicsmanager.hpp` | `physicsmanager.cpp` | Physics simulation management |
 | `player.hpp` | `player.cpp` | Player class and behavior |

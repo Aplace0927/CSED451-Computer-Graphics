@@ -1,7 +1,7 @@
 #include "healthbar.hpp"
 
 HealthBar::HealthBar::HealthBar()
-    : Object::Object(glm::vec3(0.0f, 0.0f, 0.0f),
+    : GameObject::GameObject(glm::vec3(0.0f, 0.0f, 0.0f),
                      Shape::Shape<glm::vec3, Shape::RGBColor>(
                          // subshapes: vector of subshapes, each subshape is a
                          // vector of vertices
@@ -19,7 +19,7 @@ HealthBar::HealthBar::HealthBar(const glm::vec3 &digit_position,
                                 const glm::vec3 &gauge_position,
                                 const float gauge_width,
                                 const float gauge_height, int maxHealth)
-    : Object::Object(digit_position,
+    : GameObject::GameObject(digit_position,
                      Shape::Shape<glm::vec3, Shape::RGBColor>(
                          // subshapes: vector of subshapes, each subshape is a
                          // vector of vertices

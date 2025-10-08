@@ -1,12 +1,12 @@
 #ifndef HEALTHBAR_HPP
 #define HEALTHBAR_HPP
 
-#include "object.hpp"
+#include "gameobject.hpp"
 #include "digit.hpp"
 #include "shape.hpp"
 
 namespace HealthBar {
-class HealthBar : public Object::Object<glm::vec3, Shape::RGBColor> {
+class HealthBar : public GameObject::GameObject<glm::vec3, Shape::RGBColor> {
 public:
   void update(float time) override;
   void fixedUpdate() override;

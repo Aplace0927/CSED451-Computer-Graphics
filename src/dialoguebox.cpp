@@ -2,7 +2,7 @@
 
 namespace DialogueBox {
 DialogueBox::DialogueBox()
-    : Object::Object(
+    : GameObject::GameObject(
       new Transform::Transform<glm::vec3, Shape::RGBColor>(getWinVertices())) {
   setStatus(false);
 }

@@ -3,17 +3,17 @@
 
 namespace Bullet {
 Bullet::Bullet(Shape::RGBColor color)
-    : Object::Object(
+    : GameObject::GameObject(
       Transform::createBullet(color)   
     ),
       bullet_origin(glm::vec3(0.0f, 0.0f, 0.0f)),
       movement_pattern(BulletPattern::empty()),
       bullet_shooter(BulletType::NONE) {
-  Object::setStatus(false);
+  GameObject::setStatus(false);
 }
 
 void Bullet::deactivate() {
-  Object::setStatus(false);
+  GameObject::setStatus(false);
   bullet_origin = glm::vec3(0.0f, 0.0f, 0.0f);
   movement_pattern = BulletPattern::empty();
   bullet_shooter = BulletType::NONE;
@@ -34,7 +34,7 @@ void Bullet::activate(
   setReleaseFunction(releaseFunc);
   hitDetectFunction = hitDetectFunc;
   hitEventFunction = hitEventFunc;
-  Object::setStatus(true);
+  GameObject::setStatus(true);
   setPosition(movement_pattern(bullet_origin, 0));
   
   // We should patch the code pattern like following:
@@ -46,14 +46,14 @@ void Bullet::activate(
 }
 
 void Bullet::update(float time) {
-  if (!Object::getStatus()) {
+  if (!GameObject::getStatus()) {
     return;
   }
-  Object::draw(time);
+  GameObject::draw(time);
 }
 
 void Bullet::fixedUpdate() {
-  if (!Object::getStatus()) {
+  if (!GameObject::getStatus()) {
     return;
   }
 

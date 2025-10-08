@@ -2,7 +2,7 @@
 
 namespace Player {
 Player::Player()
-    : Object::Object(
+    : GameObject::GameObject(
       Transform::createPlayer()
   )
       // playerHealth(GameConfig::PLAYER_LIFE), isShooting(false),

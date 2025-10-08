@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include "object.hpp"
+#include "gameobject.hpp"
 #include "objectpool.hpp"
 #include "bullet.hpp"
 #include "enemypatterns.hpp"
@@ -13,7 +13,7 @@
 extern GameState::GameState gameState;
 
 namespace Enemy {
-class Enemy : public Object::Object<glm::vec3, Shape::RGBColor> {
+class Enemy : public GameObject::GameObject<glm::vec3, Shape::RGBColor> {
 public:
   Enemy();
   void update(float time) override;

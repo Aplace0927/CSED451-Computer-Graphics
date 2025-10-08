@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "object.hpp"
+#include "gameobject.hpp"
 #include "gamestate.hpp"
 #include "digit.hpp"
 #include "utility.hpp"
@@ -11,7 +11,7 @@
 extern GameState::GameState gameState;
 
 namespace DialogueBox {
-class DialogueBox : public Object::Object<glm::vec3, Shape::RGBColor> {
+class DialogueBox : public GameObject::GameObject<glm::vec3, Shape::RGBColor> {
 public:
   DialogueBox();
   void update(float time) override;
