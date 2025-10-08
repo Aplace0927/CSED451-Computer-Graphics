@@ -39,7 +39,7 @@ void Bullet::activate(
   
   // We should patch the code pattern like following:
 
-  getSceneGraph()->transformMatrix = glm::translate(
+  getTransform()->transformMatrix = glm::translate(
       glm::identity<glm::mat4>(),
       bullet_origin
   );

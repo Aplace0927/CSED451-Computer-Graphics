@@ -33,21 +33,21 @@ public:
 
   void setPosition(const T &position) {
     // Move by the difference between current center and new position
-    getSceneGraph()->transformMatrix = glm::translate(getSceneGraph()->transformMatrix, glm::vec3(position - getCenter()));
+    getTransform()->transformMatrix = glm::translate(getTransform()->transformMatrix, glm::vec3(position - getCenter()));
     boundingBox = Transform->getBoundingBox(Utility::getCurrentTimeMS());
   }
 
   void move(const T &displacement) { 
-    getSceneGraph()->transformMatrix = glm::translate(getSceneGraph()->transformMatrix, glm::vec3(displacement));
+    getTransform()->transformMatrix = glm::translate(getTransform()->transformMatrix, glm::vec3(displacement));
     boundingBox = Transform->getBoundingBox(Utility::getCurrentTimeMS());
   }
 
   void rotate(const T &angles, const T &pivot) {
-    getSceneGraph()->transformMatrix = glm::translate(getSceneGraph()->transformMatrix, glm::vec3(pivot));
-    getSceneGraph()->transformMatrix = glm::rotate(getSceneGraph()->transformMatrix, glm::radians(angles.z), glm::vec3(0.0f, 0.0f, 1.0f));
-    getSceneGraph()->transformMatrix = glm::rotate(getSceneGraph()->transformMatrix, glm::radians(angles.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    getSceneGraph()->transformMatrix = glm::rotate(getSceneGraph()->transformMatrix, glm::radians(angles.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    getSceneGraph()->transformMatrix = glm::translate(getSceneGraph()->transformMatrix, glm::vec3(-pivot));
+    getTransform()->transformMatrix = glm::translate(getTransform()->transformMatrix, glm::vec3(pivot));
+    getTransform()->transformMatrix = glm::rotate(getTransform()->transformMatrix, glm::radians(angles.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    getTransform()->transformMatrix = glm::rotate(getTransform()->transformMatrix, glm::radians(angles.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    getTransform()->transformMatrix = glm::rotate(getTransform()->transformMatrix, glm::radians(angles.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    getTransform()->transformMatrix = glm::translate(getTransform()->transformMatrix, glm::vec3(-pivot));
     boundingBox = Transform->getBoundingBox(Utility::getCurrentTimeMS());
   }
 
@@ -81,7 +81,7 @@ public:
     }
   }
 
-  Transform::Transform<T, C>* getSceneGraph() const { return Transform; }
+  Transform::Transform<T, C>* getTransform() const { return Transform; }
 
   BoundingBox::BoundingBox<T> getBoundingBox() const { return boundingBox; }
 
