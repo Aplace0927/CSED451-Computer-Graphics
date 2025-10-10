@@ -16,6 +16,7 @@
 #include "singleton.hpp"
 #include "objectpool.hpp"
 #include "gamestate.hpp"
+#include "config.hpp"
 
 extern GameState::GameState gameState;
 
@@ -28,12 +29,12 @@ public:
   void keyUpEvent(unsigned char key, int x, int y);
 
 private:
-  Player::Player player;
+  Player::Player *player;
   glm::vec3 playerMoveVec;
 
-  Enemy::Enemy enemy;
+  std::vector<Enemy::Enemy *> enemys;
   DialogueBox::DialogueBox dialogueBox;
 };
-}; // namespace Game
+} // namespace Game
 
 #endif // GAME_HPP

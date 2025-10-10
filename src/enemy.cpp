@@ -1,7 +1,7 @@
 #include "enemy.hpp"
 
 namespace Enemy {
-Enemy::Enemy()
+Enemy::Enemy(glm::vec3 origin, float speed)
     : Object::Object(
       Transform::createEnemy()
     ),
@@ -13,12 +13,14 @@ Enemy::Enemy()
       //     GameConfig::ENEMY_GAUGE_WIDTH, GameConfig::ENEMY_GAUGE_HEIGHT,
       //     enemyHealth)
           {
+  setPosition(origin);
   bullets = ObjectPool::ObjectPool<Bullet::EnemyBullet>();
   shootingPatterns = {new ShootingPattern::CirclePattern(200.0f, 12),
                       new ShootingPattern::SpiralPattern(200.0f, 20.0f),
                       new ShootingPattern::RandomBurstPattern(250.0f, 5)};
   shootingPattern = chooseShootingPattern();
-  movementPattern = new MovementPattern::FallingPattern(100.0f);
+  movementPatterns = {new MovementPattern::HorizonPattern(speed),
+                      new MovementPattern::FallingPattern(5.0f)};
 }
 
 void Enemy::update(float time) {
@@ -43,9 +45,12 @@ void Enemy::fixedUpdate() {
 }
 
 void Enemy::updateMovementPattern() {
-  if (!movementPattern)
-    return;
-  setPosition(movementPattern->move(getCenter(), GameConfig::FIXED_DELTATIME));
+  for (auto movementPattern : movementPatterns) {
+    if (!movementPattern)
+      return;
+    setPosition(
+        movementPattern->move(getCenter(), GameConfig::FIXED_DELTATIME));
+  }
 }
 
 void Enemy::updateShootingPattern() {

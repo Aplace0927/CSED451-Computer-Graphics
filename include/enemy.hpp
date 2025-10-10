@@ -15,7 +15,7 @@ extern GameState::GameState gameState;
 namespace Enemy {
 class Enemy : public Object::Object<glm::vec3, Shape::RGBColor> {
 public:
-  Enemy();
+  Enemy(glm::vec3 origin, float speed);
   void update(float time) override;
   void fixedUpdate() override;
   void setBulletHitDetectFunction(
@@ -33,19 +33,17 @@ public:
         return;
       }
       enemyHealth = glm::max(0, enemyHealth - 1);
-      
+
       // Update health bar
-      getTransform()->getNthChild(0)->changeShape(
-        HealthBar::generateHealthBar(
+      getTransform()->getNthChild(0)->changeShape(HealthBar::generateHealthBar(
           glm::vec3(-30.0f, 60.0f, 0.0f), // digit position
-          10.0f, // digit size
+          10.0f,                          // digit size
           glm::vec3(-40.0f, 40.0f, 0.0f), // gauge position
-          80.0f, // gauge width
-          10.0f, // gauge height
+          80.0f,                          // gauge width
+          10.0f,                          // gauge height
           enemyHealth,
           GameConfig::ENEMY_LIFE // max health
-        )
-      );
+          ));
       if (enemyHealth == 0) {
         gameState = GameState::GameState::WIN;
       }
@@ -55,13 +53,11 @@ public:
 private:
   int enemyHealth;
   ObjectPool::ObjectPool<Bullet::EnemyBullet> bullets;
-  //HealthBar::HealthBar healthBar;
+  // HealthBar::HealthBar healthBar;
 
-  MovementPattern::MovementPattern *movementPattern;
   ShootingPattern::ShootingPattern *shootingPattern;
+  std::vector<MovementPattern::MovementPattern *> movementPatterns;
   std::vector<ShootingPattern::ShootingPattern *> shootingPatterns;
-  time_t movingCooldown;
-  time_t shootingCooldown;
 
   std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
       bulletHitDetectFunction;
@@ -72,5 +68,5 @@ private:
   ShootingPattern::ShootingPattern *chooseShootingPattern();
   void shooting();
 };
-}; // namespace Enemy
+} // namespace Enemy
 #endif // ENEMY_HPP
