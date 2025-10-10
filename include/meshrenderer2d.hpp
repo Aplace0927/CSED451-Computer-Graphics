@@ -5,8 +5,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "component.hpp"
-#include "transform.hpp"
 #include "boundingbox2d.hpp"
 #include "mesh2d.hpp"
 
@@ -17,16 +15,26 @@ private:
   Data::BoundingBox2D *boundingbox;
 
 public:
-  explicit MeshRenderer2D(GameObject::GameObject *owner,
-                        Data::Mesh2D *mesh)
+  explicit MeshRenderer2D(GameObject::GameObject *owner, Data::Mesh2D *mesh)
       : Component(owner), mesh(mesh) {
     if (!mesh)
       throw std::runtime_error("Rederer2D's Mesh object is null");
-    // TODO: make a boundingbox
+
+    boundingbox = new Data::BoundingBox2D();
+    for (const auto &vertice : mesh->getVectices()) {
+      boundingbox->expand(vertice.position)
+    }
   }
 
+  Data::Mesh2D *getMesh() { return mesh; }
+  Data::BoundingBox2D *getBoundingbox() { return boundingbox; }
+
+private:
   void renderUpdate() override {
-    //TODO: check collision Rederer boundingbox and Camera boundingbox -> optim
+    boundingbox->updateWorld(transform->getWorldMatrix());
+
+    // TODO: check collision Rederer boundingbox and Camera boundingbox -> optim
+
     mesh->draw();
   }
 };
