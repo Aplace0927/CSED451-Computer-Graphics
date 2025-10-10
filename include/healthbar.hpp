@@ -4,14 +4,11 @@
 #include "object.hpp"
 #include "digit.hpp"
 #include "shape.hpp"
+#include "config.hpp"
 
 namespace HealthBar {
-class HealthBar : public Object::Object<glm::vec3, Shape::RGBColor> {
+class HealthBar : public Shape::Shape<glm::vec3, glm::vec3> {
 public:
-  void update(float time) override;
-  void fixedUpdate() override;
-
-  HealthBar();
   HealthBar(const glm::vec3 &digit_position, const float digit_size,
             const glm::vec3 &gauge_position, const float gauge_width,
             const float gauge_height, int maxHealth);
@@ -29,6 +26,16 @@ private:
   float gauge_w;
   float gauge_h;
 };
+
+HealthBar generateHealthBar(
+  const glm::vec3 &digit_position,
+  const float digit_size,
+  const glm::vec3 &gauge_position,
+  const float gauge_width,
+  const float gauge_height,
+  int currentHealth,
+  int maxHealth
+);
 
 std::vector<glm::vec3> createHealthBarShape(glm::vec3 topleft,
                                             glm::vec3 bottomright, float gauge);

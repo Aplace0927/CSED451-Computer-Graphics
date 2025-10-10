@@ -7,7 +7,7 @@
 #include "objectpool.hpp"
 #include "bullet.hpp"
 #include "enemypatterns.hpp"
-//#include "healthbar.hpp"
+#include "healthbar.hpp"
 #include "gamestate.hpp"
 
 extern GameState::GameState gameState;
@@ -33,7 +33,19 @@ public:
         return;
       }
       enemyHealth = glm::max(0, enemyHealth - 1);
-      //healthBar.setCurrentHealth(enemyHealth);
+      
+      // Update health bar
+      getTransform()->getNthChild(0)->changeShape(
+        HealthBar::generateHealthBar(
+          glm::vec3(-30.0f, 60.0f, 0.0f), // digit position
+          10.0f, // digit size
+          glm::vec3(-40.0f, 40.0f, 0.0f), // gauge position
+          80.0f, // gauge width
+          10.0f, // gauge height
+          enemyHealth,
+          GameConfig::ENEMY_LIFE // max health
+        )
+      );
       if (enemyHealth == 0) {
         gameState = GameState::GameState::WIN;
       }

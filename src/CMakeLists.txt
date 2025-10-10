@@ -12,7 +12,7 @@ add_executable(
 	"objectpool.cpp"
 	"enemypatterns.cpp"
 	"digit.cpp"
-	#"healthbar.cpp"
+	"healthbar.cpp"
 	"transform.cpp"
 	"dialoguebox.cpp"
 )
