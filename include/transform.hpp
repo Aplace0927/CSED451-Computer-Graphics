@@ -13,7 +13,7 @@ namespace Transform {
     template <typename T, typename C>
     class Transform {
         public:
-            Transform(Shape::Shape<T, C> shape) : shape(shape), transformAnimateMatrix([](time_t) { return glm::mat4(1.0f); }), transformMatrix(glm::mat4(1.0f)) {}
+            Transform(Shape::Shape<T, C> shape) : shape(shape), transformAnimateMatrix([](time_t) { return glm::mat4(1.0f); }), transformMatrix(glm::mat4(1.0f)), hasBoundingBox(true) {}
             ~Transform<T, C>() {
                 for (Transform<T, C>* child : children) {
                     delete child;
@@ -104,9 +104,11 @@ namespace Transform {
              * @brief Get the bounding box of the shape. Recursively merges the bounding boxes of child Transform nodes.
              * Since the transformation matrix is time-dependent (for animation), the matrix is applied to the bounding box as well.
              */
+            bool hasBoundingBox;
             BoundingBox::BoundingBox<T> getBoundingBox(time_t time) const {
                 BoundingBox::BoundingBox<T> bbox = shape.getBoundingBox();
                 for(Transform<T, C>* child : children) {
+                    if (!child->hasBoundingBox) continue;
                     bbox = bbox | child->getBoundingBox(time);
                 }
 
