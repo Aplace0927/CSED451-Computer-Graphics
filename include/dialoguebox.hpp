@@ -8,7 +8,7 @@
 #include "digit.hpp"
 #include "utility.hpp"
 
-extern GameState::GameState gameState;
+extern GameState::GameStateHolder gameState;
 
 namespace DialogueBox {
 class DialogueBox : public Object::Object<glm::vec3, Shape::RGBColor> {

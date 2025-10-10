@@ -18,7 +18,7 @@
 #include "gamestate.hpp"
 #include "config.hpp"
 
-extern GameState::GameState gameState;
+extern GameState::GameStateHolder gameState;
 
 namespace Game {
 class Game : public Singleton::Singleton<Game> {

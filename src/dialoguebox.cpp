@@ -8,10 +8,10 @@ DialogueBox::DialogueBox()
 }
 
 void DialogueBox::update(float time) {
-  if (gameState == GameState::GameState::WIN) {
+  if (gameState.currentState == GameState::GameState::WIN) {
     setStatus(true);
     getTransform()->changeShape(getWinVertices());
-  } else if (gameState == GameState::GameState::LOSE) {
+  } else if (gameState.currentState == GameState::GameState::LOSE) {
     setStatus(true);
     getTransform()->changeShape(getLoseVertices());
   }

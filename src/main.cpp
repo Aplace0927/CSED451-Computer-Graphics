@@ -11,7 +11,7 @@
 #include "graphicsmanager.hpp"
 
 Game::Game game;
-GameState::GameState gameState;
+GameState::GameStateHolder gameState = {GameState::PLAYING, GameConfig::INITIAL_ENEMY_COUNT};
 
 int main(int argc, char **argv) {
   glutInit(&argc, argv);

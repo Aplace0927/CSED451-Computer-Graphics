@@ -28,6 +28,7 @@ inline constexpr float FONT_DIGIT_SIZE = 2.0f;
 inline constexpr float BIG_FONT_SIZE = 8.0f;
 inline constexpr float DIGIT_SPACING = FONT_DIGIT_SIZE * 6;
 
+inline constexpr unsigned int INITIAL_ENEMY_COUNT = 2;
 inline constexpr int ENEMY_LIFE = 100;
 inline constexpr float ENEMY_DIGIT_X = -WINDOW_WIDTH * 0.45f;
 inline constexpr float ENEMY_DIGIT_Y = WINDOW_HEIGHT * 0.45f;
