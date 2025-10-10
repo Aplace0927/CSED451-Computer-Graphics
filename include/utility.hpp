@@ -26,5 +26,30 @@ inline time_t getCurrentTimeMS() {
              std::chrono::system_clock::now().time_since_epoch())
       .count();
 }
+
+template <typename T>
+inline T getPhaseGenerator(double period, double phaseDeg = 0.0) {
+  return static_cast<T>(
+      fmod(
+          static_cast<double>(
+              getCurrentTimeMS()
+          ) * period + phaseDeg,
+          360.0
+      )
+  );
+}
+
+template <typename T>
+inline T getPhaseOscillator(double minDeg, double maxDeg, double period) {
+  return static_cast<T>(
+      fmod(maxDeg - minDeg, 360.0) / 2.0 * cos(
+          glm::radians(
+              static_cast<double>(
+                  getCurrentTimeMS()
+              ) * period
+          )
+      ) + (maxDeg - minDeg)
+  );
+}
 }; // namespace Utility
 #endif // UTILITY_HPP
