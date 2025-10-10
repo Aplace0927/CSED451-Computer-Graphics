@@ -37,6 +37,7 @@ inline constexpr float ENEMY_GAUGE_WIDTH = WINDOW_WIDTH * 0.8f;
 inline constexpr float ENEMY_GAUGE_HEIGHT = FONT_DIGIT_SIZE * 4;
 inline constexpr float ENEMY_BULLET_COLOR[3] = {
     (float)0xFF / 0xFF, (float)0xC6 / 0xFF, (float)0x39 / 0xFF};
+inline constexpr float ENEMY_FALLPATTERN_FALL_LIMIT = -WINDOW_HEIGHT * 0.2f;
 
 inline constexpr int PLAYER_LIFE = 10;
 inline constexpr float PLAYER_DIGIT_X = -WINDOW_WIDTH * 0.45f;

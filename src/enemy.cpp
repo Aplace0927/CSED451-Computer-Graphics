@@ -18,7 +18,7 @@ Enemy::Enemy()
                       new ShootingPattern::SpiralPattern(200.0f, 20.0f),
                       new ShootingPattern::RandomBurstPattern(250.0f, 5)};
   shootingPattern = chooseShootingPattern();
-  movementPattern = new MovementPattern::HorizonPattern(100.0f);
+  movementPattern = new MovementPattern::FallingPattern(100.0f);
 }
 
 void Enemy::update(float time) {

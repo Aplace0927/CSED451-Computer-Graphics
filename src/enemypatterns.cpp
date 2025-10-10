@@ -9,6 +9,18 @@ glm::vec3 HorizonPattern::move(glm::vec3 origin, float time) {
     direction.x = -direction.x;
   return origin + Utility::getNormalizedDirection(direction, time * speed);
 }
+
+FallingPattern::FallingPattern(float s) { speed = s; }
+glm::vec3 FallingPattern::move(glm::vec3 origin, float time) {
+  direction.x = 0.0f;
+  if (origin.y > GameConfig::ENEMY_FALLPATTERN_FALL_LIMIT) {
+    direction.y = -1.0f;
+  }
+  else {
+    direction.y = 0.0f;
+  }
+  return origin + Utility::getNormalizedDirection(direction, time * speed);
+}
 } // namespace MovementPattern
 
 namespace ShootingPattern {

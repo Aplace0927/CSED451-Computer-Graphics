@@ -25,6 +25,12 @@ public:
   HorizonPattern(float s);
   glm::vec3 move(glm::vec3 origin, float time) override;
 };
+
+class FallingPattern : public MovementPattern {
+public:
+  FallingPattern(float s);
+  glm::vec3 move(glm::vec3 origin, float time) override;
+};
 } // namespace MovementPattern
 
 namespace ShootingPattern {
