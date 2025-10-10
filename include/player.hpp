@@ -43,6 +43,11 @@ public:
           0.5f, 10.0f, 20.0f);
       playerHealth = glm::max(0, playerHealth - 1);
       //healthBar.setCurrentHealth(playerHealth);
+
+      auto playerOrbit = getTransform()->getNthChild(0);
+      auto playerHealthGem = playerOrbit->getNthChild(0);
+      playerOrbit->removeChild(playerHealthGem);
+
       if (playerHealth == 0) {
         gameState = GameState::GameState::LOSE;
       } else {

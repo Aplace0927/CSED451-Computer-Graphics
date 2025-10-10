@@ -48,6 +48,8 @@ inline constexpr float PLAYER_GAUGE_HEIGHT = FONT_DIGIT_SIZE * 4;
 inline constexpr float PLAYER_BULLET_COLOR[3] = {
     (float)0x50 / 0xFF, (float)0xD0 / 0xFF, (float)0xD0 / 0xFF};
 
+inline constexpr float PLAYER_HEALTH_ORBIT_ROTATION_SPEED = 0.1f;
+
 inline constexpr float GAUGE_FULL_COLOR[3] = {0.0f, 1.0f, 0.0f};
 inline constexpr float GAUGE_EMPTY_COLOR[3] = {1.0f, 0.0f, 0.0f};
 

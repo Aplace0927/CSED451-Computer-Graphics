@@ -87,7 +87,6 @@ public:
 
   virtual void update(float time);
   virtual void fixedUpdate();
-
 private:
   bool active;
   Transform::Transform<T, C>* Transform;
