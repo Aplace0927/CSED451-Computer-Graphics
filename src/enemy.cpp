@@ -24,7 +24,7 @@ Enemy::Enemy(glm::vec3 origin, float speed)
 }
 
 void Enemy::update(float time) {
-  if (gameState == GameState::GameState::WIN) {
+  if (gameState.currentState == GameState::GameState::WIN) {
     this->setStatus(false);
     //healthBar.setStatus(false);
     return;
@@ -84,7 +84,8 @@ void Enemy::shooting() {
     newBullet->activate(
         getCenter(), func, Bullet::BulletType::ENEMY,
         [this, newBullet]() { this->bullets.release(newBullet); },
-        bulletHitDetectFunction, bulletHitEventFunction);
+        hitEventHandlers
+    );
   }
 }
 } // namespace Enemy

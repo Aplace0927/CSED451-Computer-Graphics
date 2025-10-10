@@ -10,7 +10,7 @@
 #include "healthbar.hpp"
 #include "gamestate.hpp"
 
-extern GameState::GameState gameState;
+extern GameState::GameStateHolder gameState;
 
 namespace Enemy {
 class Enemy : public Object::Object<glm::vec3, Shape::RGBColor> {
@@ -18,21 +18,21 @@ public:
   Enemy(glm::vec3 origin, float speed);
   void update(float time) override;
   void fixedUpdate() override;
-  void setBulletHitDetectFunction(
-      const std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
-          &func) {
-    bulletHitDetectFunction = func;
-  }
-  void setBulletHitEventFunction(const std::function<void()> &func) {
-    bulletHitEventFunction = func;
+
+  void addBulletEventHandler(
+      const std::pair<
+        std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>,
+        std::function<void()>
+      > &func) {
+    hitEventHandlers.push_back(func);
   }
 
   std::function<void()> getBulletHitDetectHandlerFunction() {
     return [this]() {
-      if (!this->getStatus() || gameState != GameState::GameState::PLAYING) {
+      if (!this->getStatus() || gameState.currentState != GameState::GameState::PLAYING) {
         return;
       }
-      enemyHealth = glm::max(0, enemyHealth - 1);
+      this->enemyHealth = glm::max(0, this->enemyHealth - 1);
 
       // Update health bar
       getTransform()->getNthChild(0)->changeShape(HealthBar::generateHealthBar(
@@ -41,11 +41,14 @@ public:
           glm::vec3(-40.0f, 40.0f, 0.0f), // gauge position
           80.0f,                          // gauge width
           10.0f,                          // gauge height
-          enemyHealth,
+          this->enemyHealth,
           GameConfig::ENEMY_LIFE // max health
           ));
-      if (enemyHealth == 0) {
-        gameState = GameState::GameState::WIN;
+      if (this->enemyHealth == 0) {
+        this->setStatus(false);
+        if (--gameState.enemyLeft == 0) {
+          gameState.currentState = GameState::GameState::WIN;
+        }
       }
     };
   }
@@ -59,9 +62,10 @@ private:
   std::vector<MovementPattern::MovementPattern *> movementPatterns;
   std::vector<ShootingPattern::ShootingPattern *> shootingPatterns;
 
-  std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
-      bulletHitDetectFunction;
-  std::function<void()> bulletHitEventFunction;
+  std::vector<std::pair<
+    std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>,
+    std::function<void()>
+  >> hitEventHandlers;
 
   void updateMovementPattern();
   void updateShootingPattern();

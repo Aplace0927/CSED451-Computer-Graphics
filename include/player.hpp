@@ -9,7 +9,7 @@
 #include "graphicsmanager.hpp"
 #include "gamestate.hpp"
 
-extern GameState::GameState gameState;
+extern GameState::GameStateHolder gameState;
 
 namespace Player {
 class Player : public Object::Object<glm::vec3, Shape::RGBColor> {
@@ -25,18 +25,17 @@ public:
     }
   }
 
-  void setBulletHitDetectFunction(
-      const std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
-          &func) {
-    bulletHitDetectFunction = func;
-  }
-  void setBulletHitEventFunction(const std::function<void()> &func) {
-    bulletHitEventFunction = func;
+  void addBulletHitEventHandler(
+      const std::pair<
+        std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>,
+        std::function<void()>
+      > &func) {
+    hitEventHandlers.push_back(func);
   }
 
   std::function<void()> getBulletHitDetectHandlerFunction() {
     return [this]() {
-      if (!this->getStatus() || gameState != GameState::GameState::PLAYING) {
+      if (!this->getStatus() || gameState.currentState != GameState::GameState::PLAYING) {
         return;
       }
       GraphicsManager::GraphicsManager::getInstance().startCameraShake(
@@ -49,7 +48,7 @@ public:
       playerOrbit->removeChild(playerHealthGem);
 
       if (playerHealth == 0) {
-        gameState = GameState::GameState::LOSE;
+        gameState.currentState = GameState::GameState::LOSE;
       } else {
         reviveCooldown = 0;
         this->setStatus(false);
@@ -67,9 +66,10 @@ private:
 
   //HealthBar::HealthBar healthBar;
   ObjectPool::ObjectPool<Bullet::PlayerBullet> bullets;
-  std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
-      bulletHitDetectFunction;
-  std::function<void()> bulletHitEventFunction;
+  std::vector<std::pair<
+    std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>,
+    std::function<void()>
+  >> hitEventHandlers;
 };
 }; // namespace Player
 #endif // PLAYER_HPP

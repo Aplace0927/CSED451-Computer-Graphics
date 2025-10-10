@@ -18,22 +18,21 @@ void Bullet::deactivate() {
   movement_pattern = BulletPattern::empty();
   bullet_shooter = BulletType::NONE;
   setReleaseFunction(nullptr);
-  hitDetectFunction = nullptr;
-  hitEventFunction = nullptr;
+  hitEventHandlers = {};
 }
 
 void Bullet::activate(
     glm::vec3 origin, std::function<glm::vec3(glm::vec3, float)> pattern,
     BulletType shooter, std::function<void()> releaseFunc,
-    std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
-        hitDetectFunc,
-    std::function<void()> hitEventFunc) {
+    std::vector<std::pair<
+        std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>,
+        std::function<void()>
+    > > hitEventHandlerVec) {
   bullet_origin = origin;
   movement_pattern = pattern;
   bullet_shooter = shooter;
   setReleaseFunction(releaseFunc);
-  hitDetectFunction = hitDetectFunc;
-  hitEventFunction = hitEventFunc;
+  hitEventHandlers = hitEventHandlerVec;
   Object::setStatus(true);
   setPosition(movement_pattern(bullet_origin, 0));
   
@@ -64,9 +63,12 @@ void Bullet::fixedUpdate() {
     return;
   }
 
-  if (hitDetectFunction(getBoundingBox())) {
-    hitEventFunction();
-    callReleaseFunction();
+  for (const auto &handlerPair : hitEventHandlers) {
+    if (handlerPair.first(getBoundingBox())) {
+      handlerPair.second();
+      callReleaseFunction();
+      return;
+    }
   }
 }
 

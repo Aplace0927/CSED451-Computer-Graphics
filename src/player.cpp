@@ -22,7 +22,7 @@ Player::Player()
 }
 
 void Player::update(float time) {
-  if (gameState == GameState::GameState::LOSE) {
+  if (gameState.currentState == GameState::GameState::LOSE) {
     this->setStatus(false);
     //healthBar.setStatus(false);
     return;
@@ -43,7 +43,8 @@ void Player::update(float time) {
         BulletPattern::straight(glm::vec3(0, 1.0f, 0), 400.0f),
         Bullet::BulletType::PLAYER,
         [this, newBullet]() { this->bullets.release(newBullet); },
-        bulletHitDetectFunction, bulletHitEventFunction);
+        hitEventHandlers
+    );
     shootingCooldown = 0;
   }
 

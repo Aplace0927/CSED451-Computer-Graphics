@@ -4,21 +4,22 @@ Game::Game::Game() {
   player = new Player::Player();
   enemys = {
       new Enemy::Enemy(glm::vec3(0.0f, GameConfig::POSITION_UPPER_LIMIT, 0.0f), 100.0f),
-      new Enemy::Enemy(glm::vec3(0.0f, GameConfig::POSITION_UPPER_LIMIT, 0.0f), -100.0f)};
+      new Enemy::Enemy(glm::vec3(0.0f, GameConfig::POSITION_UPPER_LIMIT, 0.0f), -100.0f)
+  };
+
   playerMoveVec = glm::vec3(0.0f, 0.0f, 0.0f);
-  gameState = GameState::PLAYING;
+  gameState = {GameState::PLAYING, GameConfig::INITIAL_ENEMY_COUNT};
   dialogueBox = DialogueBox::DialogueBox();
 
   for (auto enemy : enemys) {
-    player->setBulletHitDetectFunction(
-        enemy->getBoundingBoxCollisionFunction());
-    player->setBulletHitEventFunction(
-        enemy->getBulletHitDetectHandlerFunction());
-
-    enemy->setBulletHitDetectFunction(
-        player->getBoundingBoxCollisionFunction());
-    enemy->setBulletHitEventFunction(
-        player->getBulletHitDetectHandlerFunction());
+    player->addBulletHitEventHandler({
+        enemy->getBoundingBoxCollisionFunction(),
+        enemy->getBulletHitDetectHandlerFunction()
+    });
+    enemy->addBulletEventHandler({
+        player->getBoundingBoxCollisionFunction(),
+        player->getBulletHitDetectHandlerFunction()
+    });
   }
 }
 
