@@ -15,9 +15,9 @@ Enemy::Enemy(glm::vec3 origin, float speed)
           {
   setPosition(origin);
   bullets = ObjectPool::ObjectPool<Bullet::EnemyBullet>();
-  shootingPatterns = {new ShootingPattern::CirclePattern(200.0f, 12),
-                      new ShootingPattern::SpiralPattern(200.0f, 20.0f),
-                      new ShootingPattern::RandomBurstPattern(250.0f, 5)};
+  shootingPatterns = {new ShootingPattern::CirclePattern(150.0f, 12),
+                      new ShootingPattern::SpiralPattern(150.0f, 5.0f),
+                      new ShootingPattern::RandomBurstPattern(200.0f, 5)};
   shootingPattern = chooseShootingPattern();
   movementPatterns = {new MovementPattern::HorizonPattern(speed),
                       new MovementPattern::FallingPattern(5.0f)};
@@ -64,6 +64,7 @@ void Enemy::updateShootingPattern() {
     shootingPattern->timeSinceLastFire += GameConfig::FIXED_DELTATIME;
     if (shootingPattern->timeSinceLastFire > shootingPattern->cooldown) {
       shooting();
+      shootingPattern->timeSinceLastFire = 0;
       shootingPattern->fireCount--;
     }
   }

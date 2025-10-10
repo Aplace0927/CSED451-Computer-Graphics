@@ -38,12 +38,12 @@ class ShootingPattern {
 public:
   int fireCount = 10;
   int maxFireCount = 10;
-  float cooldown = 0.2;
+  float cooldown = 0.1f;
   float timeSinceLastFire = 0.0f;
   float speed = 1.0f;
   void Init() {
     fireCount = maxFireCount;
-    timeSinceLastFire = cooldown;
+    timeSinceLastFire = 0;
   }
   virtual ~ShootingPattern() = default;
   virtual std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() = 0;

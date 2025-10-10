@@ -36,7 +36,7 @@ std::vector<std::function<glm::vec3(glm::vec3, float)>> CirclePattern::fire() {
   for (int i = 0; i < numBullets; i++) {
     angle += angleStep;
     glm::vec3 dir(cos(angle), sin(angle), 0.0f);
-    actions.push_back(BulletPattern::straight(dir, this->speed));
+    actions.push_back(BulletPattern::straight(dir, speed));
   }
 
   return actions;
@@ -44,15 +44,21 @@ std::vector<std::function<glm::vec3(glm::vec3, float)>> CirclePattern::fire() {
 
 // ===================== SpiralPattern =====================
 SpiralPattern::SpiralPattern(float s, float step)
-    : angle(-90.0f), angleStep(step) {
+    : angle(0), angleStep(step) {
   speed = s;
 }
 
 std::vector<std::function<glm::vec3(glm::vec3, float)>> SpiralPattern::fire() {
   std::vector<std::function<glm::vec3(glm::vec3, float)>> actions;
 
-  glm::vec3 dir(cos(angle), sin(angle), 0.0f);
-  actions.push_back(BulletPattern::straight(dir, speed));
+  actions.push_back(
+      BulletPattern::straight(glm::vec3(cos(angle), sin(angle), 0.0f), speed));
+  actions.push_back(BulletPattern::straight(
+      glm::vec3(cos(angle + 90), sin(angle + 90), 0.0f), speed));
+  actions.push_back(BulletPattern::straight(
+      glm::vec3(cos(angle + 180), sin(angle + 180), 0.0f), speed));
+  actions.push_back(BulletPattern::straight(
+      glm::vec3(cos(angle + 270), sin(angle + 270), 0.0f), speed));
 
   angle += angleStep;
   return actions;
