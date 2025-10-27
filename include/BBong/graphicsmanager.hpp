@@ -10,14 +10,15 @@
 #include <GL/freeglut.h>
 #include <chrono>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
-#include "singleton.hpp"
+#include "BBong/singleton.hpp"
 #include "config.hpp"
 
-namespace EngineManager {
+namespace BBong {
 typedef std::function<void()> GraphicsManagerFunc;
 
-class GraphicsManager : public Singleton::Singleton<GraphicsManager> {
+class GraphicsManager : public Singleton<GraphicsManager> {
 private:
   std::chrono::high_resolution_clock::time_point lastFrame;
   GraphicsManager(const GraphicsManager &) = delete;
@@ -45,6 +46,6 @@ public:
   void reshape(int width, int height);
   void update();
 };
-} // namespace GraphicsManager
+} // namespace BBong
 
 #endif // GRAPHICSMANAGER_HPP

@@ -1,7 +1,7 @@
 #ifndef GAMESTATE_HPP
 #define GAMESTATE_HPP
 
-namespace GameState {
+namespace BBong {
 enum GameState { PLAYING, WIN, LOSE };
 }
 

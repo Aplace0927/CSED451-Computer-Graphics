@@ -1,6 +1,6 @@
 #include "enemypatterns.hpp"
 
-namespace MovementPattern {
+namespace BBong {
 HorizonPattern::HorizonPattern(float s) { speed = s; }
 
 glm::vec3 HorizonPattern::move(glm::vec3 origin, float time) {
@@ -11,7 +11,7 @@ glm::vec3 HorizonPattern::move(glm::vec3 origin, float time) {
 }
 } // namespace MovementPattern
 
-namespace ShootingPattern {
+namespace BBong {
 // ===================== CirclePattern =====================
 CirclePattern::CirclePattern(float s, int num) : numBullets(num) { speed = s; }
 
@@ -24,7 +24,7 @@ std::vector<std::function<glm::vec3(glm::vec3, float)>> CirclePattern::fire() {
   for (int i = 0; i < numBullets; i++) {
     angle += angleStep;
     glm::vec3 dir(cos(angle), sin(angle), 0.0f);
-    actions.push_back(BulletPattern::straight(dir, this->speed));
+    actions.push_back(straight(dir, this->speed));
   }
 
   return actions;
@@ -40,7 +40,7 @@ std::vector<std::function<glm::vec3(glm::vec3, float)>> SpiralPattern::fire() {
   std::vector<std::function<glm::vec3(glm::vec3, float)>> actions;
 
   glm::vec3 dir(cos(angle), sin(angle), 0.0f);
-  actions.push_back(BulletPattern::straight(dir, speed));
+  actions.push_back(straight(dir, speed));
 
   angle += angleStep;
   return actions;
@@ -60,7 +60,7 @@ RandomBurstPattern::fire() {
   for (int i = 0; i < count; i++) {
     float angle = dist(rng);
     glm::vec3 dir(cos(angle), sin(angle), 0.0f);
-    actions.push_back(BulletPattern::straight(dir, speed));
+    actions.push_back(straight(dir, speed));
   }
 
   return actions;

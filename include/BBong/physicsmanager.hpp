@@ -9,12 +9,11 @@
 #include <chrono>
 #include <mutex>
 
-#include "singleton.hpp"
+#include "BBong/singleton.hpp"
 #include "config.hpp"
 
-namespace EngineManager {
-class PhysicsManager : public Singleton::Singleton<PhysicsManager> {
-
+namespace BBong {
+class PhysicsManager : public Singleton<PhysicsManager> {
 public:
   PhysicsManager();
   ~PhysicsManager();
@@ -37,7 +36,6 @@ private:
   void stop();
   void fixedUpdate();
 };
-
-} // namespace PhysicsManager
+}; // namespace EngineManager
 
 #endif // PHYSICSMANAGER_HPP

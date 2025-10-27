@@ -1,6 +1,6 @@
-#include "graphicsmanager.hpp"
+#include "BBong/graphicsmanager.hpp"
 
-namespace EngineManager {
+namespace BBong {
 std::shared_ptr<GraphicsManagerFunc>
 GraphicsManager::registerHandler(GraphicsManagerFunc func) {
   std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
@@ -35,7 +35,7 @@ void GraphicsManager::update() {
     if (handler == nullptr) {
       continue;
     }
-    (*handler)(deltaTime);
+    (*handler)();
   }
 
   if (shaking) {

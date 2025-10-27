@@ -1,22 +1,31 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include "BBong/objectpool.hpp"
+#include "BBong/graphicsmanager.hpp"
+#include "BBong/gameobject.hpp"
+#include "BBong/renderer2d.hpp"
+#include "BBong/collider2d.hpp"
+#include "BBong/component.hpp"
 #include "config.hpp"
-#include "objectpool.hpp"
 #include "bullet.hpp"
-//#include "healthbar.hpp"
-#include "graphicsmanager.hpp"
 #include "gamestate.hpp"
-#include "gameobject.hpp"
 
-extern GameState::GameState gameState;
+extern BBong::GameState gameState;
 
-namespace Player {
-class Player : public GameObject::GameObject<glm::vec3, Shape::RGBColor> {
+namespace BBong {
+class Player : public ClonableComponent<Player> {
 public:
-  Player();
-  void update(float time) override;
-  void fixedUpdate() override;
+  explicit Player(GameObject *owner)
+      : ClonableComponent(owner) {
+    addComponent<MeshRenderer2D>();
+    //addComponent<BoxCollider2D>();
+    //GameObject *bulletPrefab = Game::getInstance().mainScene->createGameObject();
+    //bulletPrefab->addComponent<PlayerBullet>();
+  };
+
+  //void update() override;
+  //void fixedUpdate() override;
   void setDirection(const glm::vec3 &input) { direction = input; }
   void shooting(bool shooting) {
     isShooting = shooting;
@@ -25,46 +34,13 @@ public:
     }
   }
 
-  void setBulletHitDetectFunction(
-      const std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
-          &func) {
-    bulletHitDetectFunction = func;
-  }
-  void setBulletHitEventFunction(const std::function<void()> &func) {
-    bulletHitEventFunction = func;
-  }
-
-  std::function<void()> getBulletHitDetectHandlerFunction() {
-    return [this]() {
-      if (!this->getStatus() || gameState != GameState::GameState::PLAYING) {
-        return;
-      }
-      GraphicsManager::GraphicsManager::getInstance().startCameraShake(
-          0.5f, 10.0f, 20.0f);
-      playerHealth = glm::max(0, playerHealth - 1);
-      //healthBar.setCurrentHealth(playerHealth);
-      if (playerHealth == 0) {
-        gameState = GameState::GameState::LOSE;
-      } else {
-        reviveCooldown = 0;
-        this->setStatus(false);
-      }
-    };
-  }
-
 private:
-  // Add player state variables here
-  int playerHealth;
-  glm::vec3 direction;
-  bool isShooting;
-  float shootingCooldown;
-  float reviveCooldown;
-
-  //HealthBar::HealthBar healthBar;
-  ObjectPool::ObjectPool<Bullet::PlayerBullet> bullets;
-  std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
-      bulletHitDetectFunction;
-  std::function<void()> bulletHitEventFunction;
+//  ObjectPool bullets;
+  glm::vec3 direction = glm::vec3(0.0f);
+  int playerHealth = 100;
+  float shootingCooldown = 0.0f;
+  float reviveCooldown = 0.0f;
+  bool isShooting = false;
 };
-}; // namespace Player
+} // namespace BBong
 #endif // PLAYER_HPP

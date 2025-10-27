@@ -4,18 +4,13 @@ add_executable(
 	"game.cpp"
 	"player.cpp"
 	"enemy.cpp"
-	"shape.cpp"
-	"bullet.cpp"
-	"singleton.cpp"
 	"physicsmanager.cpp"
  	"graphicsmanager.cpp"
-	"objectpool.cpp"
 	"enemypatterns.cpp"
-	"digit.cpp"
-	#"healthbar.cpp"
+	"healthbar.cpp"
 	"transform.cpp"
-	"dialoguebox.cpp"
-)
+	"component.cpp"
+ "input.cpp")
 if (UNIX AND NOT APPLE)
 	target_link_libraries(touhou_postech
 		GLUT glew OpenGL::GL glm glu
@@ -25,6 +20,9 @@ else()
 		GLUT glew OpenGL::GL glm
 	)
 endif()
+
+# Allow experimental GLM extensions used in the project
+target_compile_definitions(touhou_postech PRIVATE GLM_ENABLE_EXPERIMENTAL)
 
 if (DEFINED BOUNDING_BOX_DEBUG)
 	target_compile_definitions(touhou_postech PRIVATE BOUNDING_BOX_DEBUG)

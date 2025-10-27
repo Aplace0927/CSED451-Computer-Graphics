@@ -7,9 +7,10 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include "component.hpp"
+#include "BBong/component.hpp"
 
-namespace Component {
+namespace BBong {
+class GameObject;
 
 class Transform : public Component {
 public:
@@ -28,7 +29,12 @@ private:
   bool isWorldDirty;
 
 public:
-  explicit Transform(GameObject::GameObject *owner);
+  explicit Transform::Transform(GameObject *owner)
+      : Component(owner), position(0.0f),
+        rotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f)), scale(1.0f),
+        parent(nullptr), localTransformMatrix(1.0f), worldTransformMatrix(1.0f),
+        isLocalDirty(true), isWorldDirty(true) {};
+  virtual std::unique_ptr<Component> clone(GameObject *newOwner) const override;
 
   glm::mat4 getWorldMatrix();
   glm::mat4 getLocalMatrix();
@@ -53,7 +59,5 @@ private:
   void setLocalDirty();
   void setWorldDirty();
 };
-
-} // namespace Component
-
+} // namespace BBong
 #endif // TRANSFORM_HPP

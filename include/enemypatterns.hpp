@@ -7,9 +7,9 @@
 #include <cstdlib>
 #include <random>
 #include "bullet.hpp"
-#include "objectpool.hpp"
+#include "BBong/objectpool.hpp"
 
-namespace MovementPattern {
+namespace BBong {
 class MovementPattern {
 protected:
   glm::vec3 direction = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -25,9 +25,7 @@ public:
   HorizonPattern(float s);
   glm::vec3 move(glm::vec3 origin, float time) override;
 };
-} // namespace MovementPattern
 
-namespace ShootingPattern {
 class ShootingPattern {
 public:
   int fireCount = 10;
@@ -69,6 +67,6 @@ public:
   RandomBurstPattern(float s, int c);
   std::vector<std::function<glm::vec3(glm::vec3, float)>> fire() override;
 };
-} // namespace ShootingPattern
+} // namespace BBong
 
 #endif // ENEMYPATTERNS_HPP

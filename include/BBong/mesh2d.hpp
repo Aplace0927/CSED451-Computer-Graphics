@@ -1,12 +1,12 @@
-#ifndef MESH_HPP
-#define MESH_HPP
+#ifndef MESH2D_HPP
+#define MESH2D_HPP
 
 #include <vector>
 #include <string>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-namespace Data {
+namespace BBong {
 struct Vertex2D {
 public:
   glm::vec2 position;
@@ -19,12 +19,12 @@ private:
   std::vector<unsigned int> indices;
 
 public:
-  Mesh(const std::vector<Vertex2D> &vertices,
+  Mesh2D(const std::vector<Vertex2D> &vertices,
        const std::vector<unsigned int> &indices) {
     this->vertices = vertices;
     this->indices = indices;
   }
-  ~Mesh() {}
+  ~Mesh2D() {}
 
   std::vector<Vertex2D> getVectices() { return vertices; }
 
@@ -43,6 +43,6 @@ public:
     glEnd();
   }
 };
-} // namespace Data
+} // namespace BBong
 
-#endif // MESH_HPP
+#endif // MESH2D

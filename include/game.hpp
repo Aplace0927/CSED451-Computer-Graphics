@@ -8,32 +8,18 @@
 #include <functional>
 #include <chrono>
 
-#include "player.hpp"
-#include "enemy.hpp"
-#include "dialoguebox.hpp"
+#include "BBong/singleton.hpp"
+#include "BBong/scene.hpp"
 #include "utility.hpp"
-#include "bullet.hpp"
-#include "singleton.hpp"
-#include "objectpool.hpp"
 #include "gamestate.hpp"
 
-extern GameState::GameState gameState;
+extern BBong::GameState gameState;
 
-namespace Game {
-class Game : public Singleton::Singleton<Game> {
+namespace BBong {
+class Game : public Singleton<Game> {
 public:
   Game();
-  ~Game();
-  void keyEvent(unsigned char key, int x, int y);
-  void keyUpEvent(unsigned char key, int x, int y);
-
-private:
-  Player::Player player;
-  glm::vec3 playerMoveVec;
-
-  Enemy::Enemy enemy;
-  DialogueBox::DialogueBox dialogueBox;
+  Scene *mainScene;
 };
 }; // namespace Game
-
 #endif // GAME_HPP

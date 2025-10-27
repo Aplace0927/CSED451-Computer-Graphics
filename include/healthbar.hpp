@@ -1,14 +1,12 @@
 #ifndef HEALTHBAR_HPP
 #define HEALTHBAR_HPP
 
-#include "gameobject.hpp"
-#include "digit.hpp"
-#include "shape.hpp"
+#include "BBong/gameobject.hpp"
 
-namespace HealthBar {
-class HealthBar : public GameObject::GameObject<glm::vec3, Shape::RGBColor> {
+namespace BBong {
+class HealthBar : public Component {
 public:
-  void update(float time) override;
+  void update() override;
   void fixedUpdate() override;
 
   HealthBar();
@@ -32,7 +30,7 @@ private:
 
 std::vector<glm::vec3> createHealthBarShape(glm::vec3 topleft,
                                             glm::vec3 bottomright, float gauge);
-std::vector<Shape::RGBColor> createHealthBarColors(float gauge);
+//std::vector<Shape::RGBColor> createHealthBarColors(float gauge);
 } // namespace HealthBar
 
 #endif // HEALTHBAR_HPP

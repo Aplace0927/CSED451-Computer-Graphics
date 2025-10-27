@@ -1,6 +1,6 @@
-#include "physicsmanager.hpp"
+#include "BBong/physicsmanager.hpp"
 
-namespace EngineManager {
+namespace BBong {
 PhysicsManager::PhysicsManager() { start(); }
 
 PhysicsManager::~PhysicsManager() { stop(); }

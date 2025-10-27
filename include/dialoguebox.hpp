@@ -3,20 +3,21 @@
 
 #include <vector>
 
-#include "gameobject.hpp"
+#include "BBong/component.hpp"
 #include "gamestate.hpp"
-#include "digit.hpp"
 #include "utility.hpp"
 
 extern GameState::GameState gameState;
 
-namespace DialogueBox {
-class DialogueBox : public GameObject::GameObject<glm::vec3, Shape::RGBColor> {
+namespace BBong {
+class DialogueBox : public Component {
 public:
-  DialogueBox();
-  void update(float time) override;
-  void fixedUpdate() override;
+  explicit DialogueBox(GameObject *owner) : Component(owner) {};
+  void update() {}
+  override;
+  void fixedUpdate() {}
+  override;
 };
-} // namespace DialogueBox
+}; // namespace Component
 
 #endif // DIALOUGEBOX_HPP

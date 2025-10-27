@@ -5,8 +5,9 @@
 #include <limits>
 #include <algorithm>
 #include <vector>
+#include <memory>
 
-namespace Data {
+namespace BBong {
 class BoundingBox2D {
 private:
   glm::vec2 minOrigin;
@@ -25,6 +26,17 @@ public:
   BoundingBox2D(const glm::vec2 &minPoint, const glm::vec2 &maxPoint)
       : minOrigin(minPoint), maxOrigin(maxPoint), minWorld(minPoint),
         maxWorld(maxPoint) {}
+
+  BoundingBox2D(const BoundingBox2D &other) {
+    minOrigin = other.minOrigin;
+    maxOrigin = other.maxOrigin;
+    minWorld = other.minWorld;
+    maxWorld = other.maxWorld;
+  }
+
+  std::unique_ptr<BoundingBox2D> Clone() const {
+    return std::make_unique<BoundingBox2D>(*this);
+  }
 
   bool intersects(const BoundingBox2D &other) const {
     if (maxWorld.x < other.minWorld.x || minWorld.x > other.maxWorld.x) {
@@ -60,7 +72,12 @@ public:
       maxWorld.y = std::max(maxWorld.y, transformedCorner.y);
     }
   }
+
+  const glm::vec2 &getMinOrigin() const { return minOrigin; }
+  const glm::vec2 &getMaxOrigin() const { return maxOrigin; }
+  const glm::vec2 &getMinWorld() const { return minWorld; }
+  const glm::vec2 &getMaxWorld() const { return maxWorld; }
 };
-} // namespace Data
+} // namespace BBong
 
 #endif // BOUNDINGBOX2D_HPP

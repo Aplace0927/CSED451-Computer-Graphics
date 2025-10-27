@@ -5,13 +5,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "BBong/graphicsmanager.hpp"
+#include "BBong/input.hpp"
 #include "config.hpp"
 #include "game.hpp"
 #include "gamestate.hpp"
-#include "graphicsmanager.hpp"
 
-Game::Game game;
-GameState::GameState gameState;
+BBong::Game game;
+BBong::GameState gameState;
 
 int main(int argc, char **argv) {
   glutInit(&argc, argv);
@@ -25,16 +26,17 @@ int main(int argc, char **argv) {
   glEnable(GL_DEPTH_TEST);
 
   glutReshapeFunc([](int x, int y) {
-    GraphicsManager::GraphicsManager::getInstance().reshape(x, y);
+    BBong::GraphicsManager::getInstance().reshape(x, y);
   });
 
-  glutDisplayFunc(
-      []() { GraphicsManager::GraphicsManager::getInstance().update(); });
+  glutDisplayFunc([]() { BBong::GraphicsManager::getInstance().update(); });
 
-  glutKeyboardFunc(
-      [](unsigned char key, int x, int y) { game.keyEvent(key, x, y); });
+  glutKeyboardFunc([](unsigned char key, int x, int y) {
+    BBong::Input::getInstance().keyEvent(key, x, y);
+  });
 
-  glutKeyboardUpFunc(
-      [](unsigned char key, int x, int y) { game.keyUpEvent(key, x, y); });
+  glutKeyboardUpFunc([](unsigned char key, int x, int y) {
+    BBong::Input::getInstance().keyUpEvent(key, x, y);
+  });
   glutMainLoop();
 }

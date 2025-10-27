@@ -3,62 +3,54 @@
 
 #include <cmath>
 
-#include "gameobject.hpp"
-#include "objectpool.hpp"
+#include "BBong/gameobject.hpp"
+#include "BBong/objectpool.hpp"
+#include "BBong/component.hpp"
+#include "BBong/renderer2d.hpp"
+#include "BBong/collider2d.hpp"
 #include "bullet.hpp"
 #include "enemypatterns.hpp"
-//#include "healthbar.hpp"
 #include "gamestate.hpp"
 
-extern GameState::GameState gameState;
+extern BBong::GameState gameState;
 
-namespace Enemy {
-class Enemy : public GameObject::GameObject<glm::vec3, Shape::RGBColor> {
+namespace BBong {
+class Enemy : public ClonableComponent<Enemy> {
 public:
-  Enemy();
-  void update(float time) override;
-  void fixedUpdate() override;
-  void setBulletHitDetectFunction(
-      const std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
-          &func) {
-    bulletHitDetectFunction = func;
-  }
-  void setBulletHitEventFunction(const std::function<void()> &func) {
-    bulletHitEventFunction = func;
-  }
+  explicit Enemy(GameObject *owner)
+      : ClonableComponent(owner) {
+          // addComponent<MeshRenderer2D>();
+          // addComponent<BoxCollider2D>();
 
-  std::function<void()> getBulletHitDetectHandlerFunction() {
-    return [this]() {
-      if (!this->getStatus() || gameState != GameState::GameState::PLAYING) {
-        return;
-      }
-      enemyHealth = glm::max(0, enemyHealth - 1);
-      //healthBar.setCurrentHealth(enemyHealth);
-      if (enemyHealth == 0) {
-        gameState = GameState::GameState::WIN;
-      }
-    };
-  }
+          //// Create a prefab GameObject for enemy bullets and initialize pool
+          // GameObject *bulletPrefab =
+          // Game::getInstance().mainScene->createGameObject();
+          // bulletPrefab->addComponent<EnemyBullet>();
+
+          // shootingPatterns = {new CirclePattern(200.0f, 12),
+          //                    new SpiralPattern(200.0f, 20.0f),
+          //                    new RandomBurstPattern(250.0f, 5)};
+          // shootingPattern = chooseShootingPattern();
+          // movementPattern = new HorizonPattern(100.0f);
+        };
+  //void update() override;
+  //void fixedUpdate() override;
 
 private:
-  int enemyHealth;
-  ObjectPool::ObjectPool<Bullet::EnemyBullet> bullets;
-  //HealthBar::HealthBar healthBar;
+  int enemyHealth = 100;
+  // ObjectPool bullets;
+  // HealthBar::HealthBar healthBar;
 
-  MovementPattern::MovementPattern *movementPattern;
-  ShootingPattern::ShootingPattern *shootingPattern;
-  std::vector<ShootingPattern::ShootingPattern *> shootingPatterns;
-  time_t movingCooldown;
-  time_t shootingCooldown;
-
-  std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
-      bulletHitDetectFunction;
-  std::function<void()> bulletHitEventFunction;
+  MovementPattern *movementPattern;
+  ShootingPattern *shootingPattern;
+  std::vector<ShootingPattern *> shootingPatterns{
+      new CirclePattern(200.0f, 12), new SpiralPattern(200.0f, 20.0f),
+      new RandomBurstPattern(250.0f, 5)};
 
   void updateMovementPattern();
   void updateShootingPattern();
-  ShootingPattern::ShootingPattern *chooseShootingPattern();
+  ShootingPattern *chooseShootingPattern();
   void shooting();
 };
-}; // namespace Enemy
+} // namespace BBong
 #endif // ENEMY_HPP

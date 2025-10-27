@@ -1,52 +1,45 @@
 #ifndef BULLET_HPP 
 #define BULLET_HPP
 
-#include "gameobject.hpp"
-#include "utility.hpp"
 #include <functional>
 #include <iostream>
+#include <memory>
+#include <glm/glm.hpp>
 
-namespace Bullet {
+#include "BBong/component.hpp"
+#include "utility.hpp"
+
+namespace BBong {
+
 enum class BulletType { PLAYER, ENEMY, NONE };
 
-class Bullet : public GameObject::GameObject<glm::vec3, Shape::RGBColor> {
+class Bullet : public ClonableComponent<Bullet> {
 public:
-  Bullet(Shape::RGBColor color);
-  void update(float time) override;
+  explicit Bullet(GameObject *owner) : ClonableComponent(owner) {}
+
+  void update() override;
   void fixedUpdate() override;
-  void deactivate();
-  void activate(glm::vec3 bullet_origin,
-                std::function<glm::vec3(glm::vec3, float)> movement_pattern,
-                BulletType bullet_shooter,
-                std::function<void()> releaseFunc = nullptr,
-                std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
-                    hitDetectFunc = nullptr,
-                std::function<void()> hitEventFunc = nullptr);
 
 private:
   bool isInRenderBounds(const glm::vec3 &pos);
 
   BulletType bullet_shooter;
-  glm::vec3 bullet_origin;
+  glm::vec3 bullet_origin = glm::vec3(0.0f);
   std::function<glm::vec3(glm::vec3, float)> movement_pattern;
-  std::function<bool(const BoundingBox::BoundingBox<glm::vec3> &)>
-      hitDetectFunction;
-  std::function<void()> hitEventFunction;
 };
 
 class PlayerBullet : public Bullet {
 public:
-  PlayerBullet();
+  explicit PlayerBullet(GameObject *owner) : Bullet(owner) {}
 };
 
 class EnemyBullet : public Bullet {
 public:
-  EnemyBullet();
+  explicit EnemyBullet(GameObject *owner) : Bullet(owner) {}
 };
-} // namespace Bullet
 
-namespace BulletPattern {
 constexpr float BulletSpeed = 100.0f;
+
 inline std::function<glm::vec3(glm::vec3, float)>
 straight(glm::vec3 direction, float speed = BulletSpeed) {
   return [direction, speed](glm::vec3 origin, float time_elapsed) {
@@ -58,6 +51,6 @@ straight(glm::vec3 direction, float speed = BulletSpeed) {
 inline std::function<glm::vec3(glm::vec3, float)> empty() {
   return [](glm::vec3 origin, float time_elapsed) { return origin; };
 }
-} // namespace BulletPattern
+} // namespace BBong
 
 #endif // BULLET_HPP

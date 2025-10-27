@@ -1,7 +1,7 @@
 #ifndef SINGLETON_HPP
 #define SINGLETON_HPP
 
-namespace Singleton {
+namespace BBong {
 template <typename T> class Singleton {
 protected:
   Singleton() = default;
@@ -15,6 +15,6 @@ public:
     return instance;
   }
 };
-} // namespace Singleton
+}; // namespace Singleton
 
 #endif // SINGLETON_HPP
