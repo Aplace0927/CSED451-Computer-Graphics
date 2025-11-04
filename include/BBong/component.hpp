@@ -20,8 +20,8 @@ protected:
   template <typename T> T *addComponent();
   template <typename T> T *getComponent();
 
-  bool getStatus() const;
-  void setStatus(bool state);
+  bool getActive() const;
+  void setActive(bool state);
 
 private:
   friend class GameObject;

@@ -15,6 +15,6 @@ public:
     return instance;
   }
 };
-}; // namespace Singleton
+}; // namespace BBong
 
 #endif // SINGLETON_HPP

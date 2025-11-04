@@ -1,5 +1,16 @@
 #include "BBong/graphicsmanager.hpp"
 
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <chrono>
+#include <algorithm>
+#include <iostream>
+
+#include "config.hpp"
+#include "utility.hpp"
+
 namespace BBong {
 std::shared_ptr<GraphicsManagerFunc>
 GraphicsManager::registerHandler(GraphicsManagerFunc func) {
@@ -25,7 +36,7 @@ void GraphicsManager::update() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   auto now = std::chrono::high_resolution_clock::now();
-  float deltaTime = std::chrono::duration<float>(now - lastFrame).count();
+  Utility::DeltaTime = std::chrono::duration<float>(now - lastFrame).count();
   lastFrame = now;
 
   if (updateHandlerCopy.empty()) {
@@ -39,7 +50,7 @@ void GraphicsManager::update() {
   }
 
   if (shaking) {
-    shakeTimer += deltaTime;
+    shakeTimer += Utility::DeltaTime;
     if (shakeTimer >= shakeDuration) {
       shaking = false;
       resetCamera();

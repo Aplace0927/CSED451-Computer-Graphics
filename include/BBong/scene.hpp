@@ -13,7 +13,7 @@
 namespace BBong {
 class Scene {
 private:
-  std::vector<GameObject *> m_gameObjects;
+  std::vector<std::unique_ptr<GameObject>> m_gameObjects;
 
   std::shared_ptr<std::function<void()>> fixedUpdate_ptr;
   std::shared_ptr<std::function<void()>> update_ptr;
@@ -40,9 +40,6 @@ public:
     GraphicsManager::getInstance().unregisterHandler(
         renderUpdate_ptr);
 
-    for (auto *obj : m_gameObjects) {
-      delete obj;
-    }
     m_gameObjects.clear();
   }
 
@@ -50,10 +47,10 @@ public:
   Scene &operator=(const Scene &) = delete;
 
   GameObject *createGameObject(Transform *parent = nullptr) {
-    GameObject *newObject = new GameObject(parent);
-    if (!parent)
-      m_gameObjects.push_back(newObject);
-    return newObject;
+    auto newObjectPtr = std::make_unique<GameObject>(parent);
+    auto rawPtr = newObjectPtr.get();
+    m_gameObjects.push_back(std::move(newObjectPtr));
+    return rawPtr;
   }
 
   GameObject *Instantiate(const GameObject &prefab,
@@ -70,23 +67,31 @@ public:
 
 private:
   void fixedUpdate() {
-    for (auto *obj : m_gameObjects) {
-      obj->fixedUpdate();
+    for (const auto &objPtr : m_gameObjects) {
+      if (objPtr->transform->getParent() == nullptr) {
+        objPtr->fixedUpdate();
+      }
     }
   }
   void update() {
-    for (auto *obj : m_gameObjects) {
-      obj->update();
+    for (const auto &objPtr : m_gameObjects) {
+      if (objPtr->transform->getParent() == nullptr) {
+        objPtr->update();
+      }
     }
   }
   void lateUpdate() {
-    for (auto *obj : m_gameObjects) {
-      obj->lateUpdate();
+    for (const auto &objPtr : m_gameObjects) {
+      if (objPtr->transform->getParent() == nullptr) {
+        objPtr->lateUpdate();
+      }
     }
   }
   void renderUpdate() {
-    for (auto *obj : m_gameObjects) {
-      obj->renderUpdate();
+    for (const auto &objPtr : m_gameObjects) {
+      if (objPtr->transform->getParent() == nullptr) {
+        objPtr->renderUpdate();
+      }
     }
   }
 };

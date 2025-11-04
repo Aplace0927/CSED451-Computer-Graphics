@@ -4,13 +4,15 @@ add_executable(
 	"game.cpp"
 	"player.cpp"
 	"enemy.cpp"
-	"physicsmanager.cpp"
- 	"graphicsmanager.cpp"
+	"BBong/physicsmanager.cpp"
+ 	"BBong/graphicsmanager.cpp"
 	"enemypatterns.cpp"
 	"healthbar.cpp"
-	"transform.cpp"
-	"component.cpp"
- "input.cpp")
+	"BBong/transform.cpp"
+	"BBong/component.cpp"
+	"BBong/input.cpp"
+	"BBong/gameobject.cpp"
+ "utility.cpp" "BBong/renderer2d.cpp" "BBong/objfileloader.cpp" "BBong/mesh3d.cpp")
 if (UNIX AND NOT APPLE)
 	target_link_libraries(touhou_postech
 		GLUT glew OpenGL::GL glm glu

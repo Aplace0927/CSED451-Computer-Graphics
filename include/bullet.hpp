@@ -6,8 +6,14 @@
 #include <memory>
 #include <glm/glm.hpp>
 
+#include "BBong/renderer2d.hpp"
 #include "BBong/component.hpp"
+#include "BBong/collider2d.hpp"
+#include "BBong/gameobject.hpp"
+#include "BBong/transform.hpp"
+#include "mesh2dsample.hpp"
 #include "utility.hpp"
+#include "config.hpp"
 
 namespace BBong {
 
@@ -17,40 +23,40 @@ class Bullet : public ClonableComponent<Bullet> {
 public:
   explicit Bullet(GameObject *owner) : ClonableComponent(owner) {}
 
-  void update() override;
-  void fixedUpdate() override;
+  void fixedUpdate() override {
+    transform->setPosition(transform->position + moveDirection * BulletSpeed *
+                                                     Utility::FixedDeltaTime);
+  };
 
-private:
-  bool isInRenderBounds(const glm::vec3 &pos);
-
+protected:
+  float BulletSpeed = 300.0f;
   BulletType bullet_shooter;
-  glm::vec3 bullet_origin = glm::vec3(0.0f);
-  std::function<glm::vec3(glm::vec3, float)> movement_pattern;
+  glm::vec3 moveDirection;
 };
 
 class PlayerBullet : public Bullet {
 public:
-  explicit PlayerBullet(GameObject *owner) : Bullet(owner) {}
+  explicit PlayerBullet(GameObject *owner) : Bullet(owner) {
+    auto meshRenderer = addComponent<MeshRenderer2D>();
+    meshRenderer->SetMesh(createRainbowHexagonMesh(10));
+
+    addComponent<BoxCollider2D>();
+    bullet_shooter = BulletType::PLAYER;
+    moveDirection = glm::vec3(0.0f, 1.0f, 0.0f);
+  }
 };
 
 class EnemyBullet : public Bullet {
 public:
-  explicit EnemyBullet(GameObject *owner) : Bullet(owner) {}
+  explicit EnemyBullet(GameObject *owner) : Bullet(owner) {
+    auto meshRenderer = addComponent<MeshRenderer2D>();
+    meshRenderer->SetMesh(createRainbowHexagonMesh(10));
+
+    addComponent<BoxCollider2D>();
+    bullet_shooter = BulletType::ENEMY;
+    moveDirection = glm::vec3(0.0f, -1.0f, 0.0f);
+  }
 };
-
-constexpr float BulletSpeed = 100.0f;
-
-inline std::function<glm::vec3(glm::vec3, float)>
-straight(glm::vec3 direction, float speed = BulletSpeed) {
-  return [direction, speed](glm::vec3 origin, float time_elapsed) {
-    return origin +
-           Utility::getNormalizedDirection(direction, speed * time_elapsed);
-  };
-}
-
-inline std::function<glm::vec3(glm::vec3, float)> empty() {
-  return [](glm::vec3 origin, float time_elapsed) { return origin; };
-}
 } // namespace BBong
 
 #endif // BULLET_HPP

@@ -2,11 +2,13 @@
 #include "player.hpp"
 #include "enemy.hpp"
 
-BBong::Game::Game() {
-  mainScene = new Scene();
+namespace BBong {
+Game::Game() : mainScene(new Scene) {}
 
+void Game::Init() {
   auto playerObj = mainScene->createGameObject();
   playerObj->addComponent<Player>();
-  auto enemyObj = mainScene->createGameObject();
-  enemyObj->addComponent<Enemy>();
+  // auto enemyObj = mainScene->createGameObject();
+  // enemyObj->addComponent<Enemy>();
 }
+} // namespace BBong

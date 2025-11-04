@@ -5,6 +5,7 @@
 #include <string>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace BBong {
 struct Vertex2D {
@@ -26,7 +27,7 @@ public:
   }
   ~Mesh2D() {}
 
-  std::vector<Vertex2D> getVectices() { return vertices; }
+  const std::vector<Vertex2D> getVectices() { return vertices; }
 
   void draw() {
     if (indices.empty())

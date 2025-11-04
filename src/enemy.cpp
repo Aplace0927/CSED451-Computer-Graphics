@@ -3,8 +3,8 @@
 namespace BBong {
 //void Enemy::update() {
 //  if (gameState == GameState::WIN) {
-//    this->setStatus(false);
-//    //healthBar.setStatus(false);
+//    this->setActive(false);
+//    //healthBar.setActive(false);
 //    return;
 //  }
 //

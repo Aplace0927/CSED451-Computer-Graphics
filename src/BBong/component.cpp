@@ -5,8 +5,8 @@
 namespace BBong {
 Component::Component(GameObject *owner) : gameObject(owner), transform(owner ? owner->transform : nullptr) {}
 
-bool Component::getStatus() const { return gameObject->getActive(); }
-void Component::setStatus(bool state) { gameObject->setActive(state); }
+bool Component::getActive() const { return gameObject->getActive(); }
+void Component::setActive(bool state) { gameObject->setActive(state); }
 
 void Component::doFixedUpdate() { fixedUpdate(); }
 void Component::doCollision() { collision(); }

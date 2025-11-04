@@ -17,8 +17,7 @@ public:
       : prefab(&prefabObj), parent(parent) {
     pool.reserve(size);
     for (int i = 0; i < size; ++i) {
-      GameObject *obj =
-          Game::getInstance().mainScene->Instantiate(*prefab, parent);
+      auto obj = Game::getInstance().mainScene->Instantiate(*prefab, parent);
       obj->setActive(false);
       pool.push_back(obj);
     }
@@ -30,8 +29,7 @@ public:
 
   GameObject *acquire() {
     if (pool.empty()) {
-      GameObject *obj =
-          Game::getInstance().mainScene->Instantiate(*prefab, parent);
+      auto obj = Game::getInstance().mainScene->Instantiate(*prefab, parent);
       obj->setActive(true);
       return obj;
     } else {

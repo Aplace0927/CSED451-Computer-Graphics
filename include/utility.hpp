@@ -6,6 +6,9 @@
 #include "config.hpp"
 
 namespace Utility {
+extern float DeltaTime;
+extern float FixedDeltaTime;
+
 inline glm::vec3 getNormalizedDirection(const glm::vec3 &direction,
                                         float magnitude = 1.0f) {
   if (glm::length(direction) != 0.0f) {

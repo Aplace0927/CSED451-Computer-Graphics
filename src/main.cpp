@@ -11,10 +11,9 @@
 #include "game.hpp"
 #include "gamestate.hpp"
 
-BBong::Game game;
-BBong::GameState gameState;
-
 int main(int argc, char **argv) {
+  BBong::Game::getInstance().Init();
+
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(GameConfig::WINDOW_WIDTH, GameConfig::WINDOW_HEIGHT);
