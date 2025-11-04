@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BBONG_COMPONENT_INL
+#define BBONG_COMPONENT_INL
 
 #include "BBong/component.hpp"
 
@@ -28,3 +29,5 @@ BBong::ClonableComponent<T>::clone(GameObject *newOwner) const {
 
   return newComponent;
 }
+
+#endif // BBONG_COMPONENT_INL

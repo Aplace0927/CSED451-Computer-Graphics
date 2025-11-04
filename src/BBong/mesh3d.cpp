@@ -1,6 +1,5 @@
-#include "BBong/mesh3D.hpp"
-
-#include <GL/gl.h>
+#include "BBong/mesh3d.hpp"
+#include <GL/glew.h>
 
 namespace BBong {
 Mesh3D::Mesh3D(const std::vector<Vertex3D> &vertices,

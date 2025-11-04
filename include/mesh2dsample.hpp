@@ -18,7 +18,9 @@ createHexagonMesh(float radius = 1.0f,
 
   vertices.push_back({{0.0f, 0.0f}, centerColor});
 
+  #ifndef M_PI
   const float M_PI = 3.14159265358979323846f;
+  #endif
   for (int i = 0; i < 6; ++i) {
     float angle = (M_PI / 3.0f) * i;
     vertices.push_back(
@@ -57,11 +59,11 @@ inline std::shared_ptr<Mesh2D> createRainbowHexagonMesh(float radius = 1.0f) {
   std::vector<Vertex2D> vertices;
   std::vector<unsigned int> indices;
 
-  // 중심 정점 (v0) - 흰색
   vertices.push_back({{0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}});
 
-  // 바깥쪽 6개 정점 (v1 ~ v6) - 무지개색
+  #ifndef M_PI
   const float M_PI = 3.14159265358979323846f;
+  #endif
   std::vector<glm::vec3> colors = {
       {1.0f, 0.0f, 0.0f}, // Red (v1)
       {1.0f, 1.0f, 0.0f}, // Yellow (v2)
@@ -79,11 +81,10 @@ inline std::shared_ptr<Mesh2D> createRainbowHexagonMesh(float radius = 1.0f) {
     });
   }
 
-  // 인덱스는 위와 동일
   for (int i = 1; i <= 6; ++i) {
     indices.push_back(0);
     indices.push_back(i);
-    indices.push_back((i % 6) + 1); // 다음 정점 (6 -> 1)
+    indices.push_back((i % 6) + 1);
   }
 
   return std::make_shared<Mesh2D>(vertices, indices);

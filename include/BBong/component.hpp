@@ -47,8 +47,6 @@ public:
   explicit ClonableComponent(GameObject *owner) : Component(owner) {}
   std::unique_ptr<Component> clone(GameObject *newOwner) const override;
 };
-#include "BBong/component.inl"
-
 }; // namespace BBong
 
 #endif // BBONG_COMPONENT_HPP

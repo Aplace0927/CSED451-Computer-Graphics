@@ -29,7 +29,7 @@ private:
   bool isWorldDirty;
 
 public:
-  explicit Transform::Transform(GameObject *owner)
+  explicit Transform(GameObject *owner)
       : Component(owner), position(0.0f),
         rotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f)), scale(1.0f),
         parent(nullptr), localTransformMatrix(1.0f), worldTransformMatrix(1.0f),
