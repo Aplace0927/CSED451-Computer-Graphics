@@ -18,15 +18,17 @@ enum class GraphicStyle {
 };
 
 class Mesh3D {
-public:
-  Mesh3D(const std::vector<Vertex3D> &vertices,
-         const std::vector<unsigned int> &indices);
-  ~Mesh3D();
-  void draw(GraphicStyle style);
-
 private:
   std::vector<Vertex3D> m_vertices;
   std::vector<unsigned int> m_indices;
+
+public:
+  Mesh3D(const std::vector<Vertex3D> &m_vertices,
+         const std::vector<unsigned int> &m_indices);
+  ~Mesh3D();
+
+  const std::vector<Vertex3D> getVectices() { return m_vertices; }
+  void draw(GraphicStyle style);
 };
 } // namespace BBong
 #endif // MESH3D
