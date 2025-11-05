@@ -13,13 +13,14 @@
 namespace BBong {
 class Scene {
 private:
-  std::vector<std::unique_ptr<GameObject>> m_gameObjects;
+  std::vector<std::shared_ptr<GameObject>> m_gameObjects;
 
   std::shared_ptr<std::function<void()>> fixedUpdate_ptr;
   std::shared_ptr<std::function<void()>> update_ptr;
   std::shared_ptr<std::function<void()>> lateUpdate_ptr;
   std::shared_ptr<std::function<void()>> renderUpdate_ptr;
 
+  std::recursive_mutex sceneMutex;
 public:
   Scene() {
     fixedUpdate_ptr = PhysicsManager::getInstance().registerHandler(
@@ -67,28 +68,48 @@ public:
 
 private:
   void fixedUpdate() {
-    for (const auto &objPtr : m_gameObjects) {
+    std::vector<std::shared_ptr<GameObject>> gameObjectsCopy;
+    {
+      std::lock_guard<std::recursive_mutex> lock(sceneMutex);
+      gameObjectsCopy = m_gameObjects; // Create a copy to avoid holding the lock
+    }
+    for (const auto &objPtr : gameObjectsCopy) {
       if (objPtr->transform->getParent() == nullptr) {
         objPtr->fixedUpdate();
       }
     }
   }
   void update() {
-    for (const auto &objPtr : m_gameObjects) {
+    std::vector<std::shared_ptr<GameObject>> gameObjectsCopy;
+    {
+      std::lock_guard<std::recursive_mutex> lock(sceneMutex);
+      gameObjectsCopy = m_gameObjects; // Create a copy to avoid holding the lock
+    }
+    for (const auto &objPtr : gameObjectsCopy) {
       if (objPtr->transform->getParent() == nullptr) {
         objPtr->update();
       }
     }
   }
   void lateUpdate() {
-    for (const auto &objPtr : m_gameObjects) {
+    std::vector<std::shared_ptr<GameObject>> gameObjectsCopy;
+    {
+      std::lock_guard<std::recursive_mutex> lock(sceneMutex);
+      gameObjectsCopy = m_gameObjects; // Create a copy to avoid holding the lock
+    }
+    for (const auto &objPtr : gameObjectsCopy) {
       if (objPtr->transform->getParent() == nullptr) {
         objPtr->lateUpdate();
       }
     }
   }
   void renderUpdate() {
-    for (const auto &objPtr : m_gameObjects) {
+    std::vector<std::shared_ptr<GameObject>> gameObjectsCopy;
+    {
+      std::lock_guard<std::recursive_mutex> lock(sceneMutex);
+      gameObjectsCopy = m_gameObjects; // Create a copy to avoid holding the lock
+    }
+    for (const auto &objPtr : gameObjectsCopy) {
       if (objPtr->transform->getParent() == nullptr) {
         objPtr->renderUpdate();
       }
