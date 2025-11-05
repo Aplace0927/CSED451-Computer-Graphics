@@ -5,6 +5,7 @@
 
 #include "BBong/objectpool.hpp"
 #include "BBong/gameobject.hpp"
+#include "BBong/renderer2d.hpp"
 #include "BBong/renderer3d.hpp"
 #include "BBong/collider3d.hpp"
 #include "BBong/component.hpp"
@@ -24,7 +25,8 @@ public:
       : ClonableComponent(owner),
         bullets(new ObjectPool(*createBulletPrefab(), nullptr, 100)) {
     auto meshRederer = addComponent<MeshRenderer3D>();
-    meshRederer->SetMesh(ObjFileLoader::load("assets/papaerplane.obj"));
+    meshRederer->SetMesh(ObjFileLoader::load("assets/paperplane.obj"));
+    transform->setScale(glm::vec3(1000));
   };
 
   Player(const Player &other) : ClonableComponent(nullptr) {
