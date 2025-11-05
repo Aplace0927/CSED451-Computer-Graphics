@@ -12,7 +12,7 @@ add_executable(
 	"BBong/component.cpp"
 	"BBong/input.cpp"
 	"BBong/gameobject.cpp"
- "utility.cpp" "BBong/renderer2d.cpp" "BBong/objfileloader.cpp" "BBong/mesh3d.cpp")
+ "utility.cpp" "BBong/renderer2d.cpp" "BBong/objfileloader.cpp" "BBong/mesh3d.cpp" "BBong/renderer3d.cpp" "BBong/mesh2d.cpp")
 if (UNIX AND NOT APPLE)
 	target_link_libraries(touhou_postech
 		GLUT glew OpenGL::GL glm glu

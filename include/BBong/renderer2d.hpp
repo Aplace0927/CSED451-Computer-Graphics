@@ -6,8 +6,8 @@
 #include <glm/glm.hpp>
 
 #include "BBong/component.hpp"
-#include "boundingbox2d.hpp"
-#include "mesh2d.hpp"
+#include "BBong/boundingbox2d.hpp"
+#include "BBong/mesh2d.hpp"
 
 namespace BBong {
 class Transform;

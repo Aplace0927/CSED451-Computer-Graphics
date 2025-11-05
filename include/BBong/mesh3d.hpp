@@ -2,10 +2,7 @@
 #define MESH3D_HPP
 
 #include <vector>
-#include <string>
-#include <GL/glew.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 namespace BBong {
 struct Vertex3D {
