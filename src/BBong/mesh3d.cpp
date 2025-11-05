@@ -5,10 +5,8 @@
 
 namespace BBong {
 Mesh3D::Mesh3D(const std::vector<Vertex3D> &vertices,
-               const std::vector<unsigned int> &indices) {
-  m_vertices = vertices;
-  m_indices = indices;
-}
+               const std::vector<unsigned int> &indices)
+    : m_vertices(vertices), m_indices(indices) {}
 
 Mesh3D::~Mesh3D() {}
 

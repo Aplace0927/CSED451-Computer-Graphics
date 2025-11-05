@@ -14,15 +14,15 @@ public:
 
 class Mesh2D {
 private:
-  std::vector<Vertex2D> vertices;
-  std::vector<unsigned int> indices;
+  std::vector<Vertex2D> m_vertices;
+  std::vector<unsigned int> m_indices;
 
 public:
-  Mesh2D(const std::vector<Vertex2D> &vertices,
-         const std::vector<unsigned int> &indices);
+  Mesh2D(const std::vector<Vertex2D> &m_vertices,
+         const std::vector<unsigned int> &m_indices);
   ~Mesh2D();
 
-  const std::vector<Vertex2D> getVectices();
+  const std::vector<Vertex2D> getVectices() { return m_vertices; }
   void draw();
 };
 } // namespace BBong
