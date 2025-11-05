@@ -49,10 +49,8 @@ public:
   }
 
   void expand(const glm::vec2 &point) {
-    minOrigin.x = std::min(minOrigin.x, point.x);
-    minOrigin.y = std::min(minOrigin.y, point.y);
-    maxOrigin.x = std::max(maxOrigin.x, point.x);
-    maxOrigin.y = std::max(maxOrigin.y, point.y);
+    minOrigin = glm::min(minOrigin, point);
+    maxOrigin = glm::max(maxOrigin, point);
   }
 
   void updateWorld(const glm::mat4 &matrix) {
@@ -66,10 +64,8 @@ public:
 
     for (const auto &corner : corners) {
       glm::vec4 transformedCorner = matrix * corner;
-      minWorld.x = std::min(minWorld.x, transformedCorner.x);
-      minWorld.y = std::min(minWorld.y, transformedCorner.y);
-      maxWorld.x = std::max(maxWorld.x, transformedCorner.x);
-      maxWorld.y = std::max(maxWorld.y, transformedCorner.y);
+      minWorld = glm::min(minWorld, glm::vec2(transformedCorner));
+      maxWorld = glm::max(maxWorld, glm::vec2(transformedCorner));
     }
   }
 

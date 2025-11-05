@@ -1,4 +1,4 @@
-#ifndef BOUNDINGBOX3D_HPP // 파일명과 일치시키는 것을 권장합니다.
+#ifndef BOUNDINGBOX3D_HPP
 #define BOUNDINGBOX3D_HPP
 
 #include <glm/glm.hpp>
@@ -52,12 +52,8 @@ public:
   }
 
   void expand(const glm::vec3 &point) {
-    minOrigin.x = std::min(minOrigin.x, point.x);
-    minOrigin.y = std::min(minOrigin.y, point.y);
-    minOrigin.z = std::min(minOrigin.z, point.z);
-    maxOrigin.x = std::max(maxOrigin.x, point.x);
-    maxOrigin.y = std::max(maxOrigin.y, point.y);
-    maxOrigin.z = std::max(maxOrigin.z, point.z);
+    minOrigin = glm::min(minOrigin, point);
+    maxOrigin = glm::max(maxOrigin, point);
   }
 
   void updateWorld(const glm::mat4 &matrix) {
@@ -77,12 +73,8 @@ public:
     for (const auto &corner : corners) {
       glm::vec4 transformedCorner = matrix * corner;
 
-      minWorld.x = std::min(minWorld.x, transformedCorner.x);
-      minWorld.y = std::min(minWorld.y, transformedCorner.y);
-      minWorld.z = std::min(minWorld.z, transformedCorner.z);
-      maxWorld.x = std::max(maxWorld.x, transformedCorner.x);
-      maxWorld.y = std::max(maxWorld.y, transformedCorner.y);
-      maxWorld.z = std::max(maxWorld.z, transformedCorner.z);
+      minWorld = glm::min(minWorld, glm::vec3(transformedCorner));
+      maxWorld = glm::max(maxWorld, glm::vec3(transformedCorner));
     }
   }
 
