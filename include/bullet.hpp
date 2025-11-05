@@ -6,12 +6,12 @@
 #include <memory>
 #include <glm/glm.hpp>
 
-#include "BBong/renderer2d.hpp"
+#include "BBong/renderer3d.hpp"
 #include "BBong/component.hpp"
-#include "BBong/collider2d.hpp"
+#include "BBong/collider3d.hpp"
 #include "BBong/gameobject.hpp"
 #include "BBong/transform.hpp"
-#include "mesh2dsample.hpp"
+#include "BBong/objfileloader.hpp"
 #include "utility.hpp"
 #include "config.hpp"
 
@@ -37,10 +37,12 @@ protected:
 class PlayerBullet : public Bullet {
 public:
   explicit PlayerBullet(GameObject *owner) : Bullet(owner) {
-    auto meshRenderer = addComponent<MeshRenderer2D>();
-    meshRenderer->SetMesh(createRainbowHexagonMesh(10));
-
-    addComponent<BoxCollider2D>();
+    auto meshRenderer = addComponent<MeshRenderer3D>();
+    //meshRenderer->SetMesh(createRainbowHexagonMesh(10));
+    meshRenderer->SetMesh(ObjFileLoader::load("../assets/rice.obj"));
+    transform->setScale(glm::vec3(2.0f));
+    
+    addComponent<BoxCollider3D>();
     bullet_shooter = BulletType::PLAYER;
     moveDirection = glm::vec3(0.0f, 1.0f, 0.0f);
   }
@@ -49,10 +51,10 @@ public:
 class EnemyBullet : public Bullet {
 public:
   explicit EnemyBullet(GameObject *owner) : Bullet(owner) {
-    auto meshRenderer = addComponent<MeshRenderer2D>();
-    meshRenderer->SetMesh(createRainbowHexagonMesh(10));
+    auto meshRenderer = addComponent<MeshRenderer3D>();
+    meshRenderer->SetMesh(ObjFileLoader::load("../assets/rice.obj"));
 
-    addComponent<BoxCollider2D>();
+    addComponent<BoxCollider3D>();
     bullet_shooter = BulletType::ENEMY;
     moveDirection = glm::vec3(0.0f, -1.0f, 0.0f);
   }
