@@ -5,12 +5,10 @@
 
 #include "BBong/objectpool.hpp"
 #include "BBong/gameobject.hpp"
-#include "BBong/renderer2d.hpp"
 #include "BBong/renderer3d.hpp"
 #include "BBong/collider3d.hpp"
 #include "BBong/component.hpp"
 #include "BBong/objfileloader.hpp"
-
 #include "config.hpp"
 #include "bullet.hpp"
 #include "gamestate.hpp"
@@ -24,9 +22,13 @@ public:
   explicit Player(GameObject *owner)
       : ClonableComponent(owner),
         bullets(new ObjectPool(*createBulletPrefab(), nullptr, 100)) {
-    auto meshRederer = addComponent<MeshRenderer3D>();
-    meshRederer->SetMesh(ObjFileLoader::load("assets/paperplane.obj"));
-    transform->setScale(glm::vec3(1000));
+    auto meshRenderer = addComponent<MeshRenderer3D>();
+    //meshRenderer->SetMesh(createRainbowHexagonMesh(100));
+    meshRenderer->SetMesh(ObjFileLoader::load("../assets/jet.obj"));
+    addComponent<BoxCollider3D>();
+
+    transform->setScale(glm::vec3(5.0f));
+    transform->setRotation(glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 180.0f))));
   };
 
   Player(const Player &other) : ClonableComponent(nullptr) {

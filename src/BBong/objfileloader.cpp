@@ -68,7 +68,7 @@ std::shared_ptr<Mesh3D> ObjFileLoader::load(const std::string &path) {
     if (prefix == "v") {
       glm::vec3 pos;
       ss >> pos.x >> pos.y >> pos.z;
-      temp_positions.push_back(pos);
+      temp_positions.push_back(pos); // Scale up for visibility
     } else if (prefix == "vt") {
       glm::vec2 uv;
       ss >> uv.x >> uv.y;
@@ -94,6 +94,14 @@ std::shared_ptr<Mesh3D> ObjFileLoader::load(const std::string &path) {
       }
     }
   }
+  // for (int i = 0; i < out_vertices.size(); ++i) {
+  //   std::cout << i << ": Pos(" << out_vertices[i].position.x << ", "
+  //             << out_vertices[i].position.y << ", " << out_vertices[i].position.z
+  //             << ") Tex(" << out_vertices[i].texCoord.x << ", "
+  //             << out_vertices[i].texCoord.y << ") Norm("
+  //             << out_vertices[i].normal.x << ", " << out_vertices[i].normal.y
+  //             << ", " << out_vertices[i].normal.z << ")" << std::endl;
+  // }
   file.close();
 
   return std::make_shared<Mesh3D>(out_vertices, out_indices);

@@ -10,6 +10,7 @@
 
 #include "config.hpp"
 #include "utility.hpp"
+#include "BBong/input.hpp"
 
 namespace BBong {
 std::shared_ptr<GraphicsManagerFunc>
@@ -28,6 +29,31 @@ void GraphicsManager::unregisterHandler(
 }
 
 void GraphicsManager::update() {
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+
+  float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
+  float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
+  
+  switch (Input::getInstance().projectionMode) {
+    case Input::PERSPECTIVE:
+      gluPerspective(75.0f, static_cast<float>(halfWidth) / halfHeight, 0.1f, 3 * halfHeight);
+      glTranslatef(0.0f, 0.0f, -1.5f * halfHeight);
+      break;
+    case Input::ORTHOGRAPHIC:
+      glOrtho(-halfWidth, halfWidth, -halfHeight, halfHeight, -1.0f, 1.0f);
+      break;
+    case Input::TPV_TOPVIEW:
+      gluPerspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 3 * halfHeight);
+      gluLookAt(0.0f, -1.5f * halfHeight, 100.0f,
+                0.0f, halfHeight, -100.0f,
+                0.0f, 0.0f, 1.0f);
+      break;
+  }
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
   std::vector<std::shared_ptr<GraphicsManagerFunc>> updateHandlerCopy;
   {
     std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
@@ -69,7 +95,22 @@ void GraphicsManager::resetCamera() const {
 
   float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
   float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
-  gluOrtho2D(-halfWidth, halfWidth, -halfHeight, halfHeight);
+  
+  switch (Input::getInstance().projectionMode) {
+    case Input::PERSPECTIVE:
+      gluPerspective(75.0f, static_cast<float>(halfWidth) / halfHeight, 0.1f, 3 * halfHeight);
+      glTranslatef(0.0f, 0.0f, -1.5f * halfHeight);
+      break;
+    case Input::ORTHOGRAPHIC:
+      glOrtho(-halfWidth, halfWidth, -halfHeight, halfHeight, -1.0f, 1.0f);
+      break;
+    case Input::TPV_TOPVIEW:
+      gluPerspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 3 * halfHeight);
+      gluLookAt(0.0f, -1.5f * halfHeight, 100.0f,
+                0.0f, halfHeight, -100.0f,
+                0.0f, 0.0f, 1.0f);
+      break;
+  }
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -104,10 +145,26 @@ void GraphicsManager::startCameraShake(float duration, float magnitude,
 void GraphicsManager::reshape(int width, int height) {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-
+  
   float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
   float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
-  gluOrtho2D(-halfWidth, halfWidth, -halfHeight, halfHeight);
+ 
+  switch (Input::getInstance().projectionMode) {
+    case Input::PERSPECTIVE:
+      gluPerspective(75.0f, static_cast<float>(halfWidth) / halfHeight, 0.1f, 3 * halfHeight);
+      glTranslatef(0.0f, 0.0f, -1.5f * halfHeight);
+      break;
+    case Input::ORTHOGRAPHIC:
+      glOrtho(-halfWidth, halfWidth, -halfHeight, halfHeight, -1.0f, 1.0f);
+      break;
+    case Input::TPV_TOPVIEW:
+      gluPerspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 3 * halfHeight);
+      gluLookAt(0.0f, -1.5f * halfHeight, 100.0f,
+                0.0f, halfHeight, -100.0f,
+                0.0f, 0.0f, 1.0f);
+      break;
+  }
+  
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();

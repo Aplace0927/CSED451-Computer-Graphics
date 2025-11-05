@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 #include "BBong/singleton.hpp"
+#include "BBong/graphicsmanager.hpp"
 #include "utility.hpp"
 
 namespace BBong {
@@ -22,6 +23,19 @@ public:
 
   glm::vec3 playerMoveVec;
   bool isShooting;
+
+  enum ProjectionMode {
+    PERSPECTIVE,
+    ORTHOGRAPHIC,
+    TPV_TOPVIEW
+  };
+  enum GraphicStyleMode {
+    WIREFRAME,
+    SOLID,
+  };
+
+  ProjectionMode projectionMode = PERSPECTIVE;
+  GraphicStyleMode graphicStyleMode = SOLID;
 };
 }; // namespace Input
 

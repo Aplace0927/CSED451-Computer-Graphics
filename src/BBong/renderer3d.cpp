@@ -1,8 +1,5 @@
 #include "BBong/renderer3d.hpp"
 
-#include "BBong/gameobject.hpp"
-#include "BBong/transform.hpp"
-
 namespace BBong {
 MeshRenderer3D::MeshRenderer3D(GameObject *owner) : ClonableComponent(owner) {
   m_boundingbox = std::make_unique<BoundingBox3D>();
@@ -25,7 +22,7 @@ void MeshRenderer3D::SetMesh(std::shared_ptr<Mesh3D> mesh) {
   m_mesh = mesh;
   m_boundingbox = std::make_unique<BoundingBox3D>();
 
-  for (const auto &vertex_position : m_mesh->getVectices()) {
+  for (const auto &vertex_position : m_mesh->getVertices()) {
     m_boundingbox->expand(vertex_position.position);
   }
 }
@@ -35,6 +32,14 @@ void MeshRenderer3D::renderUpdate() {
     return;
 
   m_boundingbox->updateWorld(transform->getWorldMatrix());
-  m_mesh->draw(GraphicStyle::OPAQUE_POLYGON);
+
+  switch (Input::getInstance().graphicStyleMode) {
+  case Input::SOLID:
+    m_mesh->draw(GraphicStyle::OPAQUE_POLYGON);
+    break;
+  case Input::WIREFRAME:
+    m_mesh->draw(GraphicStyle::WIREFRAME);
+    break;
+  }
 }
 } // namespace BBong

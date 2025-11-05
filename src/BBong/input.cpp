@@ -21,6 +21,35 @@ void Input::keyEvent(unsigned char key, int x, int y) {
   case ' ':
     isShooting = true;
     break;
+  case 'e':
+    switch (projectionMode) {
+    case PERSPECTIVE:
+      projectionMode = ORTHOGRAPHIC;
+      std::cout << "Switched to ORTHOGRAPHIC mode." << std::endl;
+      break;
+    case ORTHOGRAPHIC:
+      projectionMode = TPV_TOPVIEW;
+      std::cout << "Switched to TPV_TOPVIEW mode." << std::endl;  
+      break;
+    case TPV_TOPVIEW:
+      projectionMode = PERSPECTIVE;
+      std::cout << "Switched to PERSPECTIVE mode." << std::endl;
+      break;
+    }
+    break;
+  case 'r':
+    switch (graphicStyleMode) {
+    case WIREFRAME:
+      graphicStyleMode = SOLID;
+      std::cout << "Switched to SOLID mode." << std::endl;
+      break;
+    case SOLID:
+      graphicStyleMode = WIREFRAME;
+      std::cout << "Switched to WIREFRAME mode." << std::endl;
+      break;
+    }
+    GraphicsManager::getInstance().update();
+    break;
   default:
     break;
   }

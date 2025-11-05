@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <iostream>
 
 namespace BBong {
 Mesh3D::Mesh3D(const std::vector<Vertex3D> &vertices,
@@ -9,6 +10,8 @@ Mesh3D::Mesh3D(const std::vector<Vertex3D> &vertices,
     : m_vertices(vertices), m_indices(indices) {}
 
 Mesh3D::~Mesh3D() {}
+
+const std::vector<Vertex3D> Mesh3D::getVertices() { return m_vertices; }
 
 void Mesh3D::draw(GraphicStyle style) {
   switch (style) {
