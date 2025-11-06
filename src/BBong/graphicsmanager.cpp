@@ -34,6 +34,7 @@ void GraphicsManager::update() {
 
   float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
   float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
+  float halfDepth = static_cast<float>(GameConfig::WINDOW_DEPTH) / 2;
   
   switch (Input::getInstance().projectionMode) {
     case Input::PERSPECTIVE:
@@ -41,7 +42,8 @@ void GraphicsManager::update() {
       glTranslatef(0.0f, 0.0f, -1.5f * halfHeight);
       break;
     case Input::ORTHOGRAPHIC:
-      glOrtho(-halfWidth, halfWidth, -halfHeight, halfHeight, -1.0f, 1.0f);
+      glOrtho(-halfWidth, halfWidth, -halfHeight, halfHeight, halfDepth,
+              -halfDepth);
       break;
     case Input::TPV_TOPVIEW:
       gluPerspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 3 * halfHeight);

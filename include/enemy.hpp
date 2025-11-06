@@ -4,10 +4,10 @@
 #include <cmath>
 
 #include "BBong/gameobject.hpp"
-#include "BBong/objectpool.hpp"
 #include "BBong/component.hpp"
 #include "BBong/renderer3d.hpp"
 #include "BBong/collider3d.hpp"
+#include "objectpool.hpp"
 #include "bullet.hpp"
 #include "enemypatterns.hpp"
 #include "gamestate.hpp"

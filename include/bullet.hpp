@@ -12,7 +12,7 @@
 #include "BBong/gameobject.hpp"
 #include "BBong/transform.hpp"
 #include "BBong/objfileloader.hpp"
-#include "BBong/objectpool.hpp"
+#include "objectpool.hpp"
 #include "utility.hpp"
 #include "config.hpp"
 

@@ -3,13 +3,13 @@
 
 #include <memory>
 
-#include "BBong/objectpool.hpp"
 #include "BBong/gameobject.hpp"
 #include "BBong/renderer3d.hpp"
 #include "BBong/collider3d.hpp"
 #include "BBong/component.hpp"
 #include "BBong/objfileloader.hpp"
 #include "BBong/mesh3d.hpp"
+#include "objectpool.hpp"
 #include "config.hpp"
 #include "bullet.hpp"
 #include "gamestate.hpp"
