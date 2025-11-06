@@ -33,6 +33,10 @@ void MeshRenderer3D::renderUpdate() {
 
   m_boundingbox->updateWorld(transform->getWorldMatrix());
 
+  if (forcedGraphicStyleMode.has_value()) {
+    m_mesh->draw(forcedGraphicStyleMode.value());
+    return;
+  }
   switch (Input::getInstance().graphicStyleMode) {
   case Input::SOLID:
     m_mesh->draw(GraphicStyle::OPAQUE_POLYGON);

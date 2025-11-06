@@ -2,6 +2,7 @@
 #define RENDERER3D_HPP
 
 #include <memory>
+#include <optional>
 #include <stdexcept>
 #include <glm/glm.hpp>
 
@@ -17,6 +18,7 @@ class MeshRenderer3D : public ClonableComponent<MeshRenderer3D> {
 private:
   std::shared_ptr<Mesh3D> m_mesh;
   std::unique_ptr<BoundingBox3D> m_boundingbox;
+  std::optional<GraphicStyle> forcedGraphicStyleMode = std::nullopt;
 
 public:
   explicit MeshRenderer3D(GameObject *owner);
@@ -26,6 +28,9 @@ public:
 
   std::shared_ptr<Mesh3D> getMesh() { return m_mesh; }
   const BoundingBox3D *getBoundingbox() const { return m_boundingbox.get(); }
+  void forceGraphicStyleMode(GraphicStyle style) {
+    forcedGraphicStyleMode = style;
+  }
 
 private:
   void renderUpdate() override;
