@@ -16,8 +16,8 @@ void Player::update() {
 
   if (isShooting &&
       shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_TIME_SEC) {
-    auto newbullet = bullets->acquire();
-    newbullet->transform->setPosition(transform->position);
+    auto newBullet = bullets->acquire();
+    newBullet->transform->setPosition(transform->position);
     shootingCooldown = 0;
   }
 }

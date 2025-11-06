@@ -38,8 +38,7 @@ class PlayerBullet : public Bullet {
 public:
   explicit PlayerBullet(GameObject *owner) : Bullet(owner) {
     auto meshRenderer = addComponent<MeshRenderer3D>();
-    //meshRenderer->SetMesh(createRainbowHexagonMesh(10));
-    meshRenderer->SetMesh(ObjFileLoader::load("../assets/rice.obj"));
+    meshRenderer->SetMesh(ObjFileLoader::load("assets/rice.obj"));
     transform->setScale(glm::vec3(2.0f));
     
     addComponent<BoxCollider3D>();
@@ -52,7 +51,7 @@ class EnemyBullet : public Bullet {
 public:
   explicit EnemyBullet(GameObject *owner) : Bullet(owner) {
     auto meshRenderer = addComponent<MeshRenderer3D>();
-    meshRenderer->SetMesh(ObjFileLoader::load("../assets/rice.obj"));
+    meshRenderer->SetMesh(ObjFileLoader::load("assets/rice.obj"));
 
     addComponent<BoxCollider3D>();
     bullet_shooter = BulletType::ENEMY;

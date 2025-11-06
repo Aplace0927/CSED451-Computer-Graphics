@@ -22,9 +22,10 @@ public:
   explicit Player(GameObject *owner)
       : ClonableComponent(owner),
         bullets(new ObjectPool(*createBulletPrefab(), nullptr, 100)) {
-    auto meshRenderer = addComponent<MeshRenderer3D>();
-    //meshRenderer->SetMesh(createRainbowHexagonMesh(100));
-    meshRenderer->SetMesh(ObjFileLoader::load("../assets/jet.obj"));
+    
+      auto meshRenderer = addComponent<MeshRenderer3D>();
+    meshRenderer->SetMesh(ObjFileLoader::load("assets/jet.obj"));
+
     addComponent<BoxCollider3D>();
 
     transform->setScale(glm::vec3(5.0f));
