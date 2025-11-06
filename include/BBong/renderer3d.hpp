@@ -24,7 +24,13 @@ public:
   explicit MeshRenderer3D(GameObject *owner);
   MeshRenderer3D(const MeshRenderer3D &other);
 
-  void SetMesh(std::shared_ptr<Mesh3D> mesh);
+  void setMesh(std::shared_ptr<Mesh3D> mesh);
+
+  void setDefaultColor(const glm::vec3 &color) {
+    if (m_mesh) {
+      m_mesh->defaultColor = color;
+    }
+  }
 
   std::shared_ptr<Mesh3D> getMesh() { return m_mesh; }
   const BoundingBox3D *getBoundingbox() const { return m_boundingbox.get(); }

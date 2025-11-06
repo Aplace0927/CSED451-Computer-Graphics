@@ -27,6 +27,7 @@ public:
          const std::vector<unsigned int> &indices);
   ~Mesh3D();
   const std::vector<Vertex3D> getVertices();
+  glm::vec3 defaultColor = glm::vec3(1.0f, 1.0f, 1.0f);
   void draw(GraphicStyle style);
 };
 } // namespace BBong

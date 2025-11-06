@@ -30,12 +30,12 @@ public:
     auto meshRenderer = addComponent<MeshRenderer3D>();
     
     #ifdef ASSETS_DIRECTORY
-      meshRenderer->SetMesh(ObjFileLoader::load(ASSETS_DIRECTORY "jet.obj"));
+      meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "jet.obj"));
     #else
       printf("Warning: ASSETS_DIRECTORY not defined.\n");
-      meshRenderer->SetMesh(ObjFileLoader::load("assets/jet.obj"));
+      meshRenderer->setMesh(ObjFileLoader::load("assets/jet.obj"));
     #endif
-
+    meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 1.0f));
     addComponent<BoxCollider3D>();
 
     // Player Bullet Shooting Point
@@ -63,11 +63,12 @@ public:
       );
       auto healthGemMesh = healthGem->addComponent<MeshRenderer3D>();
       #ifdef ASSETS_DIRECTORY
-        healthGemMesh->SetMesh(ObjFileLoader::load(ASSETS_DIRECTORY "star.obj"));
+        healthGemMesh->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "star.obj"));
       #else
         printf("Warning: ASSETS_DIRECTORY not defined.\n");
-        healthGemMesh->SetMesh(ObjFileLoader::load("assets/star.obj"));
+        healthGemMesh->setMesh(ObjFileLoader::load("assets/star.obj"));
       #endif
+      healthGemMesh->setDefaultColor(glm::vec3(1.0f, 1.0f, 0.5f));
       healthGem->transform->setParent(healthGemOrigin->transform);  // Set rotation center
       healthGems.push_back(healthGem);
     }

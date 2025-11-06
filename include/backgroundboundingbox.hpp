@@ -42,10 +42,11 @@ public:
         0, 2, 6, 4,
         1, 3, 7, 5,
     };
-    meshRenderer->SetMesh(
+    meshRenderer->setMesh(
         std::make_shared<Mesh3D>(vertices, indices)
     );
     meshRenderer->forceGraphicStyleMode(GraphicStyle::_GAME_BOUNDINGBOX);
+    meshRenderer->setDefaultColor(glm::vec3(1.0f, 1.0f, 0.0f));
     addComponent<BoxCollider3D>();
   };
 

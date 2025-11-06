@@ -59,11 +59,12 @@ public:
     auto meshRenderer = addComponent<MeshRenderer3D>();
     
     #ifdef ASSETS_DIRECTORY
-      meshRenderer->SetMesh(ObjFileLoader::load(ASSETS_DIRECTORY "rice.obj"));
+      meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "rice.obj"));
     #else
       printf("Warning: ASSETS_DIRECTORY not defined.\n");
-      meshRenderer->SetMesh(ObjFileLoader::load("assets/rice.obj"));
+      meshRenderer->setMesh(ObjFileLoader::load("assets/rice.obj"));
     #endif
+    meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 0.0f));
 
     transform->setScale(glm::vec3(2.0f));
     
@@ -79,11 +80,12 @@ public:
     auto meshRenderer = addComponent<MeshRenderer3D>();
     
     #ifdef ASSETS_DIRECTORY
-      meshRenderer->SetMesh(ObjFileLoader::load(ASSETS_DIRECTORY "rice.obj"));
+      meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "rice.obj"));
     #else
       printf("Warning: ASSETS_DIRECTORY not defined.\n");
-      meshRenderer->SetMesh(ObjFileLoader::load("assets/rice.obj"));
+      meshRenderer->setMesh(ObjFileLoader::load("assets/rice.obj"));
     #endif
+    meshRenderer->setDefaultColor(glm::vec3(1.0f, 0.0f, 0.5f));
 
     addComponent<BoxCollider3D>();
     bullet_shooter = BulletType::ENEMY;
