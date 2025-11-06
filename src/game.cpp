@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "player.hpp"
 #include "enemy.hpp"
+#include "backgroundboundingbox.hpp"
 
 namespace BBong {
 Game::Game() : mainScene(new Scene) {}
