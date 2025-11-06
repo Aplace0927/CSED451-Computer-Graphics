@@ -51,6 +51,4 @@ public:
 };
 }; // namespace BBong
 
-#include "BBong/component.inl"
-
 #endif // BBONG_COMPONENT_HPP

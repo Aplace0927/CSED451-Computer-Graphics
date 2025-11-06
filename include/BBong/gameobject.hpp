@@ -66,4 +66,6 @@ private:
   void renderUpdate();
 };
 } // namespace BBong
+#include "BBong/component.inl"
+
 #endif // BBONG_GAMEOBJECT_HPP
