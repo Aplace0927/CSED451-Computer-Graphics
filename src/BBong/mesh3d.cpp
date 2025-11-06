@@ -32,6 +32,7 @@ void Mesh3D::draw(GraphicStyle style) {
       const Vertex3D &vertex = m_vertices[index];
       glNormal3f(vertex.normal.x, vertex.normal.y, vertex.normal.z);
       glTexCoord2f(vertex.texCoord.x, vertex.texCoord.y);
+      glColor3f(defaultColor.r, defaultColor.g, defaultColor.b);
       glVertex3f(vertex.position.x, vertex.position.y, vertex.position.z);
     }
   glEnd();

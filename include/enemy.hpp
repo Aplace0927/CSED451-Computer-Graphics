@@ -26,11 +26,12 @@ public:
 
     auto meshRenderer = addComponent<MeshRenderer3D>();
     #ifdef ASSETS_DIRECTORY
-      meshRenderer->SetMesh(ObjFileLoader::load(ASSETS_DIRECTORY "drone.obj"));
+      meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "drone.obj"));
     #else
       printf("Warning: ASSETS_DIRECTORY not defined.\n");
-      meshRenderer->SetMesh(ObjFileLoader::load("assets/drone.obj"));
+      meshRenderer->setMesh(ObjFileLoader::load("assets/drone.obj"));
     #endif
+    meshRenderer->setDefaultColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
     addComponent<BoxCollider3D>();
 

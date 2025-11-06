@@ -15,7 +15,7 @@ MeshRenderer3D::MeshRenderer3D(const MeshRenderer3D &other)
   }
 }
 
-void MeshRenderer3D::SetMesh(std::shared_ptr<Mesh3D> mesh) {
+void MeshRenderer3D::setMesh(std::shared_ptr<Mesh3D> mesh) {
   if (!mesh) {
     throw std::invalid_argument("Mesh cannot be null.");
   }
