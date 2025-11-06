@@ -57,7 +57,14 @@ class PlayerBullet : public Bullet {
 public:
   explicit PlayerBullet(GameObject *owner) : Bullet(owner) {
     auto meshRenderer = addComponent<MeshRenderer3D>();
-    meshRenderer->SetMesh(ObjFileLoader::load("assets/rice.obj"));
+    
+    #ifdef ASSETS_DIRECTORY
+      meshRenderer->SetMesh(ObjFileLoader::load(ASSETS_DIRECTORY "rice.obj"));
+    #else
+      printf("Warning: ASSETS_DIRECTORY not defined.\n");
+      meshRenderer->SetMesh(ObjFileLoader::load("assets/rice.obj"));
+    #endif
+
     transform->setScale(glm::vec3(2.0f));
     
     addComponent<BoxCollider3D>();
@@ -70,7 +77,13 @@ class EnemyBullet : public Bullet {
 public:
   explicit EnemyBullet(GameObject *owner) : Bullet(owner) {
     auto meshRenderer = addComponent<MeshRenderer3D>();
-    meshRenderer->SetMesh(ObjFileLoader::load("assets/rice.obj"));
+    
+    #ifdef ASSETS_DIRECTORY
+      meshRenderer->SetMesh(ObjFileLoader::load(ASSETS_DIRECTORY "rice.obj"));
+    #else
+      printf("Warning: ASSETS_DIRECTORY not defined.\n");
+      meshRenderer->SetMesh(ObjFileLoader::load("assets/rice.obj"));
+    #endif
 
     addComponent<BoxCollider3D>();
     bullet_shooter = BulletType::ENEMY;

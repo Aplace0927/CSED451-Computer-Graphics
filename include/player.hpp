@@ -27,7 +27,13 @@ public:
     bulletPrefab->getComponent<Bullet>()->SetBulletPool(bullets);
 
     auto meshRenderer = addComponent<MeshRenderer3D>();
-    meshRenderer->SetMesh(ObjFileLoader::load("assets/jet.obj"));
+    
+    #ifdef ASSETS_DIRECTORY
+      meshRenderer->SetMesh(ObjFileLoader::load(ASSETS_DIRECTORY "jet.obj"));
+    #else
+      printf("Warning: ASSETS_DIRECTORY not defined.\n");
+      meshRenderer->SetMesh(ObjFileLoader::load("assets/jet.obj"));
+    #endif
 
     addComponent<BoxCollider3D>();
 

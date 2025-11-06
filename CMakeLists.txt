@@ -8,6 +8,7 @@ project (CSED451)
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build")
+set(RUNTIME_ASSET_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets")
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
 find_package(OpenGL REQUIRED)
@@ -89,3 +90,8 @@ endfunction()
 
 # Add source to this project's executable.
 add_subdirectory(src)
+
+file(
+    INSTALL "${CMAKE_SOURCE_DIR}/assets"
+    DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
+)
