@@ -7,6 +7,7 @@
 namespace BBong {
 class GameObject;
 class Transform;
+class Collider3D;
 
 class Component {
 public:
@@ -25,10 +26,11 @@ protected:
 
 private:
   friend class GameObject;
+  friend class CollisionManager;
   friend class Scene;
 
   void doFixedUpdate();
-  void doCollision();
+  void doCollision3D(Collider3D *collider);
   void doUpdate();
   void doLateUpdate();
   void doRenderUpdate();
@@ -36,7 +38,7 @@ private:
   virtual std::unique_ptr<Component> clone(GameObject *newOwner) const = 0;
 
   virtual void fixedUpdate() {}
-  virtual void collision() {}
+  virtual void collision3D(Collider3D *collider) {}
   virtual void update() {}
   virtual void lateUpdate() {}
   virtual void renderUpdate() {}
@@ -48,5 +50,7 @@ public:
   std::unique_ptr<Component> clone(GameObject *newOwner) const override;
 };
 }; // namespace BBong
+
+#include "BBong/component.inl"
 
 #endif // BBONG_COMPONENT_HPP

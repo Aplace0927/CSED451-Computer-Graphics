@@ -62,5 +62,29 @@ inline constexpr float LOSE_TEXT_COLOR[3] = {
     (float)0xFF / 0xFF, (float)0xFF / 0xFF, (float)0xFF / 0xFF};
 inline constexpr float LOSE_BG_COLOR[3] = {
     (float)0xF0 / 0xFF, (float)0x65 / 0xFF, (float)0x95 / 0xFF};
+
+inline constexpr int MAX_LAYERS = 8;
+
+enum CollisionLayer : uint8_t {
+  NONE = 0,
+  PLAYER = 1 << 0,
+  ENEMY = 1 << 1,
+  PLAYER_BULLET = 1 << 2,
+  ENEMY_BULLET = 1 << 3
+};
+
+// 0 is "do not check collision"
+// 1 is "check collision"
+// 2 is "collision ignore" -> never changed
+inline constexpr int COLLISION_MATRIX[8][8] = {
+    {0, 2, 2, 2, 2, 2, 2, 2},
+    {0, 0, 2, 2, 2, 2, 2, 2},
+    {0, 1, 0, 2, 2, 2, 2, 2},
+    {1, 0, 0, 0, 2, 2, 2, 2},
+    {0, 0, 0, 0, 0, 2, 2, 2},
+    {0, 0, 0, 0, 0, 0, 2, 2},
+    {0, 0, 0, 0, 0, 0, 0, 2},
+    {0, 0, 0, 0, 0, 0, 0, 0}
+};
 } // namespace GameConfig
 #endif // CONFIG_HPP

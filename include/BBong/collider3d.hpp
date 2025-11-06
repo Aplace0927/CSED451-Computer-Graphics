@@ -4,29 +4,34 @@
 #include <stdexcept>
 #include <memory>
 #include <vector>
+#include <functional>
 #include <glm/glm.hpp>
+#include <cstdint>
 
 #include "BBong/component.hpp"
 #include "BBong/transform.hpp"
 #include "BBong/boundingbox3d.hpp"
 #include "BBong/renderer3d.hpp"
+#include "config.hpp"
 
 namespace BBong {
+
+class CollisionManager;
+
 class Collider3D : public ClonableComponent<Collider3D> {
 protected:
+  friend class CollisionManager;
+
   std::unique_ptr<BoundingBox3D> m_boundingbox;
+  GameConfig::CollisionLayer m_layer;
 
 public:
-  explicit Collider3D(GameObject *owner)
-      : ClonableComponent<Collider3D>(owner), m_boundingbox(nullptr) {}
+  explicit Collider3D(GameObject *owner);
+  Collider3D(const Collider3D &other);
+  virtual ~Collider3D();
 
-  Collider3D(const Collider3D &other) : ClonableComponent<Collider3D>(nullptr) {
-    if (other.m_boundingbox) {
-      this->m_boundingbox = other.m_boundingbox->Clone();
-    } else {
-      this->m_boundingbox = nullptr;
-    }
-  }
+  void setLayer(GameConfig::CollisionLayer layer) { m_layer = layer; }
+  GameConfig::CollisionLayer getLayer() const { return m_layer; }
 
 protected:
   void fixedUpdate() override {
@@ -50,7 +55,15 @@ protected:
 
 class BoxCollider3D : public Collider3D {
 public:
-  explicit BoxCollider3D(GameObject *owner) : Collider3D(owner) {}
+  explicit BoxCollider3D(GameObject *owner) : Collider3D(owner) {
+    std::vector<glm::vec3> vertices = {
+        glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.5f, -0.5f, -0.5f),
+        glm::vec3(0.5f, 0.5f, -0.5f),   glm::vec3(-0.5f, 0.5f, -0.5f),
+        glm::vec3(-0.5f, -0.5f, 0.5f),  glm::vec3(0.5f, -0.5f, 0.5f),
+        glm::vec3(0.5f, 0.5f, 0.5f),    glm::vec3(-0.5f, 0.5f, 0.5f)};
+
+    SetBoundingBox(vertices);
+  }
 };
 } // namespace BBong
 

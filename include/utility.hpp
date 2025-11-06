@@ -29,5 +29,17 @@ inline time_t getCurrentTimeMS() {
              std::chrono::system_clock::now().time_since_epoch())
       .count();
 }
+
+inline int findFirstSetBit_Loop(uint32_t value) {
+  if (value == 0) {
+    return 32;
+  }
+  int index = 0;
+  while ((value & 1) == 0) {
+    value >>= 1;
+    index++;
+  }
+  return index;
+}
 }; // namespace Utility
 #endif // UTILITY_HPP

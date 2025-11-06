@@ -59,14 +59,14 @@ void GameObject::fixedUpdate() {
   }
 }
 
-void GameObject::collision() {
+void GameObject::collision3D(Collider3D *collider) {
   if (!m_isActive)
     return;
   for (const auto &comp : m_components) {
-    comp->doCollision();
+    comp->doCollision3D(collider);
   }
   for (auto child : transform->getChildren()) {
-    child->gameObject->collision();
+    child->gameObject->collision3D(collider);
   }
 }
 

@@ -9,6 +9,9 @@
 
 namespace BBong {
 class Scene;
+class CollisionManager;
+class Collider3D;
+
 class GameObject {
 public:
   Transform *transform;
@@ -51,16 +54,16 @@ public:
 
 private:
   friend class Scene;
+  friend class CollisionManager;
 
   void cloneComponentsFrom(const GameObject &other);
   void cloneFrom(const GameObject &other, Transform *parent);
 
   void fixedUpdate();
-  void collision();
+  void collision3D(Collider3D *collider);
   void update();
   void lateUpdate();
   void renderUpdate();
 };
 } // namespace BBong
-#include "BBong/component.inl"
 #endif // BBONG_GAMEOBJECT_HPP

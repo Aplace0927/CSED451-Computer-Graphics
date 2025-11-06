@@ -1,4 +1,5 @@
 #include "BBong/physicsmanager.hpp"
+#include "BBong/collisionmanager.hpp"
 
 namespace BBong {
 PhysicsManager::PhysicsManager() { start(); }
@@ -12,7 +13,7 @@ PhysicsManager::registerHandler(std::function<void()> func) {
   handlers.push_back(ptr);
   return ptr;
 }
-
+  std::recursive_mutex fixedUpdateHandlerMutex;
 void PhysicsManager::unregisterHandler(
     std::shared_ptr<std::function<void()>> ptr) {
   std::lock_guard<std::recursive_mutex> lock(fixedUpdateHandlerMutex);
@@ -24,17 +25,16 @@ void PhysicsManager::fixedUpdate() {
   std::vector<std::shared_ptr<std::function<void()>>> fixedUpdatesCopy;
   {
     std::lock_guard<std::recursive_mutex> lock(fixedUpdateHandlerMutex);
-    fixedUpdatesCopy = handlers; // Create a copy to avoid holding the lock
+    fixedUpdatesCopy = handlers;
   }
 
   if (fixedUpdatesCopy.empty()) {
     return;
   }
   for (auto &handler : fixedUpdatesCopy) {
-    if (handler == nullptr) {
-      continue;
+    if (handler != nullptr) {
+      (*handler)();
     }
-    (*handler)();
   }
 }
 
@@ -47,6 +47,7 @@ void PhysicsManager::start() {
       auto start = std::chrono::high_resolution_clock::now();
 
       fixedUpdate();
+      CollisionManager::getInstance().checkCollisions3D();
 
       auto end = std::chrono::high_resolution_clock::now();
       std::chrono::duration<float> elapsed = end - start;
@@ -64,4 +65,4 @@ void PhysicsManager::stop() {
     loopThread.join();
   }
 }
-} // namespace PhysicsManager
+} // namespace BBong
