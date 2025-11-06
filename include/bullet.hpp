@@ -12,6 +12,7 @@
 #include "BBong/gameobject.hpp"
 #include "BBong/transform.hpp"
 #include "BBong/objfileloader.hpp"
+#include "BBong/objectpool.hpp"
 #include "utility.hpp"
 #include "config.hpp"
 
@@ -21,17 +22,35 @@ enum class BulletType { PLAYER, ENEMY, NONE };
 
 class Bullet : public ClonableComponent<Bullet> {
 public:
-  explicit Bullet(GameObject *owner) : ClonableComponent(owner) {}
+  explicit Bullet(GameObject *owner)
+      : ClonableComponent(owner), bullet_shooter(BulletType::NONE),
+        moveDirection(0) {}
+
+  Bullet(const Bullet &other) : ClonableComponent(nullptr) {
+    this->bulletPool = other.bulletPool;
+    this->moveDirection = other.moveDirection;
+  }
+
+  void SetBulletPool(std::shared_ptr<ObjectPool> pool) { bulletPool = pool; }
 
   void fixedUpdate() override {
-    transform->setPosition(transform->position + moveDirection * BulletSpeed *
-                                                     Utility::FixedDeltaTime);
+    transform->translate(moveDirection * BulletSpeed * Utility::FixedDeltaTime);
+
+    glm::vec3 currentPos = transform->getWorldPosition();
+    if (currentPos.x < GameConfig::POSITION_LEFT_LIMIT ||
+        currentPos.x > GameConfig::POSITION_RIGHT_LIMIT ||
+        currentPos.y < GameConfig::POSITION_LOWER_LIMIT ||
+        currentPos.y > GameConfig::POSITION_UPPER_LIMIT)
+      bulletPool->release(gameObject);
   };
 
 protected:
   float BulletSpeed = 300.0f;
   BulletType bullet_shooter;
   glm::vec3 moveDirection;
+
+private:
+  std::shared_ptr<ObjectPool> bulletPool;
 };
 
 class PlayerBullet : public Bullet {

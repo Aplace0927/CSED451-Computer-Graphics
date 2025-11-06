@@ -1,5 +1,6 @@
 #include "BBong/transform.hpp"
 #include "BBong/gameobject.hpp"
+#include <glm/gtx/matrix_decompose.hpp>
 
 namespace BBong {
 std::unique_ptr<Component> Transform::clone(GameObject *newOwner) const {
@@ -10,7 +11,7 @@ std::unique_ptr<Component> Transform::clone(GameObject *newOwner) const {
   return t;
 }
 
-glm::mat4 Transform::getWorldMatrix() {
+glm::mat4 Transform::getWorldMatrix() const {
   if (isWorldDirty) {
     if (isLocalDirty) {
       localTransformMatrix = calculateLocalMatrix();
@@ -28,12 +29,22 @@ glm::mat4 Transform::getWorldMatrix() {
   return worldTransformMatrix;
 }
 
-glm::mat4 Transform::getLocalMatrix() {
+glm::mat4 Transform::getLocalMatrix() const {
   if (isLocalDirty) {
     localTransformMatrix = calculateLocalMatrix();
     isLocalDirty = false;
   }
   return localTransformMatrix;
+}
+
+glm::vec3 Transform::getLocalPosition() const { return position; }
+
+glm::quat Transform::getRotation() const { return rotation; }
+
+glm::vec3 Transform::getScale() const { return scale; }
+
+glm::vec3 Transform::getWorldPosition() const {
+  return glm::vec3(getWorldMatrix()[3]);
 }
 
 void Transform::rotate(float angle_degrees, const glm::vec3 &axis) {
@@ -57,8 +68,21 @@ void Transform::setRotation(const glm::quat &newRotation) {
   setLocalDirty();
 }
 
-void Transform::setPosition(const glm::vec3 &position) {
+void Transform::setLocalPosition(const glm::vec3 &position) {
   this->position = position;
+  setLocalDirty();
+}
+
+void Transform::setWorldPosition(const glm::vec3 &newWorldPosition) {
+  if (parent) {
+    glm::mat4 parentWorldMatrix = parent->getWorldMatrix();
+    glm::mat4 inverseParentWorldMatrix = glm::inverse(parentWorldMatrix);
+    glm::vec4 newLocalPositionVec4 =
+        inverseParentWorldMatrix * glm::vec4(newWorldPosition, 1.0f);
+    this->position = glm::vec3(newLocalPositionVec4);
+  } else {
+    this->position = newWorldPosition;
+  }
   setLocalDirty();
 }
 
@@ -77,7 +101,6 @@ void Transform::removeChild(Transform *child) {
   auto it = std::find(children.begin(), children.end(), child);
   if (it != children.end()) {
     (*it)->setParent(nullptr);
-    children.erase(it);
   }
 }
 
@@ -121,9 +144,8 @@ void Transform::setLocalDirty() {
 }
 
 void Transform::setWorldDirty() {
-  if (isWorldDirty) {
+  if (isWorldDirty)
     return;
-  }
 
   this->isWorldDirty = true;
   for (Transform *child : children) {

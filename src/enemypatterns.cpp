@@ -39,7 +39,8 @@ SpiralPattern::SpiralPattern(float s, float step)
 std::vector<std::function<glm::vec3(glm::vec3, float)>> SpiralPattern::fire() {
   std::vector<std::function<glm::vec3(glm::vec3, float)>> actions;
 
-  glm::vec3 dir(cos(angle), sin(angle), 0.0f);
+  float angleInRadians = glm::radians(angle);
+  glm::vec3 dir(cos(angleInRadians), sin(angleInRadians), 0.0f);
   actions.push_back(straight(dir, speed));
 
   angle += angleStep;

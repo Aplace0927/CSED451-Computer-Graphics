@@ -18,20 +18,23 @@ namespace BBong {
 class Enemy : public ClonableComponent<Enemy> {
 public:
   explicit Enemy(GameObject *owner)
-      : ClonableComponent(owner),
-        bullets(new ObjectPool(*createBulletPrefab(), nullptr, 100)) {
+      : ClonableComponent(owner){
 
-    movementPattern = new HorizonPattern(100.0f);
-    shootingPattern = chooseShootingPattern();
+    GameObject *bulletPrefab = createBulletPrefab();
+    bullets = std::make_shared<ObjectPool>(*bulletPrefab, nullptr, 0);
+    bulletPrefab->getComponent<Bullet>()->SetBulletPool(bullets);
 
     auto meshRenderer = addComponent<MeshRenderer3D>();
-    meshRenderer->SetMesh(ObjFileLoader::load("assets/jet.obj"));
+    meshRenderer->SetMesh(ObjFileLoader::load("assets/drone.obj"));
 
     addComponent<BoxCollider3D>();
 
-    transform->setScale(glm::vec3(5.0f));
+    transform->setScale(glm::vec3(100.0f));
     transform->setRotation(
         glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 0.0f))));
+
+    movementPattern = new HorizonPattern(100.0f);
+    shootingPattern = chooseShootingPattern();
   };
 
   Enemy(const Enemy &other) : ClonableComponent(nullptr) {

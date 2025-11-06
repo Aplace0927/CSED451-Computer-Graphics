@@ -10,10 +10,11 @@
 #include "BBong/objectpool.hpp"
 
 namespace BBong {
-inline std::function<glm::vec3(glm::vec3, float)> straight(glm::vec3 direction,
-                                                           float speed) {
-  return [direction, speed](glm::vec3 origin, float time) -> glm::vec3 {
-    return origin + (direction * speed * time);
+inline std::function<glm::vec3(glm::vec3, float)>
+straight(glm::vec3 direction, float speed) {
+  return [direction, speed](glm::vec3 origin, float time_elapsed) {
+    return origin +
+           Utility::getNormalizedDirection(direction, speed * time_elapsed);
   };
 }
 

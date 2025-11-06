@@ -20,33 +20,35 @@ namespace BBong {
 class Player : public ClonableComponent<Player> {
 public:
   explicit Player(GameObject *owner)
-      : ClonableComponent(owner),
-        bullets(new ObjectPool(*createBulletPrefab(), nullptr, 100)) {
-    
-      auto meshRenderer = addComponent<MeshRenderer3D>();
+      : ClonableComponent(owner) {
+
+    GameObject *bulletPrefab = createBulletPrefab();
+    bullets = std::make_shared<ObjectPool>(*bulletPrefab, nullptr, 0);
+    bulletPrefab->getComponent<Bullet>()->SetBulletPool(bullets);
+
+    auto meshRenderer = addComponent<MeshRenderer3D>();
     meshRenderer->SetMesh(ObjFileLoader::load("assets/jet.obj"));
 
     addComponent<BoxCollider3D>();
 
     transform->setScale(glm::vec3(5.0f));
-    transform->setRotation(glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 180.0f))));
+    transform->setRotation(
+        glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 180.0f))));
+
+    shootingPoint = Game::getInstance().mainScene->createGameObject(transform);
+    shootingPoint->transform->setWorldPosition(glm::vec3(0, 30, 0));
   };
 
   Player(const Player &other) : ClonableComponent(nullptr) {
     this->bullets = other.bullets;
+    this->direction = other.direction;
+    this->shootingPoint = other.shootingPoint;
   }
 
   ~Player() override { bullets.reset(); }
 
   void update() override;
   void fixedUpdate() override;
-  void setDirection(const glm::vec3 &input) { direction = input; }
-  void shooting(bool shooting) {
-    isShooting = shooting;
-    if (!isShooting) {
-      shootingCooldown = 0;
-    }
-  }
 
 private:
   static GameObject *createBulletPrefab() {
@@ -58,6 +60,7 @@ private:
 
   std::shared_ptr<ObjectPool> bullets;
   glm::vec3 direction = glm::vec3(0.0f);
+  GameObject* shootingPoint;
   int playerHealth = 100;
   float shootingCooldown = 0.0f;
   float reviveCooldown = 0.0f;

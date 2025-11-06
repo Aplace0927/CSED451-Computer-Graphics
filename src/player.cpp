@@ -17,18 +17,17 @@ void Player::update() {
   if (isShooting &&
       shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_TIME_SEC) {
     auto newBullet = bullets->acquire();
-    newBullet->transform->setPosition(transform->position);
+    newBullet->transform->setWorldPosition(shootingPoint->transform->getWorldPosition());
     shootingCooldown = 0;
   }
 }
 
 void Player::fixedUpdate() {
-  transform->setPosition(transform->position +
-                         direction * Utility::FixedDeltaTime * speed);
+  transform->translate(direction * Utility::FixedDeltaTime * speed);
 
-  glm::vec3 currentpos = transform->position;
+  glm::vec3 currentpos = transform->getWorldPosition();
 
-  transform->setPosition(
+  transform->setWorldPosition(
       glm::vec3(glm::clamp(currentpos.x, GameConfig::POSITION_LEFT_LIMIT,
                            GameConfig::POSITION_RIGHT_LIMIT),
                 glm::clamp(currentpos.y, GameConfig::POSITION_LOWER_LIMIT,

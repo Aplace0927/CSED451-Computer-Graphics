@@ -9,8 +9,8 @@ void Enemy::fixedUpdate() {
 void Enemy::updateMovementPattern() {
   if (!movementPattern)
     return;
-  transform->setPosition(
-      movementPattern->move(transform->position, GameConfig::FIXED_DELTATIME));
+  transform->setWorldPosition(movementPattern->move(
+      transform->getWorldPosition(), GameConfig::FIXED_DELTATIME));
 }
 
 void Enemy::updateShootingPattern() {
@@ -38,9 +38,8 @@ ShootingPattern *Enemy::chooseShootingPattern() {
 void Enemy::shooting() {
   for (const std::function<glm::vec3(glm::vec3, float)> &func :
        shootingPattern->fire()) {
-
     auto *newBullet = bullets->acquire();
-    newBullet->transform->setPosition(transform->position);
+    newBullet->transform->setWorldPosition(transform->getWorldPosition());
   }
 }
 } // namespace BBong
