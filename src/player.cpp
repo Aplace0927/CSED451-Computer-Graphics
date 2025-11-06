@@ -14,6 +14,11 @@ void Player::update() {
     this->setActive(true);
   }
 
+  healthGemOrigin->transform->rotate(
+    90.0f * Utility::DeltaTime,
+    glm::vec3(0, 0, 1)
+  );
+
   if (isShooting &&
       shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_TIME_SEC) {
     auto newBullet = bullets->acquire();
