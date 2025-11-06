@@ -14,6 +14,14 @@ void Player::update() {
     this->setActive(true);
   }
 
+  transform->setRotation(
+      glm::quat(glm::radians(glm::vec3(
+        -90.0f + 20.0f * direction.y,
+        180.0f + 10.0f * direction.x,
+        0.0f
+      )))
+  );
+
   healthGemOrigin->transform->rotate(
     90.0f * Utility::DeltaTime,
     glm::vec3(0, 0, 1)
