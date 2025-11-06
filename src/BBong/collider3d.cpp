@@ -23,4 +23,9 @@ Collider3D::~Collider3D() {
   CollisionManager::getInstance().unregisterCollider3D(this);
 }
 
+void Collider3D::setLayer(GameConfig::CollisionLayer layer) {
+  CollisionManager::getInstance().unregisterCollider3D(this);
+  m_layer = layer;
+  CollisionManager::getInstance().registerCollider3D(this);
+}
 } // namespace BBong

@@ -18,13 +18,10 @@
 
 namespace BBong {
 
-enum class BulletType { PLAYER, ENEMY, NONE };
-
 class Bullet : public ClonableComponent<Bullet> {
 public:
   explicit Bullet(GameObject *owner)
-      : ClonableComponent(owner), bullet_shooter(BulletType::NONE),
-        moveDirection(0) {}
+      : ClonableComponent(owner), moveDirection(0) {}
 
   Bullet(const Bullet &other) : ClonableComponent(nullptr) {
     this->bulletPool = other.bulletPool;
@@ -46,7 +43,6 @@ public:
 
 protected:
   float BulletSpeed = 300.0f;
-  BulletType bullet_shooter;
   glm::vec3 moveDirection;
 
 private:
@@ -57,19 +53,19 @@ class PlayerBullet : public Bullet {
 public:
   explicit PlayerBullet(GameObject *owner) : Bullet(owner) {
     auto meshRenderer = addComponent<MeshRenderer3D>();
-    
-    #ifdef ASSETS_DIRECTORY
-      meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "rice.obj"));
-    #else
-      printf("Warning: ASSETS_DIRECTORY not defined.\n");
-      meshRenderer->setMesh(ObjFileLoader::load("assets/rice.obj"));
-    #endif
+
+#ifdef ASSETS_DIRECTORY
+    meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "rice.obj"));
+#else
+    printf("Warning: ASSETS_DIRECTORY not defined.\n");
+    meshRenderer->setMesh(ObjFileLoader::load("assets/rice.obj"));
+#endif
     meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 0.0f));
 
     transform->setScale(glm::vec3(2.0f));
-    
-    addComponent<BoxCollider3D>();
-    bullet_shooter = BulletType::PLAYER;
+
+    auto collider = addComponent<BoxCollider3D>();
+    collider->setLayer(GameConfig::CollisionLayer::PLAYER_BULLET);
     moveDirection = glm::vec3(0.0f, 1.0f, 0.0f);
   }
 };
@@ -78,17 +74,17 @@ class EnemyBullet : public Bullet {
 public:
   explicit EnemyBullet(GameObject *owner) : Bullet(owner) {
     auto meshRenderer = addComponent<MeshRenderer3D>();
-    
-    #ifdef ASSETS_DIRECTORY
-      meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "rice.obj"));
-    #else
-      printf("Warning: ASSETS_DIRECTORY not defined.\n");
-      meshRenderer->setMesh(ObjFileLoader::load("assets/rice.obj"));
-    #endif
+
+#ifdef ASSETS_DIRECTORY
+    meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "rice.obj"));
+#else
+    printf("Warning: ASSETS_DIRECTORY not defined.\n");
+    meshRenderer->setMesh(ObjFileLoader::load("assets/rice.obj"));
+#endif
     meshRenderer->setDefaultColor(glm::vec3(1.0f, 0.0f, 0.5f));
 
-    addComponent<BoxCollider3D>();
-    bullet_shooter = BulletType::ENEMY;
+    auto collider = addComponent<BoxCollider3D>();
+    collider->setLayer(GameConfig::CollisionLayer::ENEMY_BULLET);
     moveDirection = glm::vec3(0.0f, -1.0f, 0.0f);
   }
 };

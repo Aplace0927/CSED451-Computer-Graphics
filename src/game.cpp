@@ -12,7 +12,7 @@ void Game::Init() {
 
   GameObject* playerObj = mainScene->createGameObject();
   playerObj->addComponent<Player>();
-  auto enemyObj = mainScene->createGameObject();
-  enemyObj->addComponent<Enemy>();
+  /*auto enemyObj = mainScene->createGameObject();
+  enemyObj->addComponent<Enemy>();*/
 }
 } // namespace BBong

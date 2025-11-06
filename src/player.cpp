@@ -14,23 +14,17 @@ void Player::update() {
     this->setActive(true);
   }
 
-  transform->setRotation(
-      glm::quat(glm::radians(glm::vec3(
-        -90.0f + 20.0f * direction.y,
-        180.0f + 10.0f * direction.x,
-        0.0f
-      )))
-  );
+  transform->setRotation(glm::quat(glm::radians(glm::vec3(
+      -90.0f + 20.0f * direction.y, 180.0f + 10.0f * direction.x, 0.0f))));
 
-  healthGemOrigin->transform->rotate(
-    90.0f * Utility::DeltaTime,
-    glm::vec3(0, 0, 1)
-  );
+  healthGemOrigin->transform->rotate(90.0f * Utility::DeltaTime,
+                                     glm::vec3(0, 0, 1));
 
   if (isShooting &&
       shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_TIME_SEC) {
     auto newBullet = bullets->acquire();
-    newBullet->transform->setWorldPosition(shootingPoint->transform->getWorldPosition());
+    newBullet->transform->setWorldPosition(
+        shootingPoint->transform->getWorldPosition());
     shootingCooldown = 0;
   }
 }
@@ -47,4 +41,16 @@ void Player::fixedUpdate() {
                            GameConfig::POSITION_UPPER_LIMIT),
                 currentpos.z));
 }
-} // namespace Player
+
+void Player::collision3D(Collider3D *collider) {
+  std::cout << "Player collision!" << std::endl;
+  /*this->setActive(false);
+  reviveCooldown = 0.0f;
+  if (playerHealth > 0) {
+    --playerHealth;
+    GameObject *lostHealthGem = healthGems.back();
+    healthGems.pop_back();
+    lostHealthGem->setActive(false);
+  }*/
+}
+} // namespace BBong

@@ -71,6 +71,10 @@ public:
       healthGemMesh->setDefaultColor(glm::vec3(1.0f, 1.0f, 0.5f));
       healthGem->transform->setParent(healthGemOrigin->transform);  // Set rotation center
       healthGems.push_back(healthGem);
+
+      //Player Collider
+      auto collider = addComponent<BoxCollider3D>();
+      collider->setLayer(GameConfig::CollisionLayer::PLAYER);
     }
   };
 
@@ -84,6 +88,7 @@ public:
 
   void update() override;
   void fixedUpdate() override;
+  void collision3D(Collider3D *collider) override;
 
 private:
   static GameObject *createBulletPrefab() {

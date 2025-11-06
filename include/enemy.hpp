@@ -41,6 +41,10 @@ public:
 
     movementPattern = new HorizonPattern(100.0f);
     shootingPattern = chooseShootingPattern();
+
+    // Set up collider
+    auto collider = addComponent<BoxCollider3D>();
+    collider->setLayer(GameConfig::CollisionLayer::ENEMY);
   };
 
   Enemy(const Enemy &other) : ClonableComponent(nullptr) {

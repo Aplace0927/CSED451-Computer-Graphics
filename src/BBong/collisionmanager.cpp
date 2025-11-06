@@ -56,8 +56,6 @@ void CollisionManager::checkCollisions3D() {
         continue;
       }
       if (GameConfig::COLLISION_MATRIX[i][j] == 2) {
-        std::cout << "Skipping collision check between layers " << i << " and "
-                  << j << std::endl;
         continue;
       }
 
@@ -75,7 +73,6 @@ void CollisionManager::checkCollisions3D() {
         for (Collider3D *b : collidersB) {
           if (b == nullptr)
             continue;
-
           if (a->intersects(b)) {
             a->gameObject->collision3D(b);
             b->gameObject->collision3D(a);

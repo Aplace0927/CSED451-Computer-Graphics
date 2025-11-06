@@ -7,6 +7,7 @@
 #include <functional>
 #include <glm/glm.hpp>
 #include <cstdint>
+#include <iostream>
 
 #include "BBong/component.hpp"
 #include "BBong/transform.hpp"
@@ -30,13 +31,71 @@ public:
   Collider3D(const Collider3D &other);
   virtual ~Collider3D();
 
-  void setLayer(GameConfig::CollisionLayer layer) { m_layer = layer; }
+  void setLayer(GameConfig::CollisionLayer layer);
   GameConfig::CollisionLayer getLayer() const { return m_layer; }
 
 protected:
   void fixedUpdate() override {
     if (m_boundingbox)
       m_boundingbox->updateWorld(transform->getWorldMatrix());
+    std::cout << m_boundingbox->getMinWorld().x << ", "
+              << m_boundingbox->getMinWorld().y << ", "
+              << m_boundingbox->getMinWorld().z << " - "
+              << m_boundingbox->getMaxWorld().x << ", "
+              << m_boundingbox->getMaxWorld().y << ", "
+              << m_boundingbox->getMaxWorld().z << std::endl;
+    std::cout << transform->getWorldPosition().x << ", "
+              << transform->getWorldPosition().y << ", "
+              << transform->getWorldPosition().z << std::endl;
+  }
+
+  void renderUpdate() override {
+    if (!m_boundingbox)
+      return;
+
+    glPushAttrib(GL_ENABLE_BIT | GL_LINE_BIT | GL_CURRENT_BIT);
+    glPushMatrix();
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glLineWidth(2.0f);
+    glColor3f(0.0f, 1.0f, 0.0f);
+
+    const glm::vec3 &min = m_boundingbox->getMinWorld();
+    const glm::vec3 &max = m_boundingbox->getMaxWorld();
+
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(min.x, min.y, min.z);
+    glVertex3f(max.x, min.y, min.z);
+    glVertex3f(max.x, max.y, min.z);
+    glVertex3f(min.x, max.y, min.z);
+    glEnd();
+
+    // 2. 뒷면 (max.z)
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(min.x, min.y, max.z);
+    glVertex3f(max.x, min.y, max.z);
+    glVertex3f(max.x, max.y, max.z);
+    glVertex3f(min.x, max.y, max.z);
+    glEnd();
+
+    // 3. 연결선 (4개)
+    glBegin(GL_LINES);
+    glVertex3f(min.x, min.y, min.z);
+    glVertex3f(min.x, min.y, max.z);
+
+    glVertex3f(max.x, min.y, min.z);
+    glVertex3f(max.x, min.y, max.z);
+
+    glVertex3f(max.x, max.y, min.z);
+    glVertex3f(max.x, max.y, max.z);
+
+    glVertex3f(min.x, max.y, min.z);
+    glVertex3f(min.x, max.y, max.z);
+    glEnd();
+
+    glPopMatrix();
+    glPopAttrib();
   }
 
   void SetBoundingBox(const std::vector<glm::vec3> &vertices) {
