@@ -14,7 +14,8 @@ public:
 
 enum class GraphicStyle {
   OPAQUE_POLYGON,
-  WIREFRAME
+  WIREFRAME,
+  _GAME_BOUNDINGBOX
 };
 
 class Mesh3D {

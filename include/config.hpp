@@ -4,6 +4,8 @@
 namespace GameConfig {
 inline constexpr int WINDOW_WIDTH = 512;
 inline constexpr int WINDOW_HEIGHT = 1024;
+inline constexpr int WINDOW_DEPTH = 256;
+
 inline constexpr const char *WINDOW_TITLE = "POST-ouhou-ECH";
 
 inline constexpr float PLAYER_SPEED = 10.0f;
