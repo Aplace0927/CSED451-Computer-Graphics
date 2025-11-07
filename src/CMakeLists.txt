@@ -16,7 +16,6 @@ add_executable(
 	"enemy.cpp"
 	"enemypatterns.cpp"
 	"game.cpp"
-	"healthbar.cpp"
 	"main.cpp"
 	"player.cpp"
 	"utility.cpp"

@@ -7,6 +7,7 @@
 #include "BBong/component.hpp"
 #include "BBong/renderer3d.hpp"
 #include "BBong/collider3d.hpp"
+#include "healthbar.hpp"
 #include "objectpool.hpp"
 #include "bullet.hpp"
 #include "enemypatterns.hpp"
@@ -38,6 +39,15 @@ public:
 
     shootingPattern = chooseShootingPattern();
 
+    healthBar = Game::getInstance().mainScene->createGameObject(transform);
+    healthBar->transform->setScale(glm::vec3(0.2f));
+    healthBar->transform->setLocalPosition(glm::vec3(0.0f, 0.2f, 0.2f));
+    
+    auto healthBarMesh = healthBar->addComponent<MeshRenderer3D>();
+    healthBarMesh->setMesh(createHealthBarMesh(enemyHealth, enemyMaxHealth));
+    healthBarMesh->forceGraphicStyleMode(GraphicStyle::OPAQUE_POLYGON);
+    healthBarMesh->setDefaultColor(glm::vec3(0.0f, 1.0f, 0.0f));  // Green initial
+     
     // Set up collider
     auto collider = addComponent<BoxCollider3D>();
     collider->setLayer(GameConfig::CollisionLayer::ENEMY);
@@ -52,6 +62,7 @@ public:
     this->shootingPatterns = other.shootingPatterns;
   }
 
+  void update() override;
   void fixedUpdate() override;
   void collision3D(Collider3D *collider) override;
 
@@ -67,7 +78,7 @@ private:
   ShootingPattern *chooseShootingPattern();
   void shooting();
 
-  // HealthBar::HealthBar healthBar;
+  GameObject* healthBar;
   std::shared_ptr<ObjectPool> bullets;
   std::vector<MovementPattern *> movementPatterns{new HorizonPattern(10.0f),
                                                   new FallingPattern(5.0f)};
@@ -76,6 +87,7 @@ private:
       new CirclePattern(200.0f, 12), new SpiralPattern(200.0f, 20.0f),
       new RandomBurstPattern(250.0f, 5)};
   int enemyHealth = 100;
+  int enemyMaxHealth = 100;
 };
 } // namespace BBong
 #endif // ENEMY_HPP

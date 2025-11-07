@@ -1,6 +1,18 @@
 #include "enemy.hpp"
 
 namespace BBong {
+
+void Enemy::update() {
+  auto healthBarRenderer = healthBar->getComponent<Mesh3D>();
+  healthBarRenderer->setMesh(
+    createHealthBarMesh(enemyHealth, enemyMaxHealth)
+  );
+  float healthRatio = static_cast<float>(enemyHealth) / enemyMaxHealth;
+  healthBarRenderer->setDefaultColor(
+    glm::vec3(1.0f - healthRatio, healthRatio, 0.0f)
+  );
+}
+
 void Enemy::fixedUpdate() {
   updateMovementPattern();
   updateShootingPattern();
@@ -9,12 +21,13 @@ void Enemy::fixedUpdate() {
 void Enemy::collision3D(Collider3D *collider) {
   enemyHealth--;
   if (enemyHealth < 0) {
-    Game::getInstance().mainScene->destroyGameObject(gameObject);
+    std::cerr << "Enemy destroyed!" << std::endl;
+    setActive(false);
   }
 }
 
 void Enemy::updateMovementPattern() {
-  for each (auto movementPattern in movementPatterns) {
+  for (auto movementPattern : movementPatterns) {
     if (!movementPattern)
       return;
     transform->setWorldPosition(movementPattern->move(
