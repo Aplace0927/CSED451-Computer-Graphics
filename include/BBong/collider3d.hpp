@@ -51,6 +51,9 @@ protected:
     if (!m_boundingbox)
       return;
 
+    if (!Input::getInstance().boundingBoxVisible)
+      return;
+      
     glPushAttrib(GL_ENABLE_BIT | GL_LINE_BIT | GL_CURRENT_BIT);
     glPushMatrix();
 
@@ -69,7 +72,7 @@ protected:
     glVertex3f(min.x, max.y, min.z);
     glEnd();
 
-    // 2. µÞ¸é (max.z)
+    // 2. ï¿½Þ¸ï¿½ (max.z)
     glBegin(GL_LINE_LOOP);
     glVertex3f(min.x, min.y, max.z);
     glVertex3f(max.x, min.y, max.z);
@@ -77,7 +80,7 @@ protected:
     glVertex3f(min.x, max.y, max.z);
     glEnd();
 
-    // 3. ¿¬°á¼± (4°³)
+    // 3. ï¿½ï¿½ï¿½á¼± (4ï¿½ï¿½)
     glBegin(GL_LINES);
     glVertex3f(min.x, min.y, min.z);
     glVertex3f(min.x, min.y, max.z);

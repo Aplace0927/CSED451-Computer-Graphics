@@ -36,6 +36,7 @@ public:
 
   ProjectionMode projectionMode = PERSPECTIVE;
   GraphicStyleMode graphicStyleMode = SOLID;
+  bool boundingBoxVisible = false;
 };
 }; // namespace Input
 
