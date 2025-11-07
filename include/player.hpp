@@ -6,6 +6,7 @@
 #include "BBong/gameobject.hpp"
 #include "BBong/renderer3d.hpp"
 #include "BBong/collider3d.hpp"
+#include "BBong/collisionmanager.hpp"
 #include "BBong/component.hpp"
 #include "BBong/objfileloader.hpp"
 #include "objectpool.hpp"
