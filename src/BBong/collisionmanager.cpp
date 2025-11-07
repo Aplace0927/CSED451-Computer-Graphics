@@ -15,7 +15,7 @@ void CollisionManager::registerCollider3D(Collider3D *collider) {
   uint8_t layer = collider->getLayer();
 
   if (layer != 0 && (layer & (layer - 1)) != 0) {
-    std::cout << "Warning: Collider registered with multiple layers " << layer
+    std::cerr << "Warning: Collider registered with multiple layers " << layer
               << " Enforcing single layer rule." << std::endl;
     layer = layer & -layer;
   }

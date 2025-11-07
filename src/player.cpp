@@ -10,6 +10,11 @@ void Player::update() {
   shootingCooldown += Utility::DeltaTime;
   reviveCooldown += Utility::DeltaTime;
 
+  if (playerHealth <= 0) {
+    this->setActive(false);
+    return;
+  }
+
   if (reviveCooldown >= GameConfig::REVIVE_COOLDOWN_TIME_SEC) {
     isLive = true;
     meshRenderer->gameObject->setActive(true);

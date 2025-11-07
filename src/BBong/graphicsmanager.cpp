@@ -72,7 +72,6 @@ void GraphicsManager::update() {
 
   // --- 3. Camera Shaking ---
   if (shaking) {
-    std::cout << "Shaking: " << shakeTimer << " / " << shakeDuration << "\n";
     shakeTimer += Utility::DeltaTime;
     if (shakeTimer >= shakeDuration) {
       shaking = false;
