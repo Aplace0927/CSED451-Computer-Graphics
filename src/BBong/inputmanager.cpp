@@ -1,4 +1,4 @@
-#include <BBong/input.hpp>
+#include <BBong/inputmanager.hpp>
 
 namespace BBong {
 void Input::keyEvent(unsigned char key, int x, int y) {

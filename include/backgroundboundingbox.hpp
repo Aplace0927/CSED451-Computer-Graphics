@@ -12,9 +12,6 @@
 #include "objectpool.hpp"
 #include "config.hpp"
 #include "bullet.hpp"
-#include "gamestate.hpp"
-
-extern BBong::GameState gameState;
 
 namespace BBong {
 class BackgroundBoundingBox : public ClonableComponent<BackgroundBoundingBox> {

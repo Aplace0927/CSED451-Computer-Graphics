@@ -11,9 +11,6 @@
 #include "objectpool.hpp"
 #include "bullet.hpp"
 #include "enemypatterns.hpp"
-#include "gamestate.hpp"
-
-extern BBong::GameState gameState;
 
 namespace BBong {
 class Enemy : public ClonableComponent<Enemy> {

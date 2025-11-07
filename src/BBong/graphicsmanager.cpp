@@ -10,7 +10,7 @@
 
 #include "config.hpp"
 #include "utility.hpp"
-#include "BBong/input.hpp"
+#include "BBong/inputmanager.hpp"
 
 namespace BBong {
 std::shared_ptr<GraphicsManagerFunc>

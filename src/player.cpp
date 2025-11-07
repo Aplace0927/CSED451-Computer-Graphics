@@ -1,6 +1,6 @@
 #include "player.hpp"
 
-#include "BBong/input.hpp"
+#include "BBong/inputmanager.hpp"
 
 namespace BBong {
 void Player::update() {

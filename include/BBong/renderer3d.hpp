@@ -11,7 +11,7 @@
 #include "BBong/gameobject.hpp"
 #include "BBong/transform.hpp"
 #include "BBong/mesh3d.hpp"
-#include "BBong/input.hpp"
+#include "BBong/inputmanager.hpp"
 
 namespace BBong {
 class MeshRenderer3D : public ClonableComponent<MeshRenderer3D> {

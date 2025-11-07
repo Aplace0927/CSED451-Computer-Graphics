@@ -6,10 +6,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "BBong/graphicsmanager.hpp"
-#include "BBong/input.hpp"
+#include "BBong/inputmanager.hpp"
 #include "config.hpp"
 #include "game.hpp"
-#include "gamestate.hpp"
 
 int main(int argc, char **argv) {
   BBong::Game::getInstance().Init();

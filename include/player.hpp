@@ -12,10 +12,6 @@
 #include "objectpool.hpp"
 #include "config.hpp"
 #include "bullet.hpp"
-#include "gamestate.hpp"
-#include "mesh2dsample.hpp"
-
-extern BBong::GameState gameState;
 
 namespace BBong {
 class Player : public ClonableComponent<Player> {
