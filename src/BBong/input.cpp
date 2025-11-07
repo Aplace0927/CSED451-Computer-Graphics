@@ -50,6 +50,11 @@ void Input::keyEvent(unsigned char key, int x, int y) {
     }
     GraphicsManager::getInstance().update();
     break;
+  case 't':
+    boundingBoxVisible = !boundingBoxVisible;
+    std::cerr << "Bounding Box Visibility: " 
+              << (boundingBoxVisible ? "ON" : "OFF") << "." << std::endl;
+    break;
   default:
     break;
   }
