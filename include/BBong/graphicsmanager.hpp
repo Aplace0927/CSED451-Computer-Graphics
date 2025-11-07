@@ -24,7 +24,6 @@ private:
   GraphicsManager(const GraphicsManager &) = delete;
   GraphicsManager &operator=(const GraphicsManager &) = delete;
 
-  void resetCamera() const;
   void applyCameraShake() const;
 
   std::vector<std::shared_ptr<GraphicsManagerFunc>> handlers;
