@@ -3,7 +3,7 @@
 namespace BBong {
 
 void Enemy::update() {
-  auto healthBarRenderer = healthBar->getComponent<Mesh3D>();
+  auto healthBarRenderer = healthBar->getComponent<MeshRenderer3D>();
   healthBarRenderer->setMesh(
     createHealthBarMesh(enemyHealth, enemyMaxHealth)
   );

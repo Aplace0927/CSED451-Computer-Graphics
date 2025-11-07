@@ -39,6 +39,7 @@ public:
 
     shootingPattern = chooseShootingPattern();
 
+    // Set up health bar
     healthBar = Game::getInstance().mainScene->createGameObject(transform);
     healthBar->transform->setScale(glm::vec3(0.2f));
     healthBar->transform->setLocalPosition(glm::vec3(0.0f, 0.2f, 0.2f));
@@ -46,7 +47,7 @@ public:
     auto healthBarMesh = healthBar->addComponent<MeshRenderer3D>();
     healthBarMesh->setMesh(createHealthBarMesh(enemyHealth, enemyMaxHealth));
     healthBarMesh->forceGraphicStyleMode(GraphicStyle::OPAQUE_POLYGON);
-    healthBarMesh->setDefaultColor(glm::vec3(0.0f, 1.0f, 0.0f));  // Green initial
+    healthBarMesh->setDefaultColor(glm::vec3(0.0f, 1.0f, 0.0f));
      
     // Set up collider
     auto collider = addComponent<BoxCollider3D>();
@@ -57,6 +58,7 @@ public:
   };
 
   Enemy(const Enemy &other) : ClonableComponent(nullptr) {
+    this->healthBar = Game::getInstance().mainScene->Instantiate(*other.healthBar);
     this->bullets = other.bullets;
     this->shootingPattern = other.shootingPattern;
     this->shootingPatterns = other.shootingPatterns;

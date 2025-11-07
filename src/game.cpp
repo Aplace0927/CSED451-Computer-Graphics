@@ -13,12 +13,14 @@ void Game::Init() {
   GameObject *playerObj = mainScene->createGameObject();
   playerObj->addComponent<Player>();
 
-  auto enemyObj = mainScene->createGameObject();
-  enemyObj->addComponent<Enemy>();
-  enemyObj->transform->setWorldPosition(glm::vec3(
+  auto enemyObj1 = mainScene->createGameObject();
+  enemyObj1->addComponent<Enemy>();
+  enemyObj1->transform->setWorldPosition(glm::vec3(
       GameConfig::POSITION_LEFT_LIMIT, GameConfig::POSITION_UPPER_LIMIT, 0.0f));
 
-  mainScene->Instantiate(*enemyObj)->transform->setWorldPosition(
+  auto enemyObj2 = mainScene->createGameObject();
+  enemyObj2->addComponent<Enemy>();
+  enemyObj2->transform->setWorldPosition(
       glm::vec3(GameConfig::POSITION_RIGHT_LIMIT,
                 GameConfig::POSITION_UPPER_LIMIT, 0.0f));
 }
