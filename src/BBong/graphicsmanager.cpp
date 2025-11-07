@@ -29,7 +29,7 @@ void GraphicsManager::unregisterHandler(
 }
 
 void GraphicsManager::update() {
-  // --- 1. Projection 매트릭스 설정 ---
+  // --- 1. Setting Projection Matrix ---
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
@@ -55,11 +55,11 @@ void GraphicsManager::update() {
     break;
   }
 
-  // --- 2. ModelView 매트릭스 초기화 ---
+  // --- 2. Init ModelView ---
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  // --- 타이머 및 핸들러 복사 ---
+  // --- Copy timer and handeler---
   auto now = std::chrono::high_resolution_clock::now();
   Utility::DeltaTime = std::chrono::duration<float>(now - lastFrame).count();
   lastFrame = now;
@@ -70,7 +70,7 @@ void GraphicsManager::update() {
     updateHandlerCopy = handlers; // Create a copy to avoid holding the lock
   }
 
-  // --- 3. 카메라 셰이크 적용 (그리기 전) ---
+  // --- 3. Camera Shaking ---
   if (shaking) {
     std::cout << "Shaking: " << shakeTimer << " / " << shakeDuration << "\n";
     shakeTimer += Utility::DeltaTime;
@@ -81,23 +81,21 @@ void GraphicsManager::update() {
     }
   }
 
-  // --- 4. 화면 지우기 ---
+  // --- 4. Clear screen ---
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  // --- 5. 모든 객체 렌더링 ---
-  // `return`을 제거하여, 핸들러가 없어도 화면이 clear되고 swap되도록
-  // 수정
+  // --- 5. Rendering SceneGraph ---
   if (!updateHandlerCopy.empty()) {
     for (auto &handler : updateHandlerCopy) {
       if (handler == nullptr) {
         continue;
       }
-      (*handler)(); // 셰이크가 적용된 ModelView 매트릭스 위에서 렌더링
+      (*handler)();
     }
   }
 
-  // --- 6. 버퍼 스왑 및 재그리기 요청 ---
+  // --- 6. Buffer Swap and Redisplay ---
   glutSwapBuffers();
   glutPostRedisplay();
 }
