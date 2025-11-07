@@ -31,6 +31,7 @@ inline constexpr float BIG_FONT_SIZE = 8.0f;
 inline constexpr float DIGIT_SPACING = FONT_DIGIT_SIZE * 6;
 
 inline constexpr int ENEMY_LIFE = 100;
+inline constexpr int ENEMY_FALLPATTERN_FALL_LIMIT = POSITION_LOWER_LIMIT / 2;
 inline constexpr float ENEMY_DIGIT_X = -WINDOW_WIDTH * 0.45f;
 inline constexpr float ENEMY_DIGIT_Y = WINDOW_HEIGHT * 0.45f;
 inline constexpr float ENEMY_GAUGE_X = ENEMY_DIGIT_X + DIGIT_SPACING * 5;

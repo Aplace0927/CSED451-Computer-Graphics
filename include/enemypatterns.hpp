@@ -33,6 +33,12 @@ public:
   glm::vec3 move(glm::vec3 origin, float time) override;
 };
 
+class FallingPattern : public MovementPattern {
+public:
+  FallingPattern(float s);
+  glm::vec3 move(glm::vec3 origin, float time) override;
+};
+
 class ShootingPattern {
 public:
   int fireCount = 10;
