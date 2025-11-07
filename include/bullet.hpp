@@ -45,6 +45,12 @@ public:
     bulletPool->release(gameObject);
   };
 
+  void setMoveDirection(const glm::vec3 &dir) {
+    moveDirection = Utility::getNormalizedDirection(dir, 1.0f);
+  }
+
+  void setBulletSpeed(float speed) { BulletSpeed = speed; } 
+
 protected:
   float BulletSpeed = 300.0f;
   glm::vec3 moveDirection;
@@ -98,8 +104,6 @@ public:
     std::vector<glm::vec3> vertices = {glm::vec3(-0.5f, -0.5f, -0.5f),
                                        glm::vec3(0.5f, 0.5f, 0.5f)};
     collider->SetBoundingBox(vertices);
-
-    moveDirection = glm::vec3(0.0f, -1.0f, 0.0f);
   }
 };
 } // namespace BBong

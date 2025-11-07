@@ -42,6 +42,14 @@ void Enemy::shooting() {
        shootingPattern->fire()) {
     auto *newBullet = bullets->acquire();
     newBullet->transform->setWorldPosition(transform->getWorldPosition());
+    
+    glm::vec3 dir = Utility::getNormalizedDirection(func(glm::vec3(0.0f), 1.0f));
+    dir.z = Utility::randFloatRange(-0.2f, 0.2f);
+
+    // setMoveDirection is method of Bullet, so cast to getComponent<Bullet>()
+    newBullet->getComponent<Bullet>()->setMoveDirection(
+      dir
+    );
   }
 }
 } // namespace BBong
