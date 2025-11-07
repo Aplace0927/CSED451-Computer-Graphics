@@ -25,15 +25,15 @@ void Input::keyEvent(unsigned char key, int x, int y) {
     switch (projectionMode) {
     case PERSPECTIVE:
       projectionMode = ORTHOGRAPHIC;
-      std::cout << "Switched to ORTHOGRAPHIC mode." << std::endl;
+      std::cerr << "Switched to ORTHOGRAPHIC mode." << std::endl;
       break;
     case ORTHOGRAPHIC:
       projectionMode = TPV_TOPVIEW;
-      std::cout << "Switched to TPV_TOPVIEW mode." << std::endl;  
+      std::cerr << "Switched to TPV_TOPVIEW mode." << std::endl;  
       break;
     case TPV_TOPVIEW:
       projectionMode = PERSPECTIVE;
-      std::cout << "Switched to PERSPECTIVE mode." << std::endl;
+      std::cerr << "Switched to PERSPECTIVE mode." << std::endl;
       break;
     }
     break;
@@ -41,11 +41,11 @@ void Input::keyEvent(unsigned char key, int x, int y) {
     switch (graphicStyleMode) {
     case WIREFRAME:
       graphicStyleMode = SOLID;
-      std::cout << "Switched to SOLID mode." << std::endl;
+      std::cerr << "Switched to SOLID mode." << std::endl;
       break;
     case SOLID:
       graphicStyleMode = WIREFRAME;
-      std::cout << "Switched to WIREFRAME mode." << std::endl;
+      std::cerr << "Switched to WIREFRAME mode." << std::endl;
       break;
     }
     GraphicsManager::getInstance().update();

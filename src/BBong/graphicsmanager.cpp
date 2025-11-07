@@ -29,7 +29,7 @@ void GraphicsManager::unregisterHandler(
 }
 
 void GraphicsManager::update() {
-  // --- 1. Projection ¸ÅÆ®¸¯½º ¼³Á¤ ---
+  // --- 1. Projection ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ---
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
@@ -55,11 +55,11 @@ void GraphicsManager::update() {
     break;
   }
 
-  // --- 2. ModelView ¸ÅÆ®¸¯½º ÃÊ±âÈ­ ---
+  // --- 2. ModelView ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ---
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  // --- Å¸ÀÌ¸Ó ¹× ÇÚµé·¯ º¹»ç ---
+  // --- Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½ ï¿½Úµé·¯ ï¿½ï¿½ï¿½ï¿½ ---
   auto now = std::chrono::high_resolution_clock::now();
   Utility::DeltaTime = std::chrono::duration<float>(now - lastFrame).count();
   lastFrame = now;
@@ -70,9 +70,8 @@ void GraphicsManager::update() {
     updateHandlerCopy = handlers; // Create a copy to avoid holding the lock
   }
 
-  // --- 3. Ä«¸Þ¶ó ¼ÎÀÌÅ© Àû¿ë (±×¸®±â Àü) ---
+  // --- 3. Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½ (ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½) ---
   if (shaking) {
-    std::cout << "Shaking: " << shakeTimer << " / " << shakeDuration << "\n";
     shakeTimer += Utility::DeltaTime;
     if (shakeTimer >= shakeDuration) {
       shaking = false;
@@ -81,23 +80,23 @@ void GraphicsManager::update() {
     }
   }
 
-  // --- 4. È­¸é Áö¿ì±â ---
+  // --- 4. È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ---
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  // --- 5. ¸ðµç °´Ã¼ ·»´õ¸µ ---
-  // `return`À» Á¦°ÅÇÏ¿©, ÇÚµé·¯°¡ ¾ø¾îµµ È­¸éÀÌ clearµÇ°í swapµÇµµ·Ï
-  // ¼öÁ¤
+  // --- 5. ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ---
+  // `return`ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½, ï¿½Úµé·¯ï¿½ï¿½ ï¿½ï¿½ï¿½îµµ È­ï¿½ï¿½ï¿½ï¿½ clearï¿½Ç°ï¿½ swapï¿½Çµï¿½ï¿½ï¿½
+  // ï¿½ï¿½ï¿½ï¿½
   if (!updateHandlerCopy.empty()) {
     for (auto &handler : updateHandlerCopy) {
       if (handler == nullptr) {
         continue;
       }
-      (*handler)(); // ¼ÎÀÌÅ©°¡ Àû¿ëµÈ ModelView ¸ÅÆ®¸¯½º À§¿¡¼­ ·»´õ¸µ
+      (*handler)(); // ï¿½ï¿½ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ModelView ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     }
   }
 
-  // --- 6. ¹öÆÛ ½º¿Ò ¹× Àç±×¸®±â ¿äÃ» ---
+  // --- 6. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½Ã» ---
   glutSwapBuffers();
   glutPostRedisplay();
 }

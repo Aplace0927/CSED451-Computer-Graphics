@@ -11,7 +11,7 @@ void Player::update() {
   reviveCooldown += Utility::DeltaTime;
 
   if (playerHealth <= 0) {
-    //CollisionManager::getInstance().unregisterCollider3D(this->getComponent<Collider3D>());
+    this->setActive(false);
     return;
   }
 
