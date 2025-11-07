@@ -36,7 +36,6 @@ public:
       meshRenderer->setMesh(ObjFileLoader::load("assets/jet.obj"));
     #endif
     meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 1.0f));
-    addComponent<BoxCollider3D>();
 
     // Player Bullet Shooting Point
     transform->setWorldPosition(
@@ -75,6 +74,9 @@ public:
       //Player Collider
       auto collider = addComponent<BoxCollider3D>();
       collider->setLayer(GameConfig::CollisionLayer::PLAYER);
+      std::vector<glm::vec3> vertices = {
+          glm::vec3(-3.0f, -3.0f, -3.0f), glm::vec3(3.0f, 3.0f, 3.0f)};
+      collider->SetBoundingBox(vertices);
     }
   };
 

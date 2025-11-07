@@ -34,10 +34,17 @@ public:
   void setLayer(GameConfig::CollisionLayer layer);
   GameConfig::CollisionLayer getLayer() const { return m_layer; }
 
+  void SetBoundingBox(const std::vector<glm::vec3> &vertices) {
+    m_boundingbox = std::make_unique<BoundingBox3D>();
+    for (const auto &vertex : vertices) {
+      m_boundingbox->expand(vertex);
+    }
+  }
+
 protected:
   void fixedUpdate() override {
     if (m_boundingbox)
-      m_boundingbox->updateWorld(transform->getWorldMatrix());
+      m_boundingbox->updateWorld(transform->getWorldMatrix());/*
     std::cout << m_boundingbox->getMinWorld().x << ", "
               << m_boundingbox->getMinWorld().y << ", "
               << m_boundingbox->getMinWorld().z << " - "
@@ -46,10 +53,10 @@ protected:
               << m_boundingbox->getMaxWorld().z << std::endl;
     std::cout << transform->getWorldPosition().x << ", "
               << transform->getWorldPosition().y << ", "
-              << transform->getWorldPosition().z << std::endl;
+              << transform->getWorldPosition().z << std::endl;*/
   }
 
-  void renderUpdate() override {
+  void lateUpdate() override {
     if (!m_boundingbox)
       return;
 
@@ -96,13 +103,6 @@ protected:
 
     glPopMatrix();
     glPopAttrib();
-  }
-
-  void SetBoundingBox(const std::vector<glm::vec3> &vertices) {
-    m_boundingbox = std::make_unique<BoundingBox3D>();
-    for (const auto &vertex : vertices) {
-      m_boundingbox->expand(vertex);
-    }
   }
 
   bool intersects(const Collider3D *other) const {
