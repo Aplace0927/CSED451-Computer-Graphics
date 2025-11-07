@@ -17,27 +17,25 @@ extern BBong::GameState gameState;
 namespace BBong {
 class Enemy : public ClonableComponent<Enemy> {
 public:
-  explicit Enemy(GameObject *owner)
-      : ClonableComponent(owner){
+  explicit Enemy(GameObject *owner) : ClonableComponent(owner) {
 
     GameObject *bulletPrefab = createBulletPrefab();
     bullets = std::make_shared<ObjectPool>(*bulletPrefab, nullptr, 0);
     bulletPrefab->getComponent<Bullet>()->SetBulletPool(bullets);
 
     auto meshRenderer = addComponent<MeshRenderer3D>();
-    #ifdef ASSETS_DIRECTORY
-      meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "drone.obj"));
-    #else
-      printf("Warning: ASSETS_DIRECTORY not defined.\n");
-      meshRenderer->setMesh(ObjFileLoader::load("assets/drone.obj"));
-    #endif
+#ifdef ASSETS_DIRECTORY
+    meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "drone.obj"));
+#else
+    printf("Warning: ASSETS_DIRECTORY not defined.\n");
+    meshRenderer->setMesh(ObjFileLoader::load("assets/drone.obj"));
+#endif
     meshRenderer->setDefaultColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
     transform->setScale(glm::vec3(100.0f));
     transform->setRotation(
         glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 0.0f))));
 
-    movementPattern = new HorizonPattern(100.0f);
     shootingPattern = chooseShootingPattern();
 
     // Set up collider
@@ -50,8 +48,8 @@ public:
 
   Enemy(const Enemy &other) : ClonableComponent(nullptr) {
     this->bullets = other.bullets;
-    this->movementPattern = other.movementPattern;
     this->shootingPattern = other.shootingPattern;
+    this->shootingPatterns = other.shootingPatterns;
   }
 
   void fixedUpdate() override;
@@ -71,7 +69,8 @@ private:
 
   // HealthBar::HealthBar healthBar;
   std::shared_ptr<ObjectPool> bullets;
-  MovementPattern *movementPattern;
+  std::vector<MovementPattern *> movementPatterns{new HorizonPattern(10.0f),
+                                                  new FallingPattern(5.0f)};
   ShootingPattern *shootingPattern;
   std::vector<ShootingPattern *> shootingPatterns{
       new CirclePattern(200.0f, 12), new SpiralPattern(200.0f, 20.0f),

@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <algorithm>
+#include <unordered_set>
 
 #include "BBong/physicsmanager.hpp"
 #include "BBong/graphicsmanager.hpp"
@@ -64,6 +66,38 @@ public:
       Instantiate(*(childTransform->gameObject), newGameObject->transform);
     }
     return newGameObject;
+  }
+
+  void destroyGameObject(GameObject *objToDestroy) {
+    if (!objToDestroy) {
+      return;
+    }
+
+    std::vector<GameObject *> objectsToDestroy;
+    std::function<void(GameObject *)> collectAll;
+    collectAll = [&](GameObject *obj) {
+      if (!obj)
+        return;
+      objectsToDestroy.push_back(obj);
+      for (const auto childTransform : obj->transform->getChildren()) {
+        if (childTransform && childTransform->gameObject) {
+          collectAll(childTransform->gameObject);
+        }
+      }
+    };
+
+    collectAll(objToDestroy);
+
+    std::unordered_set<GameObject *> destroySet(objectsToDestroy.begin(),
+                                                objectsToDestroy.end());
+
+    std::lock_guard<std::recursive_mutex> lock(sceneMutex);
+    m_gameObjects.erase(
+        std::remove_if(m_gameObjects.begin(), m_gameObjects.end(),
+                       [&](const std::shared_ptr<GameObject> &ptr) {\
+                         return destroySet.count(ptr.get()) > 0;
+                       }),
+        m_gameObjects.end());
   }
 
 private:

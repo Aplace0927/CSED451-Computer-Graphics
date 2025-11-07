@@ -6,13 +6,20 @@ void Enemy::fixedUpdate() {
   updateShootingPattern();
 }
 
-void Enemy::collision3D(Collider3D *collider){ enemyHealth -= 1; }
+void Enemy::collision3D(Collider3D *collider) {
+  enemyHealth--;
+  if (enemyHealth < 0) {
+    Game::getInstance().mainScene->destroyGameObject(gameObject);
+  }
+}
 
 void Enemy::updateMovementPattern() {
-  if (!movementPattern)
-    return;
-  transform->setWorldPosition(movementPattern->move(
-      transform->getWorldPosition(), GameConfig::FIXED_DELTATIME));
+  for each (auto movementPattern in movementPatterns) {
+    if (!movementPattern)
+      return;
+    transform->setWorldPosition(movementPattern->move(
+        transform->getWorldPosition(), GameConfig::FIXED_DELTATIME));
+  }
 }
 
 void Enemy::updateShootingPattern() {
