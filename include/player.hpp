@@ -22,12 +22,15 @@ public:
   explicit Player(GameObject *owner)
       : ClonableComponent(owner) {
 
-    // Player Object
+    // Player Bullet Object
     GameObject *bulletPrefab = createBulletPrefab();
     bullets = std::make_shared<ObjectPool>(*bulletPrefab, nullptr, 0);
     bulletPrefab->getComponent<Bullet>()->SetBulletPool(bullets);
 
-    auto meshRenderer = addComponent<MeshRenderer3D>();
+    // Player Mesh Component
+    GameObject * renderObj =
+        Game::getInstance().mainScene->createGameObject(transform);
+    meshRenderer = renderObj->addComponent<MeshRenderer3D>();
     
     #ifdef ASSETS_DIRECTORY
       meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "jet.obj"));
@@ -84,6 +87,8 @@ public:
     this->bullets = other.bullets;
     this->direction = other.direction;
     this->shootingPoint = other.shootingPoint;
+    this->healthGemOrigin = other.healthGemOrigin;
+    this->healthGems = other.healthGems;
   }
 
   ~Player() override { bullets.reset(); }
@@ -104,12 +109,14 @@ private:
   glm::vec3 direction = glm::vec3(0.0f);
   GameObject* shootingPoint;
   GameObject* healthGemOrigin;
+  MeshRenderer3D *meshRenderer;
   std::vector<GameObject*> healthGems;
   int playerHealth = 10;
   float shootingCooldown = 0.0f;
   float reviveCooldown = 0.0f;
   float speed = 100.0f;
   bool isShooting = false;
+  bool isLive = true;
 };
 } // namespace BBong
 #endif // PLAYER_HPP

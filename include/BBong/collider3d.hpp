@@ -44,16 +44,7 @@ public:
 protected:
   void fixedUpdate() override {
     if (m_boundingbox)
-      m_boundingbox->updateWorld(transform->getWorldMatrix());/*
-    std::cout << m_boundingbox->getMinWorld().x << ", "
-              << m_boundingbox->getMinWorld().y << ", "
-              << m_boundingbox->getMinWorld().z << " - "
-              << m_boundingbox->getMaxWorld().x << ", "
-              << m_boundingbox->getMaxWorld().y << ", "
-              << m_boundingbox->getMaxWorld().z << std::endl;
-    std::cout << transform->getWorldPosition().x << ", "
-              << transform->getWorldPosition().y << ", "
-              << transform->getWorldPosition().z << std::endl;*/
+      m_boundingbox->updateWorld(transform->getWorldMatrix());
   }
 
   void lateUpdate() override {
@@ -106,6 +97,8 @@ protected:
   }
 
   bool intersects(const Collider3D *other) const {
+    if (!getActive() || !other->getActive())
+      return false;
     if (!m_boundingbox || !other->m_boundingbox)
       return false;
     return m_boundingbox->intersects(*other->m_boundingbox);
@@ -115,13 +108,6 @@ protected:
 class BoxCollider3D : public Collider3D {
 public:
   explicit BoxCollider3D(GameObject *owner) : Collider3D(owner) {
-    std::vector<glm::vec3> vertices = {
-        glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.5f, -0.5f, -0.5f),
-        glm::vec3(0.5f, 0.5f, -0.5f),   glm::vec3(-0.5f, 0.5f, -0.5f),
-        glm::vec3(-0.5f, -0.5f, 0.5f),  glm::vec3(0.5f, -0.5f, 0.5f),
-        glm::vec3(0.5f, 0.5f, 0.5f),    glm::vec3(-0.5f, 0.5f, 0.5f)};
-
-    SetBoundingBox(vertices);
   }
 };
 } // namespace BBong

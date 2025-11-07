@@ -6,6 +6,8 @@ void Enemy::fixedUpdate() {
   updateShootingPattern();
 }
 
+void Enemy::collision3D(Collider3D *collider){ enemyHealth -= 1; }
+
 void Enemy::updateMovementPattern() {
   if (!movementPattern)
     return;

@@ -33,8 +33,6 @@ public:
     #endif
     meshRenderer->setDefaultColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
-    addComponent<BoxCollider3D>();
-
     transform->setScale(glm::vec3(100.0f));
     transform->setRotation(
         glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 0.0f))));
@@ -45,6 +43,9 @@ public:
     // Set up collider
     auto collider = addComponent<BoxCollider3D>();
     collider->setLayer(GameConfig::CollisionLayer::ENEMY);
+    std::vector<glm::vec3> vertices = {glm::vec3(-0.3f, -0.3f, -0.6f),
+                                       glm::vec3(0.3f, 0.3f, 0.3f)};
+    collider->SetBoundingBox(vertices);
   };
 
   Enemy(const Enemy &other) : ClonableComponent(nullptr) {
@@ -54,6 +55,7 @@ public:
   }
 
   void fixedUpdate() override;
+  void collision3D(Collider3D *collider) override;
 
 private:
   static GameObject *createBulletPrefab() {

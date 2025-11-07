@@ -10,8 +10,9 @@ void Player::update() {
   shootingCooldown += Utility::DeltaTime;
   reviveCooldown += Utility::DeltaTime;
 
-  if (!getActive() && reviveCooldown >= GameConfig::REVIVE_COOLDOWN_TIME_SEC) {
-    this->setActive(true);
+  if (reviveCooldown >= GameConfig::REVIVE_COOLDOWN_TIME_SEC) {
+    isLive = true;
+    meshRenderer->gameObject->setActive(true);
   }
 
   transform->setRotation(glm::quat(glm::radians(glm::vec3(
@@ -43,14 +44,14 @@ void Player::fixedUpdate() {
 }
 
 void Player::collision3D(Collider3D *collider) {
-  std::cout << "Player collision!" << std::endl;
-  /*this->setActive(false);
-  reviveCooldown = 0.0f;
-  if (playerHealth > 0) {
+  if (playerHealth > 0 && isLive) {
     --playerHealth;
+    isLive = false;
+    reviveCooldown = 0.0f;
+    meshRenderer->gameObject->setActive(false);
     GameObject *lostHealthGem = healthGems.back();
     healthGems.pop_back();
     lostHealthGem->setActive(false);
-  }*/
+  }
 }
 } // namespace BBong
