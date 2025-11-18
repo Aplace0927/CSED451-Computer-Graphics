@@ -10,13 +10,17 @@ namespace BBong {
         uniformLocationCache.clear();
         removeProgram();
     }
-
+ 
     void ShaderManager::init() {
         std::vector<ShaderInfo> shaders = {
             {"../src/shader/vert_shader.glsl", GL_VERTEX_SHADER},
             {"../src/shader/frag_shader.glsl", GL_FRAGMENT_SHADER},
         };
         programID = installShaders(shaders);
+
+        if (programID == 0) {
+            std::cerr << "[SHADER] Shader program initialization failed!" << std::endl;
+        }
     }
 
     GLint ShaderManager::getUniformLocation(const std::string &symbol) {
@@ -47,15 +51,15 @@ namespace BBong {
             glAttachShader(program, shaderID);
         }    
 
-        glLinkProgram(programID);
-        glGetProgramiv(programID, GL_LINK_STATUS, &success);
+        glLinkProgram(program);
+        glGetProgramiv(program, GL_LINK_STATUS, &success);
         if (!success) {
             char infoLog[LOG_BUFFER_SIZE];
-            glGetProgramInfoLog(programID, LOG_BUFFER_SIZE, nullptr, infoLog);
+            glGetProgramInfoLog(program, LOG_BUFFER_SIZE, nullptr, infoLog);
             std::cerr << "[SHADER] Program linking failed!\n" << std::string(infoLog) << std::endl;
         }
         else {
-            std::cerr << "[SHADER] Program linked successfully. (Program ID: " << programID << ")" << std::endl;
+            std::cerr << "[SHADER] Program linked successfully. (Program ID: " << program << ")" << std::endl;
         }
 
         for (const auto &shaderID : shaderIDs) {
@@ -117,5 +121,41 @@ namespace BBong {
         }
         programID = 0;
         uniformLocationCache.clear();
+    }
+
+    template<> void ShaderManager::setUniformValue<int>(const std::string &symbol, const int &value) {
+        attachProgram();
+        glUniform1i(getUniformLocation(symbol), value);
+        detachProgram();
+    }
+
+    template<> void ShaderManager::setUniformValue<float>(const std::string &symbol, const float &value) {
+        attachProgram();
+        glUniform1f(getUniformLocation(symbol), value);
+        detachProgram();
+    }
+
+    template<> void ShaderManager::setUniformValue<glm::vec3>(const std::string &symbol, const glm::vec3 &value) {
+        attachProgram();
+        glUniform3fv(getUniformLocation(symbol), 1, glm::value_ptr(value));
+        detachProgram();
+    }
+
+    template<> void ShaderManager::setUniformValue<glm::vec4>(const std::string &symbol, const glm::vec4 &value) {
+        attachProgram();
+        glUniform4fv(getUniformLocation(symbol), 1, glm::value_ptr(value));
+        detachProgram();
+    }
+
+    template<> void ShaderManager::setUniformValue<glm::mat3>(const std::string &symbol, const glm::mat3 &value) {
+        attachProgram();
+        glUniformMatrix3fv(getUniformLocation(symbol), 1, GL_FALSE, glm::value_ptr(value));
+        detachProgram();
+    }
+
+    template<> void ShaderManager::setUniformValue<glm::mat4>(const std::string &symbol, const glm::mat4 &value) {
+        attachProgram();
+        glUniformMatrix4fv(getUniformLocation(symbol), 1, GL_FALSE, glm::value_ptr(value));
+        detachProgram();
     }
 }

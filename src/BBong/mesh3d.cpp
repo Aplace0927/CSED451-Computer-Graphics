@@ -30,9 +30,25 @@ void Mesh3D::draw(GraphicStyle style) {
   }
   for (unsigned int index : m_indices) {
       const Vertex3D &vertex = m_vertices[index];
-      glNormal3f(vertex.normal.x, vertex.normal.y, vertex.normal.z);
-      glTexCoord2f(vertex.texCoord.x, vertex.texCoord.y);
-      glColor3f(defaultColor.r, defaultColor.g, defaultColor.b);
+
+      /**
+       * [TODO]
+       * 
+       * Following is example of migrating immediate mode to retained mode.
+       * 1. Finish the shader design first, and replace the bounding variable names.
+       * 2. Add VAO/VBO binding to replace immediate mode calls.
+       */
+
+
+      //glNormal3f(vertex.normal.x, vertex.normal.y, vertex.normal.z);
+      ShaderManager::getInstance().setUniformValue<glm::vec3>("vctNormal", vertex.normal);
+      
+      //glTexCoord2f(vertex.texCoord.x, vertex.texCoord.y);
+      
+      //glColor3f(defaultColor.r, defaultColor.g, defaultColor.b);
+      ShaderManager::getInstance().setUniformValue<glm::vec3>("vctRGBColor", defaultColor);
+      
+      // [TODO] add VAO/VBO binding to replace following immediate mode calls
       glVertex3f(vertex.position.x, vertex.position.y, vertex.position.z);
     }
   glEnd();

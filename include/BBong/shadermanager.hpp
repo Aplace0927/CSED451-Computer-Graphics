@@ -2,6 +2,9 @@
 #define SHADERUTILITY_HPP
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <string>
 #include <vector>
 #include <fstream>
@@ -25,7 +28,8 @@ public:
     void init();
     
     GLint getUniformLocation(const std::string &symbol);
-    
+    template<typename T> void setUniformValue(const std::string &symbol, const T &value);
+
     void attachProgram();
     void detachProgram();
     void removeProgram();
@@ -37,11 +41,6 @@ private:
     GLuint installShaders(const std::vector<ShaderInfo> &shaderInformations);
     GLint compileShader(const std::string shaderPath, GLenum shaderType);
 };
-
-
 }
-
-
-
 
 #endif // SHADERUTILITY_HPP
