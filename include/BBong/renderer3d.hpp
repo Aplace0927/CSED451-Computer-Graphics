@@ -12,6 +12,7 @@
 #include "BBong/transform.hpp"
 #include "BBong/mesh3d.hpp"
 #include "BBong/inputmanager.hpp"
+#include "BBong/shadermanager.hpp"
 
 namespace BBong {
 class MeshRenderer3D : public ClonableComponent<MeshRenderer3D> {

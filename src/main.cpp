@@ -8,8 +8,8 @@
 
 #include "BBong/graphicsmanager.hpp"
 #include "BBong/inputmanager.hpp"
+#include "BBong/shadermanager.hpp"
 #include "config.hpp"
-#include "shaderutility.hpp"
 #include "game.hpp"
 
 int main(int argc, char **argv) {
@@ -20,13 +20,7 @@ int main(int argc, char **argv) {
   glutInitWindowSize(GameConfig::WINDOW_WIDTH, GameConfig::WINDOW_HEIGHT);
   glutCreateWindow(GameConfig::WINDOW_TITLE);
   glewInit();
-
-  std::vector<ShaderInfo> shaders = {
-      {"../src/shader/vert_shader.glsl", GL_VERTEX_SHADER},
-      {"../src/shader/frag_shader.glsl", GL_FRAGMENT_SHADER},
-  };
-
-  initializeShader(shaders);
+  BBong::ShaderManager::getInstance().init();
 
   glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 

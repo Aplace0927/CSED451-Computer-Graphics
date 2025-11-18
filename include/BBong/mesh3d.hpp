@@ -4,6 +4,8 @@
 #include <vector>
 #include <glm/glm.hpp>
 
+#include "BBong/shadermanager.hpp"
+
 namespace BBong {
 struct Vertex3D {
 public:
