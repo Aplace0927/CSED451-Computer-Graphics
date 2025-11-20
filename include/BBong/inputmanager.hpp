@@ -8,6 +8,7 @@
 
 #include "BBong/singleton.hpp"
 #include "BBong/graphicsmanager.hpp"
+#include "BBong/shadermanager.hpp"
 #include "utility.hpp"
 
 namespace BBong {

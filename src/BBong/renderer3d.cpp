@@ -32,9 +32,10 @@ void MeshRenderer3D::renderUpdate() {
     return;
 
   m_boundingbox->updateWorld(transform->getWorldMatrix());
-  
+
   ShaderManager::getInstance().attachProgram();
-  ShaderManager::getInstance().setUniformValue<glm::mat4>("uModel", transform->getWorldMatrix());
+  glm::mat4 modelMatrix = transform->getWorldMatrix();
+  ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4Model", modelMatrix);
   ShaderManager::getInstance().detachProgram();
   
   if (forcedGraphicStyleMode.has_value()) {

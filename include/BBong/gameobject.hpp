@@ -6,6 +6,7 @@
 #include <type_traits>
 #include "BBong/transform.hpp"
 #include "BBong/component.hpp"
+#include "BBong/shadermanager.hpp"
 
 namespace BBong {
 class Scene;
