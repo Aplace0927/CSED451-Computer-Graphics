@@ -13,10 +13,17 @@ namespace BBong {
     }
  
     void ShaderManager::init() {
+    #ifdef SHADER_DIRECTORY
         std::vector<ShaderInfo> shaders = {
-            {"../src/shader/vert_shader.glsl", GL_VERTEX_SHADER},
-            {"../src/shader/frag_shader.glsl", GL_FRAGMENT_SHADER},
+            {SHADER_DIRECTORY "vert_shader.glsl", GL_VERTEX_SHADER},
+            {SHADER_DIRECTORY "frag_shader.glsl", GL_FRAGMENT_SHADER},
         };
+    #else
+        std::vector<ShaderInfo> shaders = {
+            {"../shader/vert_shader.glsl", GL_VERTEX_SHADER},
+            {"../shader/frag_shader.glsl", GL_FRAGMENT_SHADER},
+        };
+    #endif
         programID = installShaders(shaders);
 
         if (programID == 0) {
