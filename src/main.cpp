@@ -13,14 +13,13 @@
 #include "game.hpp"
 
 int main(int argc, char **argv) {
-  BBong::Game::getInstance().Init();
-
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(GameConfig::WINDOW_WIDTH, GameConfig::WINDOW_HEIGHT);
   glutCreateWindow(GameConfig::WINDOW_TITLE);
   glewInit();
-  BBong::ShaderManager::getInstance().init();
+  
+  BBong::Game::getInstance().Init();
 
   glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 

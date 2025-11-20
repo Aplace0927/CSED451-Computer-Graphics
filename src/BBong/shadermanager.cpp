@@ -2,6 +2,7 @@
 
 namespace BBong {
     ShaderManager::ShaderManager() {
+        removeProgram();
         programID = 0;
     }
 
@@ -38,8 +39,13 @@ namespace BBong {
     GLuint ShaderManager::installShaders(const std::vector<ShaderInfo> &shaderInformations) {
         std::vector<GLuint> shaderIDs;
         GLint success;
+
+        std::cerr << "[SHADER] Installing shaders..." << std::endl;
+
         GLuint program = glCreateProgram();
 
+        std::cerr << "[SHADER] Created program with ID: " << program << std::endl;
+        
         // Compile and attach each shader
         for (const auto &shaderInfo: shaderInformations) {
             GLint shaderID = compileShader(shaderInfo.first, shaderInfo.second);

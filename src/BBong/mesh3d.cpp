@@ -7,50 +7,49 @@
 namespace BBong {
 Mesh3D::Mesh3D(const std::vector<Vertex3D> &vertices,
                const std::vector<unsigned int> &indices)
-    : m_vertices(vertices), m_indices(indices) {}
+    : m_vertices(vertices), m_indices(indices), VAO(std::nullopt), VBO(std::nullopt) {}
 
 Mesh3D::~Mesh3D() {}
 
 const std::vector<Vertex3D> Mesh3D::getVertices() { return m_vertices; }
 
 void Mesh3D::draw(GraphicStyle style) {
-  switch (style) {
-  case GraphicStyle::OPAQUE_POLYGON:
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glBegin(GL_TRIANGLES);
-    break;
-  case GraphicStyle::WIREFRAME:
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glBegin(GL_TRIANGLES);
-    break;
-  case GraphicStyle::_GAME_BOUNDINGBOX:
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glBegin(GL_QUADS);
-    break;
+  // if VAO and VBO are available, use retained mode rendering
+  if (VAO.has_value() && VBO.has_value()) {
+
+    ShaderManager::getInstance().attachProgram();
+    ShaderManager::getInstance().setUniformValue<glm::vec3>("uColor", defaultColor);
+    
+
+    glBindVertexArray(VAO.value());
+    glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(m_indices.size()));
+    glBindVertexArray(0);
+  
+    ShaderManager::getInstance().detachProgram();
   }
-  for (unsigned int index : m_indices) {
-      const Vertex3D &vertex = m_vertices[index];
-
-      /**
-       * [TODO]
-       * 
-       * Following is example of migrating immediate mode to retained mode.
-       * 1. Finish the shader design first, and replace the bounding variable names.
-       * 2. Add VAO/VBO binding to replace immediate mode calls.
-       */
-
-
-      //glNormal3f(vertex.normal.x, vertex.normal.y, vertex.normal.z);
-      ShaderManager::getInstance().setUniformValue<glm::vec3>("vctNormal", vertex.normal);
-      
-      //glTexCoord2f(vertex.texCoord.x, vertex.texCoord.y);
-      
-      //glColor3f(defaultColor.r, defaultColor.g, defaultColor.b);
-      ShaderManager::getInstance().setUniformValue<glm::vec3>("vctRGBColor", defaultColor);
-      
-      // [TODO] add VAO/VBO binding to replace following immediate mode calls
-      glVertex3f(vertex.position.x, vertex.position.y, vertex.position.z);
-    }
-  glEnd();
+  else {
+  //   switch (style) {
+  //   case GraphicStyle::OPAQUE_POLYGON:
+  //     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  //     glBegin(GL_TRIANGLES);
+  //     break;
+  //   case GraphicStyle::WIREFRAME:
+  //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  //     glBegin(GL_TRIANGLES);
+  //     break;
+  //   case GraphicStyle::_GAME_BOUNDINGBOX:
+  //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  //     glBegin(GL_QUADS);
+  //     break;
+  //   }
+  //  for (unsigned int index : m_indices) {
+  //     const Vertex3D &vertex = m_vertices[index];
+  //     glNormal3f(vertex.normal.x, vertex.normal.y, vertex.normal.z);
+  //     glTexCoord2f(vertex.texCoord.x, vertex.texCoord.y);
+  //     glColor3f(defaultColor.r, defaultColor.g, defaultColor.b);      
+  //     glVertex3f(vertex.position.x, vertex.position.y, vertex.position.z);
+  //   }
+  // glEnd(); 
+  }
 }
 } // namespace BBong

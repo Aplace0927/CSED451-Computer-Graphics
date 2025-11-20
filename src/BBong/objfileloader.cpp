@@ -96,6 +96,61 @@ std::shared_ptr<Mesh3D> ObjFileLoader::load(const std::string &path) {
   }
   file.close();
 
-  return std::make_shared<Mesh3D>(out_vertices, out_indices);
+  GLuint m_vao;
+  VBOProps m_vbo;
+
+  /* Debug here */
+  glGenVertexArrays(1, &m_vao);
+
+  glGenBuffers(1, &m_vbo.vboVertices);
+  glBindVertexArray(m_vao);
+  glBindBuffer(GL_ARRAY_BUFFER, m_vbo.vboVertices);
+  glBufferData(
+    GL_ARRAY_BUFFER,
+    static_cast<GLsizeiptr>(out_vertices.size() * sizeof(Vertex3D)),
+    out_vertices.data(),
+    GL_STATIC_DRAW
+  );
+
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(
+    0,
+    3,
+    GL_FLOAT,
+    GL_FALSE,
+    sizeof(Vertex3D),
+    (void*)offsetof(Vertex3D, position)
+  );
+  
+  glGenBuffers(1, &m_vbo.vboNormal);
+  glBindVertexArray(m_vao);
+  glBindBuffer(GL_ARRAY_BUFFER, m_vbo.vboNormal);
+  glBufferData(
+    GL_ARRAY_BUFFER,
+    static_cast<GLsizeiptr>(out_indices.size() * sizeof(unsigned int)),
+    out_indices.data(),
+    GL_STATIC_DRAW
+  );
+  glEnableVertexAttribArray(1);
+  glVertexAttribPointer(
+    1,
+    3,
+    GL_FLOAT,
+    GL_FALSE,
+    sizeof(Vertex3D),
+    (void*)offsetof(Vertex3D, normal)
+  );
+
+
+  glBindVertexArray(0);
+
+  std::shared_ptr<Mesh3D> mesh = std::make_shared<Mesh3D>(out_vertices, out_indices);
+  mesh->setVAO(m_vao);
+  mesh->setVBO(m_vbo);
+
+  std::cerr << "Loaded OBJ file: " << path << " with "
+            << out_vertices.size() << " vertices." << 
+            "(VAO: " << m_vao << ", VBO Vert: " << m_vbo.vboVertices << ", VBO Normal: " << m_vbo.vboNormal << ")\n"; 
+  return mesh;
 }
 } // namespace BBong

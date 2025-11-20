@@ -7,6 +7,8 @@ namespace BBong {
 Game::Game() : mainScene(new Scene) {}
 
 void Game::Init() {
+  BBong::ShaderManager::getInstance().init();
+  
   GameObject *backgroundboundingboxObj = mainScene->createGameObject();
   backgroundboundingboxObj->addComponent<BackgroundBoundingBox>();
 

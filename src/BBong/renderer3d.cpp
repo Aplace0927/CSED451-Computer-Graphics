@@ -33,8 +33,9 @@ void MeshRenderer3D::renderUpdate() {
 
   m_boundingbox->updateWorld(transform->getWorldMatrix());
   
-  // [TODO] Following 'matModelView' is example name, so change it after finish shader design.
-  ShaderManager::getInstance().setUniformValue<glm::mat4>("matModelView", transform->getWorldMatrix());
+  ShaderManager::getInstance().attachProgram();
+  ShaderManager::getInstance().setUniformValue<glm::mat4>("uModel", transform->getWorldMatrix());
+  ShaderManager::getInstance().detachProgram();
   
   if (forcedGraphicStyleMode.has_value()) {
     m_mesh->draw(forcedGraphicStyleMode.value());

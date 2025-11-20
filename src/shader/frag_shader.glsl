@@ -1,7 +1,9 @@
 #version 330 core
 
-out vec4 fragColor;
+uniform vec3 uColor;
+
+out vec3 FragColor;
 
 void main() {
-    fragColor = vec4(1.0, 0.0, 0.0, 1.0); // Set the fragment color to red
+    FragColor = uColor;
 }
