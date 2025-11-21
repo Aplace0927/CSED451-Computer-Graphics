@@ -138,6 +138,47 @@ namespace BBong {
         uniformLocationCache.clear();
     }
 
+    ShaderStateDrawingMethod ShaderManager::getCurrentDrawingState() {
+        std::vector<GLenum> capabilitiesCheck = {
+            GL_BLEND,
+            GL_CULL_FACE,
+            GL_DEPTH_TEST,
+            GL_DITHER,
+            GL_POLYGON_OFFSET_FILL,
+            GL_POLYGON_OFFSET_LINE,
+            GL_SCISSOR_TEST,
+            GL_STENCIL_TEST
+        };
+        std::vector<std::pair<GLenum, bool>> capabilitiesStates;
+        for (const auto &cap : capabilitiesCheck) {
+            capabilitiesStates.push_back({cap, glIsEnabled(cap)});
+        }
+        ShaderStateDrawingMethod state;
+        state.capabilitiesStates = capabilitiesStates;
+        glGetIntegerv(GL_POLYGON_MODE, reinterpret_cast<GLint*>(state.polygonMode));
+        glGetBooleanv(GL_COLOR_WRITEMASK, reinterpret_cast<GLboolean*>(state.colorMask));
+        glGetBooleanv(GL_DEPTH_WRITEMASK, &state.depthMask);
+        glGetFloatv(GL_LINE_WIDTH, &state.lineWidth);
+        glGetFloatv(GL_POLYGON_OFFSET_FACTOR, &state.polygonOffset[0]);
+        glGetFloatv(GL_POLYGON_OFFSET_UNITS, &state.polygonOffset[1]);
+        return state;
+    }
+
+    void ShaderManager::setCurrentDrawingState(const ShaderStateDrawingMethod &state) {
+        for (const auto &capState : state.capabilitiesStates) {
+            if (capState.second) {
+                glEnable(capState.first);
+            } else {
+                glDisable(capState.first);
+            }
+        }
+        glPolygonMode(GL_FRONT_AND_BACK, state.polygonMode[0]);
+        glColorMask(state.colorMask[0], state.colorMask[1], state.colorMask[2], state.colorMask[3]);
+        glDepthMask(state.depthMask);
+        glLineWidth(state.lineWidth);
+        glPolygonOffset(state.polygonOffset[0], state.polygonOffset[1]);
+    }
+
     template<> void ShaderManager::setUniformValue<int>(const std::string &symbol, const int &value) {
         glUniform1i(getUniformLocation(symbol), value);
     }
