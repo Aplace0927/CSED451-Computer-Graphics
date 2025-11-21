@@ -40,7 +40,7 @@ public:
         1, 3, 7, 5,
     };
     meshRenderer->setMesh(
-        std::make_shared<Mesh3D>(vertices, indices)
+        ObjFileLoader::loadFromVertex3D(vertices, indices)
     );
     meshRenderer->forceGraphicStyleMode(GraphicStyle::_GAME_BOUNDINGBOX);
     meshRenderer->setDefaultColor(glm::vec3(1.0f, 1.0f, 0.0f));

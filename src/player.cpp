@@ -24,7 +24,7 @@ void Player::update() {
       -90.0f + 20.0f * direction.y, 180.0f + 10.0f * direction.x, 0.0f))));
 
   healthGemOrigin->transform->rotate(90.0f * Utility::DeltaTime,
-                                     glm::vec3(0, 0, 1));
+                                     glm::normalize(glm::vec3(0, 1, 1)));
 
   if (isShooting &&
       shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_TIME_SEC) {

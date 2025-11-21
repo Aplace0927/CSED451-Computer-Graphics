@@ -44,6 +44,10 @@ void Input::keyEvent(unsigned char key, int x, int y) {
       std::cerr << "Switched to SOLID mode." << std::endl;
       break;
     case SOLID:
+      graphicStyleMode = HIDDEN_LINE_REMOVAL;
+      std::cerr << "Switched to HIDDEN_LINE_REMOVAL mode." << std::endl;
+      break;
+    case HIDDEN_LINE_REMOVAL:
       graphicStyleMode = WIREFRAME;
       std::cerr << "Switched to WIREFRAME mode." << std::endl;
       break;

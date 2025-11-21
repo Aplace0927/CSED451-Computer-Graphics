@@ -20,6 +20,15 @@ namespace BBong {
 
 typedef std::pair<std::string, GLenum> ShaderInfo;
 
+struct ShaderStateDrawingMethod {
+    std::vector<std::pair<GLenum, bool>> capabilitiesStates;
+    GLenum polygonMode[2];
+    GLfloat polygonOffset[2];
+    GLboolean colorMask[4];
+    GLboolean depthMask;
+    GLfloat lineWidth;
+};
+
 class ShaderManager : public Singleton<ShaderManager> {
 public:
     ShaderManager();
@@ -33,6 +42,9 @@ public:
     void attachProgram();
     void detachProgram();
     void removeProgram();
+
+    ShaderStateDrawingMethod getCurrentDrawingState();
+    void setCurrentDrawingState(const ShaderStateDrawingMethod &state);
 
 private:
     GLuint programID;

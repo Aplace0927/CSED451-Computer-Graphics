@@ -95,7 +95,7 @@ public:
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
     meshRenderer->setMesh(ObjFileLoader::load("assets/rice.obj"));
 #endif
-    meshRenderer->setDefaultColor(glm::vec3(1.0f, 0.0f, 0.5f));
+    meshRenderer->setDefaultColor(glm::vec3(0.6f, 0.2f, 0.2f));
 
     transform->setScale(glm::vec3(2.0f));
 

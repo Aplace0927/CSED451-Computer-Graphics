@@ -49,6 +49,9 @@ void MeshRenderer3D::renderUpdate() {
   case Input::WIREFRAME:
     m_mesh->draw(GraphicStyle::WIREFRAME);
     break;
+  case Input::HIDDEN_LINE_REMOVAL:
+    m_mesh->draw(GraphicStyle::HIDDEN_LINE_REMOVAL);
+    break;
   }
 }
 } // namespace BBong

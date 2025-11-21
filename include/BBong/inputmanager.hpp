@@ -33,6 +33,7 @@ public:
   enum GraphicStyleMode {
     WIREFRAME,
     SOLID,
+    HIDDEN_LINE_REMOVAL
   };
 
   ProjectionMode projectionMode = PERSPECTIVE;

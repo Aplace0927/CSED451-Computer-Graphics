@@ -42,11 +42,11 @@ void GraphicsManager::update() {
   switch (Input::getInstance().projectionMode) {
   case Input::PERSPECTIVE:
       projectionMatrix = \
-        glm::perspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 10.0f * halfHeight) * 
+        glm::perspective(glm::radians(90.0f), 1.0f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 10.0f * halfHeight) * 
         glm::lookAt(
-          glm::vec3(0.0f, 0.0f, 5.0f * halfHeight),
-          glm::vec3(0.0f, 0.0f, -2.0f * halfHeight),
-          glm::vec3(0.0f, -1.0f, 0.0f)
+          glm::vec3(0.0f, 0.0f, 1.3f * halfHeight),
+          glm::vec3(0.0f, 0.0f, -1.0f * halfHeight),
+          glm::vec3(0.0f, 1.0f, 0.0f)
         );
     break;
   case Input::ORTHOGRAPHIC:
@@ -54,11 +54,11 @@ void GraphicsManager::update() {
     break;
   case Input::TPV_TOPVIEW:
     projectionMatrix = \
-      glm::perspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 3 * halfHeight) *
+      glm::perspective(glm::radians(90.0f), 1.0f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 3 * halfHeight) *
       glm::lookAt(
-        glm::vec3(0.0f, -1.5f * halfHeight, 100.0f),
-        glm::vec3(0.0f, halfHeight, -100.0f),
-        glm::vec3(0.0f, 0.0f, -1.0f)
+        glm::vec3(0.0f, -1.2f * halfHeight, 70.0f),
+        glm::vec3(0.0f, 1.0f * halfHeight,  -50.0f),
+        glm::vec3(0.0f, 0.0f, 1.0f)
       );
     break;
   }
@@ -128,25 +128,25 @@ void GraphicsManager::reshape(int width, int height) {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
-  float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
+  // float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
+  // float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
 
-  switch (Input::getInstance().projectionMode) {
-  case Input::PERSPECTIVE:
-    gluPerspective(75.0f, static_cast<float>(halfWidth) / halfHeight, 0.1f,
-                   3 * halfHeight);
-    glTranslatef(0.0f, 0.0f, -1.5f * halfHeight);
-    break;
-  case Input::ORTHOGRAPHIC:
-    glOrtho(-halfWidth, halfWidth, -halfHeight, halfHeight, -1.0f, 1.0f);
-    break;
-  case Input::TPV_TOPVIEW:
-    gluPerspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight,
-                   0.1f, 3 * halfHeight);
-    gluLookAt(0.0f, -1.5f * halfHeight, 100.0f, 0.0f, halfHeight, -100.0f, 0.0f,
-              0.0f, 1.0f);
-    break;
-  }
+  // switch (Input::getInstance().projectionMode) {
+  // case Input::PERSPECTIVE:
+  //   gluPerspective(75.0f, static_cast<float>(halfWidth) / halfHeight, 0.1f,
+  //                  3 * halfHeight);
+  //   glTranslatef(0.0f, 0.0f, -1.5f * halfHeight);
+  //   break;
+  // case Input::ORTHOGRAPHIC:
+  //   glOrtho(-halfWidth, halfWidth, -halfHeight, halfHeight, -1.0f, 1.0f);
+  //   break;
+  // case Input::TPV_TOPVIEW:
+  //   gluPerspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight,
+  //                  0.1f, 3 * halfHeight);
+  //   gluLookAt(0.0f, -1.5f * halfHeight, 100.0f, 0.0f, halfHeight, -100.0f, 0.0f,
+  //             0.0f, 1.0f);
+  //   break;
+  //}
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();

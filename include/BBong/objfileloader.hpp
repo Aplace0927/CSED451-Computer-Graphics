@@ -14,7 +14,11 @@ class ObjFileLoader {
 public:
   ObjFileLoader() = delete;
   static std::shared_ptr<Mesh3D> load(const std::string &path);
-
+  static std::shared_ptr<Mesh3D> loadFromVertex3D(
+    const std::vector<Vertex3D> &vertices,
+    const std::vector<unsigned int> &indices
+  );
+  static std::shared_ptr<Mesh3D> loadtoGPU(const std::vector<Vertex3D> &vertices, const std::vector<unsigned int> &indices);
 private:
   static unsigned int
   processVertex(const std::string &vertexData,
