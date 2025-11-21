@@ -30,15 +30,13 @@ void GraphicsManager::unregisterHandler(
 
 void GraphicsManager::update() {
   // --- 1. Setting Projection Matrix ---
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-
   float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
   float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
   float halfDepth = static_cast<float>(GameConfig::WINDOW_DEPTH) / 2;
 
   glm::mat4 projectionMatrix;
   ShaderManager::getInstance().attachProgram();
+  ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4CameraShake", glm::mat4(1.0f));
   switch (Input::getInstance().projectionMode) {
   case Input::PERSPECTIVE:
       projectionMatrix = \
@@ -65,8 +63,8 @@ void GraphicsManager::update() {
   ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4Projection", projectionMatrix);
   ShaderManager::getInstance().detachProgram();
   // --- 2. Init ModelView ---
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+  // glMatrixMode(GL_MODELVIEW);
+  // glLoadIdentity();
 
   // --- Copy timer and handeler---
   auto now = std::chrono::high_resolution_clock::now();
@@ -82,7 +80,11 @@ void GraphicsManager::update() {
   // --- 3. Camera Shaking ---
   if (shaking) {
     shakeTimer += Utility::DeltaTime;
+    glm::mat4 cameraShakeMatrix = glm::mat4(1.0f);
     if (shakeTimer >= shakeDuration) {
+      ShaderManager::getInstance().attachProgram();
+      ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4CameraShake", cameraShakeMatrix);
+      ShaderManager::getInstance().detachProgram();
       shaking = false;
     } else {
       applyCameraShake();
@@ -109,10 +111,14 @@ void GraphicsManager::update() {
 }
 
 void GraphicsManager::applyCameraShake() const {
-  float offsetX = glm::sin(shakeTimer * shakeSpeed) * shakeMagnitude;
-  float offsetY = glm::cos(shakeTimer * shakeSpeed * 1.3f) * shakeMagnitude;
+  float offsetX = glm::sin(shakeTimer * shakeSpeed) * shakeMagnitude / GameConfig::WINDOW_WIDTH;
+  float offsetY = glm::cos(shakeTimer * shakeSpeed * 1.3f) * shakeMagnitude / GameConfig::WINDOW_HEIGHT;
 
-  glTranslatef(-offsetX, -offsetY, 0.0f);
+  glm::mat4 cameraShakeMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-offsetX, -offsetY, 0.0f));
+
+  ShaderManager::getInstance().attachProgram();
+  ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4CameraShake", cameraShakeMatrix);
+  ShaderManager::getInstance().detachProgram();
 }
 
 void GraphicsManager::startCameraShake(float duration, float magnitude,
@@ -125,8 +131,8 @@ void GraphicsManager::startCameraShake(float duration, float magnitude,
 }
 
 void GraphicsManager::reshape(int width, int height) {
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
+  // glMatrixMode(GL_PROJECTION);
+  // glLoadIdentity();
 
   // float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
   // float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
@@ -148,21 +154,21 @@ void GraphicsManager::reshape(int width, int height) {
   //   break;
   //}
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+  // glMatrixMode(GL_MODELVIEW);
+  // glLoadIdentity();
 
-  float originalAspect =
-      static_cast<float>(GameConfig::WINDOW_WIDTH) / GameConfig::WINDOW_HEIGHT;
-  float aspect = static_cast<float>(width) / height;
+  // float originalAspect =
+  //     static_cast<float>(GameConfig::WINDOW_WIDTH) / GameConfig::WINDOW_HEIGHT;
+  // float aspect = static_cast<float>(width) / height;
 
-  if (aspect > originalAspect) {
-    int newWidth = originalAspect * height;
-    int xOffset = (width - newWidth) / 2;
-    glViewport(xOffset, 0, newWidth, height);
-  } else {
-    int newHeight = width / originalAspect;
-    int yOffset = (height - newHeight) / 2;
-    glViewport(0, yOffset, width, newHeight);
-  }
+  // if (aspect > originalAspect) {
+  //   int newWidth = originalAspect * height;
+  //   int xOffset = (width - newWidth) / 2;
+  //   glViewport(xOffset, 0, newWidth, height);
+  // } else {
+  //   int newHeight = width / originalAspect;
+  //   int yOffset = (height - newHeight) / 2;
+  //   glViewport(0, yOffset, width, newHeight);
+  // }
 }
 } // namespace BBong

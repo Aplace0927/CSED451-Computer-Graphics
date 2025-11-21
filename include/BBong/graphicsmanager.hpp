@@ -14,6 +14,7 @@
 
 #include "BBong/singleton.hpp"
 #include "config.hpp"
+#include "BBong/shadermanager.hpp"
 
 namespace BBong {
 typedef std::function<void()> GraphicsManagerFunc;
