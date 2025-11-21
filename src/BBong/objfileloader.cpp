@@ -43,10 +43,87 @@ ObjFileLoader::processVertex(const std::string &vertexData,
   return newIndex;
 }
 
+std::shared_ptr<Mesh3D> ObjFileLoader::loadFromVertex3D(
+  const std::vector<Vertex3D> &vertices,
+  const std::vector<unsigned int> &indices
+) {
+  std::vector<Vertex3D> out_vertices;
+  std::vector<unsigned int> out_indices;
+
+  for(unsigned int index: indices) {
+    out_vertices.push_back(vertices[index]);
+    out_indices.push_back(out_vertices.size() - 1);
+  }
+
+  std::cerr << "[OBJLOADER] From entity at (&V, &I) = ( " << vertices.data() << ", " << indices.data() << " )" << std::endl;
+  std::shared_ptr<Mesh3D> mesh = ObjFileLoader::loadtoGPU(out_vertices, out_indices); 
+  return mesh;
+}
+
+std::shared_ptr<Mesh3D> ObjFileLoader::loadtoGPU(
+  const std::vector<Vertex3D> &vertices,
+  const std::vector<unsigned int> &indices
+) {
+  GLuint m_vao;
+  VBOProps m_vbo;
+
+  glGenVertexArrays(1, &m_vao);
+
+  glGenBuffers(1, &m_vbo.vboVertices);
+  glBindVertexArray(m_vao);
+  glBindBuffer(GL_ARRAY_BUFFER, m_vbo.vboVertices);
+  glBufferData(
+    GL_ARRAY_BUFFER,
+    static_cast<GLsizeiptr>(vertices.size() * sizeof(Vertex3D)),
+    vertices.data(),
+    GL_STATIC_DRAW
+  );
+
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(
+    0,
+    3,
+    GL_FLOAT,
+    GL_FALSE,
+    sizeof(Vertex3D),
+    (void*)offsetof(Vertex3D, position)
+  );
+  
+  glEnableVertexAttribArray(1);
+  glVertexAttribPointer(
+    1,
+    3,
+    GL_FLOAT,
+    GL_FALSE,
+    sizeof(Vertex3D),
+    (void*)offsetof(Vertex3D, normal)
+  );
+
+  glEnableVertexAttribArray(2);
+  glVertexAttribPointer(
+    2,
+    2,
+    GL_FLOAT,
+    GL_FALSE,
+    sizeof(Vertex3D),
+    (void*)offsetof(Vertex3D, texCoord)
+  );
+
+  glBindVertexArray(0);
+
+  std::shared_ptr<Mesh3D> mesh = std::make_shared<Mesh3D>(vertices, indices);
+  mesh->setVAO(m_vao);
+  mesh->setVBO(m_vbo);
+
+  std::cerr << "[OBJLOADER] Loaded OBJ file: (|V|, |I|) = (" << vertices.size() << ", " << indices.size() << ") (VAO: " << mesh->getVAO().value() << ", VBO[Vert]: " << mesh->getVBO().value().vboVertices << ")" << std::endl;
+  
+  return mesh;
+}
+
 std::shared_ptr<Mesh3D> ObjFileLoader::load(const std::string &path) {
   std::ifstream file(path);
   if (!file.is_open()) {
-    std::cerr << "Error: Could not open OBJ file: " << path << std::endl;
+    std::cerr << "[OBJLOADER] Error: Could not open OBJ file: " << path << std::endl;
     return nullptr;
   }
 
@@ -87,7 +164,8 @@ std::shared_ptr<Mesh3D> ObjFileLoader::load(const std::string &path) {
                                             out_vertices, vertexMap));
       }
 
-      for (size_t i = 1; i < faceIndices.size() - 1; ++i) {
+      size_t faceVertexCount = faceIndices.size();
+      for (size_t i = 1; i < faceVertexCount - 1; i++) {
         out_indices.push_back(faceIndices[0]);
         out_indices.push_back(faceIndices[i]);
         out_indices.push_back(faceIndices[i + 1]);
@@ -96,61 +174,8 @@ std::shared_ptr<Mesh3D> ObjFileLoader::load(const std::string &path) {
   }
   file.close();
 
-  GLuint m_vao;
-  VBOProps m_vbo;
-
-  /* Debug here */
-  glGenVertexArrays(1, &m_vao);
-
-  glGenBuffers(1, &m_vbo.vboVertices);
-  glBindVertexArray(m_vao);
-  glBindBuffer(GL_ARRAY_BUFFER, m_vbo.vboVertices);
-  glBufferData(
-    GL_ARRAY_BUFFER,
-    static_cast<GLsizeiptr>(out_vertices.size() * sizeof(Vertex3D)),
-    out_vertices.data(),
-    GL_STATIC_DRAW
-  );
-
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(
-    0,
-    3,
-    GL_FLOAT,
-    GL_FALSE,
-    sizeof(Vertex3D),
-    (void*)offsetof(Vertex3D, position)
-  );
-  
-  glGenBuffers(1, &m_vbo.vboNormal);
-  glBindVertexArray(m_vao);
-  glBindBuffer(GL_ARRAY_BUFFER, m_vbo.vboNormal);
-  glBufferData(
-    GL_ARRAY_BUFFER,
-    static_cast<GLsizeiptr>(out_indices.size() * sizeof(unsigned int)),
-    out_indices.data(),
-    GL_STATIC_DRAW
-  );
-  glEnableVertexAttribArray(1);
-  glVertexAttribPointer(
-    1,
-    3,
-    GL_FLOAT,
-    GL_FALSE,
-    sizeof(Vertex3D),
-    (void*)offsetof(Vertex3D, normal)
-  );
-
-
-  glBindVertexArray(0);
-
-  std::shared_ptr<Mesh3D> mesh = std::make_shared<Mesh3D>(out_vertices, out_indices);
-  mesh->setVAO(m_vao);
-  mesh->setVBO(m_vbo);
-
-  std::cerr << "Loaded OBJ file: " << path << " with "
-            << out_vertices.size() << " vertices." << 
-            "(VAO: " << m_vao << ", VBO Vert: " << m_vbo.vboVertices << ", VBO Normal: " << m_vbo.vboNormal << ")\n"; 
+  std::cerr << "[OBJLOADER] From " << path << ":" << std::endl;
+  std::shared_ptr<Mesh3D> mesh = ObjFileLoader::loadtoGPU(out_vertices, out_indices); 
   return mesh;
 }
 } // namespace BBong
