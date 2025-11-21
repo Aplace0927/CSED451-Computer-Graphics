@@ -17,12 +17,12 @@ public:
 
 struct VBOProps {
   GLuint vboVertices;
-  GLuint vboNormal;
 };
 
 enum class GraphicStyle {
   OPAQUE_POLYGON,
   WIREFRAME,
+  HIDDEN_LINE_REMOVAL,
   _GAME_BOUNDINGBOX
 };
 

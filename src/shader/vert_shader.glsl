@@ -2,6 +2,7 @@
 
 layout (location = 0) in vec3 inVec3Position;
 layout (location = 1) in vec3 inVec3Normal;
+layout (location = 2) in vec2 inVec2TexCoord;
 
 uniform mat4 uMat4Projection;
 uniform mat4 uMat4Model;
