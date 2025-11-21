@@ -37,24 +37,33 @@ void GraphicsManager::update() {
   float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
   float halfDepth = static_cast<float>(GameConfig::WINDOW_DEPTH) / 2;
 
+  glm::mat4 projectionMatrix;
+  ShaderManager::getInstance().attachProgram();
   switch (Input::getInstance().projectionMode) {
   case Input::PERSPECTIVE:
-    gluPerspective(75.0f, static_cast<float>(halfWidth) / halfHeight, 0.1f,
-                   3 * halfHeight);
-    glTranslatef(0.0f, 0.0f, -1.5f * halfHeight);
+      projectionMatrix = \
+        glm::perspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 10.0f * halfHeight) * 
+        glm::lookAt(
+          glm::vec3(0.0f, 0.0f, 5.0f * halfHeight),
+          glm::vec3(0.0f, 0.0f, -2.0f * halfHeight),
+          glm::vec3(0.0f, -1.0f, 0.0f)
+        );
     break;
   case Input::ORTHOGRAPHIC:
-    glOrtho(-halfWidth, halfWidth, -halfHeight, halfHeight, halfDepth,
-            -halfDepth);
+    projectionMatrix = glm::ortho(-halfWidth, halfWidth, -halfHeight, halfHeight, halfDepth, -halfDepth);
     break;
   case Input::TPV_TOPVIEW:
-    gluPerspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight,
-                   0.1f, 3 * halfHeight);
-    gluLookAt(0.0f, -1.5f * halfHeight, 100.0f, 0.0f, halfHeight, -100.0f, 0.0f,
-              0.0f, 1.0f);
+    projectionMatrix = \
+      glm::perspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 3 * halfHeight) *
+      glm::lookAt(
+        glm::vec3(0.0f, -1.5f * halfHeight, 100.0f),
+        glm::vec3(0.0f, halfHeight, -100.0f),
+        glm::vec3(0.0f, 0.0f, -1.0f)
+      );
     break;
   }
-
+  ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4Projection", projectionMatrix);
+  ShaderManager::getInstance().detachProgram();
   // --- 2. Init ModelView ---
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();

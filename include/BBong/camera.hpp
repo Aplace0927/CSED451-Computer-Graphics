@@ -17,7 +17,6 @@ class Camera : public ClonableComponent<Camera> {
 public:
   explicit Camera(GameObject *owner);
   Camera(const Camera &other);
-  virtual ~Camera();
 
   void lateUpdate() override;
 

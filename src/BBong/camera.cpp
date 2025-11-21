@@ -14,6 +14,7 @@ Camera::Camera(GameObject *owner)
     m_aspectRatio = 1.0f;
   }
 }
+Camera::Camera(const Camera &other) : ClonableComponent(nullptr) {}
 
 void Camera::setProjectionType(ProjectionType pt) {
   m_projectionType = pt;
@@ -32,16 +33,6 @@ void Camera::lateUpdate() {
   switch (m_projectionType) {
   case ProjectionType::PERSPECTIVE:
   case ProjectionType::ORTHOGRAPHIC:
-    desiredPos = glm::vec3(targetPos.x, m_topViewHeight, targetPos.z);
-    m_currentFront = glm::vec3(0.0f, -1.0f, 0.0f);
-    m_currentUp = glm::vec3(0.0f, 0.0f, -1.0f);
-    break;
-
-  case CameraMode::THIRD_PERSON:
-    desiredPos = targetPos + glm::vec3(0.0f, m_tpsHeight, m_tpsDistance);
-
-    m_currentFront = glm::normalize(targetPos - desiredPos);
-    m_currentUp = glm::vec3(0.0f, 1.0f, 0.0f);
     break;
   }
 }

@@ -34,6 +34,7 @@ endif()
 # Allow experimental GLM extensions used in the project
 target_compile_definitions(
 	touhou_postech PRIVATE ASSETS_DIRECTORY="${RUNTIME_ASSET_DIRECTORY}/"
+	touhou_postech PRIVATE SHADER_DIRECTORY="${RUNTIME_SHADER_DIRECTORY}/"
 )
 target_compile_definitions(touhou_postech PRIVATE GLM_ENABLE_EXPERIMENTAL)
 

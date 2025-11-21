@@ -97,6 +97,7 @@ void GameObject::renderUpdate() {
     return;
   glPushMatrix();
   glMultMatrixf(glm::value_ptr(transform->getLocalMatrix()));
+  
   for (const auto &comp : m_components) {
     comp->doRenderUpdate();
   }

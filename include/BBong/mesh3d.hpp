@@ -40,7 +40,7 @@ public:
   ~Mesh3D();
 
   const std::vector<Vertex3D> getVertices();
-  glm::vec3 defaultColor = glm::vec3(1.0f, 0.7f, 1.0f);
+  glm::vec3 defaultColor = glm::vec3(1.0f, 1.0f, 1.0f);
   void draw(GraphicStyle style);
 
   void setVAO(GLuint vao) { VAO = vao; }

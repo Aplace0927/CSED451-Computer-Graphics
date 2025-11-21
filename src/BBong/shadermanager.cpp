@@ -13,10 +13,17 @@ namespace BBong {
     }
  
     void ShaderManager::init() {
+    #ifdef SHADER_DIRECTORY
         std::vector<ShaderInfo> shaders = {
-            {"../src/shader/vert_shader.glsl", GL_VERTEX_SHADER},
-            {"../src/shader/frag_shader.glsl", GL_FRAGMENT_SHADER},
+            {SHADER_DIRECTORY "vert_shader.glsl", GL_VERTEX_SHADER},
+            {SHADER_DIRECTORY "frag_shader.glsl", GL_FRAGMENT_SHADER},
         };
+    #else
+        std::vector<ShaderInfo> shaders = {
+            {"../shader/vert_shader.glsl", GL_VERTEX_SHADER},
+            {"../shader/frag_shader.glsl", GL_FRAGMENT_SHADER},
+        };
+    #endif
         programID = installShaders(shaders);
 
         if (programID == 0) {
@@ -69,8 +76,10 @@ namespace BBong {
         }
 
         for (const auto &shaderID : shaderIDs) {
+            glDetachShader(program, shaderID);
             glDeleteShader(shaderID);
         }
+        uniformLocationCache.clear();
 
         return program;
     }
@@ -130,38 +139,26 @@ namespace BBong {
     }
 
     template<> void ShaderManager::setUniformValue<int>(const std::string &symbol, const int &value) {
-        attachProgram();
         glUniform1i(getUniformLocation(symbol), value);
-        detachProgram();
     }
 
     template<> void ShaderManager::setUniformValue<float>(const std::string &symbol, const float &value) {
-        attachProgram();
         glUniform1f(getUniformLocation(symbol), value);
-        detachProgram();
     }
 
     template<> void ShaderManager::setUniformValue<glm::vec3>(const std::string &symbol, const glm::vec3 &value) {
-        attachProgram();
         glUniform3fv(getUniformLocation(symbol), 1, glm::value_ptr(value));
-        detachProgram();
     }
 
     template<> void ShaderManager::setUniformValue<glm::vec4>(const std::string &symbol, const glm::vec4 &value) {
-        attachProgram();
         glUniform4fv(getUniformLocation(symbol), 1, glm::value_ptr(value));
-        detachProgram();
     }
 
     template<> void ShaderManager::setUniformValue<glm::mat3>(const std::string &symbol, const glm::mat3 &value) {
-        attachProgram();
         glUniformMatrix3fv(getUniformLocation(symbol), 1, GL_FALSE, glm::value_ptr(value));
-        detachProgram();
     }
 
     template<> void ShaderManager::setUniformValue<glm::mat4>(const std::string &symbol, const glm::mat4 &value) {
-        attachProgram();
         glUniformMatrix4fv(getUniformLocation(symbol), 1, GL_FALSE, glm::value_ptr(value));
-        detachProgram();
     }
 }
