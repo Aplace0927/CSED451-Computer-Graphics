@@ -2,6 +2,7 @@
 #define HEALTHBAR_HPP
 
 #include "BBong/mesh3d.hpp"
+#include "BBong/objfileloader.hpp"
 
 namespace BBong {
 inline std::shared_ptr<Mesh3D> createHealthBarMesh(int currentHealth, int maxHealth) {
@@ -27,7 +28,7 @@ inline std::shared_ptr<Mesh3D> createHealthBarMesh(int currentHealth, int maxHea
         0, 2, 6, 4,
         1, 3, 7, 5,
     };
-    return std::make_shared<Mesh3D>(vertices, indices);
+    return ObjFileLoader::loadFromVertex3D(vertices, indices);
   }
 }
 

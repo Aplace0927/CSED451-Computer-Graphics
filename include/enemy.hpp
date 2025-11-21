@@ -28,7 +28,7 @@ public:
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
     meshRenderer->setMesh(ObjFileLoader::load("assets/drone.obj"));
 #endif
-    meshRenderer->setDefaultColor(glm::vec3(1.0f, 0.0f, 0.0f));
+    meshRenderer->setDefaultColor(glm::vec3(0.5f, 0.0f, 0.5f));
 
     transform->setScale(glm::vec3(100.0f));
     transform->setRotation(

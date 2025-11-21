@@ -4,10 +4,8 @@ namespace BBong {
 
 void Enemy::update() {
   auto healthBarRenderer = healthBar->getComponent<MeshRenderer3D>();
-  healthBarRenderer->setMesh(
-    createHealthBarMesh(enemyHealth, enemyMaxHealth)
-  );
   float healthRatio = static_cast<float>(enemyHealth) / enemyMaxHealth;
+  healthBarRenderer->transform->setScale(glm::vec3(0.2f * healthRatio, 0.2f, 0.2f));
   healthBarRenderer->setDefaultColor(
     glm::vec3(1.0f - healthRatio, healthRatio, 0.0f)
   );
