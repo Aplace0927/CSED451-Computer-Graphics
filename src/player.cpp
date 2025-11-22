@@ -50,7 +50,7 @@ void Player::fixedUpdate() {
 
 void Player::collision3D(Collider3D *collider) {
   if (playerHealth > 0 && isLive) {
-    GraphicsManager::getInstance().startCameraShake(0.15f, 1.5f, 60.0f);
+    GraphicsManager::getInstance().startCameraShake(0.15f, 5.0f, 60.0f);
     --playerHealth;
     isLive = false;
     reviveCooldown = 0.0f;
