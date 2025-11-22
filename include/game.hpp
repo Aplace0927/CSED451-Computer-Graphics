@@ -16,6 +16,9 @@ public:
 
 private:
   Game();
+  void CameraInit();
+
+  GameObject *playerObj;
 };
 } // namespace BBong
 #endif // GAME_HPP

@@ -22,8 +22,9 @@ int main(int argc, char **argv) {
   BBong::Game::getInstance().Init();
 
   glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
-
-  glEnable(GL_DEPTH_TEST | GL_TEXTURE_2D);
+  
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_TEXTURE_2D);
 
   glutReshapeFunc([](int x, int y) {
     BBong::GraphicsManager::getInstance().reshape(x, y);

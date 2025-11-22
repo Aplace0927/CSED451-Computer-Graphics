@@ -10,19 +10,19 @@ namespace BBong {
 Scene::Scene() {
   fixedUpdate_ptr = PhysicsManager::getInstance().registerHandler(
       [this]() { this->fixedUpdate(); });
-  update_ptr = GraphicsManager::getInstance().registerHandler(
+  update_ptr = GraphicsManager::getInstance().registerUpdateHandler(
       [this]() { this->update(); });
-  lateUpdate_ptr = GraphicsManager::getInstance().registerHandler(
+  lateUpdate_ptr = GraphicsManager::getInstance().registerLateUpdateHandler(
       [this]() { this->lateUpdate(); });
-  renderUpdate_ptr = GraphicsManager::getInstance().registerHandler(
+  renderUpdate_ptr = GraphicsManager::getInstance().registerRenderUpdateHandler(
       [this]() { this->renderUpdate(); });
 }
 
 Scene::~Scene() {
   PhysicsManager::getInstance().unregisterHandler(fixedUpdate_ptr);
-  GraphicsManager::getInstance().unregisterHandler(update_ptr);
-  GraphicsManager::getInstance().unregisterHandler(lateUpdate_ptr);
-  GraphicsManager::getInstance().unregisterHandler(renderUpdate_ptr);
+  GraphicsManager::getInstance().unregisterUpdateHandler(update_ptr);
+  GraphicsManager::getInstance().unregisterLateUpdateHandler(lateUpdate_ptr);
+  GraphicsManager::getInstance().unregisterRenderUpdateHandler(renderUpdate_ptr);
 
   m_gameObjects.clear();
 }

@@ -48,9 +48,27 @@ void Player::fixedUpdate() {
                 currentpos.z));
 }
 
+void Player::lateUpdate() {
+  if (shaking) {
+    shakeTimer -= Utility::DeltaTime;
+    if (shakeTimer <= 0.0f) {
+      shaking = false;
+      shakeTimer = 0.0f;
+
+      ShaderManager::getInstance().attachProgram();
+      ShaderManager::getInstance().setUniformValue<glm::mat4>(
+          "uMat4CameraShake", glm::mat4(1.0f));
+      ShaderManager::getInstance().detachProgram();
+    }
+
+    ShaderManager::getInstance().attachProgram();
+    applyCameraShake();
+  }
+}
+
 void Player::collision3D(Collider3D *collider) {
   if (playerHealth > 0 && isLive) {
-    GraphicsManager::getInstance().startCameraShake(0.15f, 5.0f, 60.0f);
+    startCameraShake(0.15f, 3000.0f, 60.0f);
     --playerHealth;
     isLive = false;
     reviveCooldown = 0.0f;
@@ -59,5 +77,29 @@ void Player::collision3D(Collider3D *collider) {
     healthGems.pop_back();
     lostHealthGem->setActive(false);
   }
+}
+
+void Player::applyCameraShake() const {
+  float offsetX = glm::sin(shakeTimer * shakeSpeed) * shakeMagnitude /
+                  GameConfig::WINDOW_WIDTH;
+  float offsetY = glm::cos(shakeTimer * shakeSpeed * 1.3f) * shakeMagnitude /
+                  GameConfig::WINDOW_HEIGHT;
+
+  glm::mat4 cameraShakeMatrix =
+      glm::translate(glm::mat4(1.0f), glm::vec3(-offsetX, -offsetY, 0.0f));
+
+  ShaderManager::getInstance().attachProgram();
+  ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4CameraShake",
+                                                          cameraShakeMatrix);
+  ShaderManager::getInstance().detachProgram();
+}
+
+void Player::startCameraShake(float duration, float magnitude,
+                                       float speed) {
+  shakeDuration = duration;
+  shakeMagnitude = magnitude;
+  shakeSpeed = speed;
+  shakeTimer = duration;
+  shaking = true;
 }
 } // namespace BBong

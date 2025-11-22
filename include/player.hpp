@@ -17,8 +17,8 @@ namespace BBong {
 class Player : public ClonableComponent<Player> {
 public:
   explicit Player(GameObject *owner)
-      : ClonableComponent(owner) {
-
+      : ClonableComponent(owner), meshRenderer(nullptr) // 멤버 변수 초기화 추가
+  {
     // Player Bullet Object
     GameObject *bulletPrefab = createBulletPrefab();
     bullets = std::make_shared<ObjectPool>(*bulletPrefab, nullptr, 0);
@@ -28,59 +28,57 @@ public:
     GameObject * renderObj =
         Game::getInstance().mainScene->createGameObject(transform);
     meshRenderer = renderObj->addComponent<MeshRenderer3D>();
-    
-    #ifdef ASSETS_DIRECTORY
-      meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "jet.obj"));
-    #else
-      printf("Warning: ASSETS_DIRECTORY not defined.\n");
-      meshRenderer->setMesh(ObjFileLoader::load("assets/jet.obj"));
-    #endif
+
+#ifdef ASSETS_DIRECTORY
+    meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "jet.obj"));
+#else
+    printf("Warning: ASSETS_DIRECTORY not defined.\n");
+    meshRenderer->setMesh(ObjFileLoader::load("assets/jet.obj"));
+#endif
     meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 1.0f));
 
-    // Player Bullet Shooting Point
-    transform->setWorldPosition(
-        glm::vec3(0.0f, -GameConfig::WINDOW_HEIGHT / 4.0f, 0.0f)
-    );
+    transform->setWorldPosition(glm::vec3(0.0f, -GameConfig::WINDOW_HEIGHT / 4.0f, 0.0f));
     transform->setScale(glm::vec3(5.0f));
-    transform->setRotation(
-        glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 180.0f))));
 
+    transform->setRotation(glm::quat(glm::vec3(0.0f)));
     shootingPoint = Game::getInstance().mainScene->createGameObject(transform);
     shootingPoint->transform->setLocalPosition(glm::vec3(0, 0, 7));
 
     // Player Health Gem Origin
-    healthGemOrigin = Game::getInstance().mainScene->createGameObject(transform);
+    healthGemOrigin =
+        Game::getInstance().mainScene->createGameObject(transform);
 
     for (int i = 0; i < playerHealth; ++i) {
-      GameObject* healthGem = Game::getInstance().mainScene->createGameObject(transform);
-      healthGem->transform->setLocalPosition(
-        glm::vec3(
+      GameObject *healthGem =
+          Game::getInstance().mainScene->createGameObject(transform);
+      healthGem->transform->setLocalPosition(glm::vec3(
           10 * glm::cos(glm::radians(360.0f * i / playerHealth)),
-          10 * glm::sin(glm::radians(360.0f * i / playerHealth)),
-          0.0f
-        )
-      );
+          10 * glm::sin(glm::radians(360.0f * i / playerHealth)), 0.0f));
       auto healthGemMesh = healthGem->addComponent<MeshRenderer3D>();
-      #ifdef ASSETS_DIRECTORY
-        healthGemMesh->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "star.obj"));
-      #else
-        printf("Warning: ASSETS_DIRECTORY not defined.\n");
-        healthGemMesh->setMesh(ObjFileLoader::load("assets/star.obj"));
-      #endif
+#ifdef ASSETS_DIRECTORY
+      healthGemMesh->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "star.obj"));
+#else
+      printf("Warning: ASSETS_DIRECTORY not defined.\n");
+      healthGemMesh->setMesh(ObjFileLoader::load("assets/star.obj"));
+#endif
       healthGemMesh->setDefaultColor(glm::vec3(1.0f, 1.0f, 0.5f));
-      healthGem->transform->setParent(healthGemOrigin->transform);  // Set rotation center
+      healthGem->transform->setParent(
+          healthGemOrigin->transform); // Set rotation center
       healthGems.push_back(healthGem);
 
-      //Player Collider
+      // Player Collider
       auto collider = addComponent<BoxCollider3D>();
       collider->setLayer(GameConfig::CollisionLayer::PLAYER);
-      std::vector<glm::vec3> vertices = {
-          glm::vec3(-3.0f, -3.0f, -3.0f), glm::vec3(3.0f, 3.0f, 3.0f)};
+      std::vector<glm::vec3> vertices = {glm::vec3(-3.0f, -3.0f, -3.0f),
+                                         glm::vec3(3.0f, 3.0f, 3.0f)};
       collider->SetBoundingBox(vertices);
-    }
+    } // for loop brace was missing in provided snippet, assumed closed here
   };
 
-  Player(const Player &other) : ClonableComponent(nullptr) {
+  Player(const Player &other)
+      : ClonableComponent(nullptr),
+        meshRenderer(nullptr)
+  {
     this->bullets = other.bullets;
     this->direction = other.direction;
     this->shootingPoint = other.shootingPoint;
@@ -91,6 +89,7 @@ public:
   ~Player() override { bullets.reset(); }
 
   void update() override;
+  void lateUpdate() override;
   void fixedUpdate() override;
   void collision3D(Collider3D *collider) override;
 
@@ -102,11 +101,20 @@ private:
     return bulletPrefab;
   }
 
+  void startCameraShake(float duration, float magnitude, float speed);
+  void applyCameraShake() const;
+
+  bool shaking = false;
+  float shakeDuration = 0.0f;
+  float shakeTimer = 0.0f;
+  float shakeMagnitude = 0.0f;
+  float shakeSpeed = 0.0f;
+
   std::shared_ptr<ObjectPool> bullets;
   glm::vec3 direction = glm::vec3(0.0f);
   GameObject* shootingPoint;
   GameObject* healthGemOrigin;
-  MeshRenderer3D *meshRenderer;
+  MeshRenderer3D *meshRenderer = nullptr; // 명시적 초기화
   std::vector<GameObject*> healthGems;
   int playerHealth = 10;
   float shootingCooldown = 0.0f;

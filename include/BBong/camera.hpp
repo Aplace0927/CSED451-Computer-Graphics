@@ -8,38 +8,39 @@
 
 namespace BBong {
 
-enum class ProjectionType {
-  PERSPECTIVE,
-  ORTHOGRAPHIC
-};
+enum class ProjectionType { PERSPECTIVE, ORTHOGRAPHIC };
 
 class Camera : public ClonableComponent<Camera> {
 public:
   explicit Camera(GameObject *owner);
   Camera(const Camera &other);
-
-  void lateUpdate() override;
+  ~Camera() override = default;
 
   glm::mat4 getViewMatrix() const;
-
   glm::mat4 getProjectionMatrix() const;
 
-  void onResize(int width, int height);
-
-  void setProjectionType(ProjectionType pt);
+  void setProjectionType(ProjectionType mode);
   ProjectionType getProjectionType() const { return m_projectionType; }
+
+  void setPerspective(float fovRadians, float aspect, float nearPlane,
+                      float farPlane);
+  void setOrthographic(float width, float height, float nearPlane,
+                       float farPlane);
+
+  void updateAspectRatio(float aspect);
 
 private:
   ProjectionType m_projectionType;
 
-  int m_width;
-  int m_height;
-  float m_aspectRatio;
-
-  float m_fov;
-  float m_orthoSize;
+  // 공통/Perspective 변수
+  float m_fov;         // Field of View (Radians)
+  float m_aspectRatio; // Width / Height
   float m_nearPlane;
   float m_farPlane;
-};
 
+  // Orthographic 변수
+  float m_orthoWidth;
+  float m_orthoHeight;
+  float m_orthoSize;
+};
 } // namespace BBong

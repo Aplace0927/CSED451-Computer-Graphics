@@ -1,4 +1,5 @@
 #include "BBong/graphicsmanager.hpp"
+#include "BBong/camera.hpp" // Camera 클래스 전체 정의 필요
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
@@ -11,164 +12,138 @@
 #include "config.hpp"
 #include "utility.hpp"
 #include "BBong/inputmanager.hpp"
+#include "BBong/shadermanager.hpp"
 
 namespace BBong {
+#pragma region register
 std::shared_ptr<GraphicsManagerFunc>
-GraphicsManager::registerHandler(GraphicsManagerFunc func) {
+GraphicsManager::registerUpdateHandler(GraphicsManagerFunc func) {
   std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
   auto ptr = std::make_shared<GraphicsManagerFunc>(func);
-  handlers.push_back(ptr);
+  this->updatehandler = ptr;
   return ptr;
 }
 
-void GraphicsManager::unregisterHandler(
+void GraphicsManager::unregisterUpdateHandler(
     std::shared_ptr<GraphicsManagerFunc> ptr) {
   std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
-  handlers.erase(std::remove(handlers.begin(), handlers.end(), ptr),
-                 handlers.end());
+  if (this->updatehandler == ptr) {
+    this->updatehandler = nullptr;
+  }
 }
 
-void GraphicsManager::update() {
-  // --- 1. Setting Projection Matrix ---
-  float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
-  float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
-  float halfDepth = static_cast<float>(GameConfig::WINDOW_DEPTH) / 2;
+std::shared_ptr<GraphicsManagerFunc>
+GraphicsManager::registerLateUpdateHandler(GraphicsManagerFunc func) {
+  std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
+  auto ptr = std::make_shared<GraphicsManagerFunc>(func);
+  this->lateUpdatehandler = ptr;
+  return ptr;
+}
 
-  glm::mat4 projectionMatrix;
-  ShaderManager::getInstance().attachProgram();
-  ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4CameraShake", glm::mat4(1.0f));
-  switch (Input::getInstance().projectionMode) {
-  case Input::PERSPECTIVE:
-      projectionMatrix = \
-        glm::perspective(glm::radians(90.0f), 1.0f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 10.0f * halfHeight) * 
-        glm::lookAt(
-          glm::vec3(0.0f, 0.0f, 1.3f * halfHeight),
-          glm::vec3(0.0f, 0.0f, -1.0f * halfHeight),
-          glm::vec3(0.0f, 1.0f, 0.0f)
-        );
-    break;
-  case Input::ORTHOGRAPHIC:
-    projectionMatrix = glm::ortho(-halfWidth, halfWidth, -halfHeight, halfHeight, halfDepth, -halfDepth);
-    break;
-  case Input::TPV_TOPVIEW:
-    projectionMatrix = \
-      glm::perspective(glm::radians(90.0f), 1.0f * static_cast<float>(halfWidth) / halfHeight, 0.1f, 3 * halfHeight) *
-      glm::lookAt(
-        glm::vec3(0.0f, -1.2f * halfHeight, 70.0f),
-        glm::vec3(0.0f, 1.0f * halfHeight,  -50.0f),
-        glm::vec3(0.0f, 0.0f, 1.0f)
-      );
-    break;
+void GraphicsManager::unregisterLateUpdateHandler(
+    std::shared_ptr<GraphicsManagerFunc> ptr) {
+  std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
+  if (this->lateUpdatehandler == ptr) {
+    this->lateUpdatehandler = nullptr;
   }
-  ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4Projection", projectionMatrix);
-  ShaderManager::getInstance().detachProgram();
-  // --- 2. Init ModelView ---
-  // glMatrixMode(GL_MODELVIEW);
-  // glLoadIdentity();
+}
 
-  // --- Copy timer and handeler---
+std::shared_ptr<GraphicsManagerFunc>
+GraphicsManager::registerRenderUpdateHandler(GraphicsManagerFunc func) {
+  std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
+  auto ptr = std::make_shared<GraphicsManagerFunc>(func);
+  this->renderUpdatehandler = ptr;
+  return ptr;
+}
+
+void GraphicsManager::unregisterRenderUpdateHandler(
+    std::shared_ptr<GraphicsManagerFunc> ptr) {
+  std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
+  if (this->renderUpdatehandler == ptr) {
+    this->renderUpdatehandler = nullptr;
+  }
+}
+#pragma endregion
+
+void GraphicsManager::setMainCamera(Camera *camera) { m_mainCamera = camera; }
+
+void GraphicsManager::update() {
+  // --- 1. Time Calculation ---
   auto now = std::chrono::high_resolution_clock::now();
   Utility::DeltaTime = std::chrono::duration<float>(now - lastFrame).count();
   lastFrame = now;
 
-  std::vector<std::shared_ptr<GraphicsManagerFunc>> updateHandlerCopy;
+  // --- 2. Thread Safety: Get Local Shared Pointers ---
+  std::shared_ptr<GraphicsManagerFunc> currentUpdate;
+  std::shared_ptr<GraphicsManagerFunc> currentLateUpdate;
+  std::shared_ptr<GraphicsManagerFunc> currentRenderUpdate;
+
   {
     std::lock_guard<std::recursive_mutex> lock(updateHandlerMutex);
-    updateHandlerCopy = handlers; // Create a copy to avoid holding the lock
+    currentUpdate = updatehandler;
+    currentLateUpdate = lateUpdatehandler;
+    currentRenderUpdate = renderUpdatehandler;
   }
 
-  // --- 3. Camera Shaking ---
-  if (shaking) {
-    shakeTimer += Utility::DeltaTime;
-    glm::mat4 cameraShakeMatrix = glm::mat4(1.0f);
-    if (shakeTimer >= shakeDuration) {
-      ShaderManager::getInstance().attachProgram();
-      ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4CameraShake", cameraShakeMatrix);
-      ShaderManager::getInstance().detachProgram();
-      shaking = false;
-    } else {
-      applyCameraShake();
-    }
+  // --- 3. Update (Game Logic) ---
+  if (currentUpdate) {
+    (*currentUpdate)();
   }
 
-  // --- 4. Clear screen ---
-
+  // --- 4. Render Preparation ---
+  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  // --- 5. Rendering SceneGraph ---
-  if (!updateHandlerCopy.empty()) {
-    for (auto &handler : updateHandlerCopy) {
-      if (handler == nullptr) {
-        continue;
-      }
-      (*handler)();
-    }
+  if (m_mainCamera) {
+    glm::mat4 view = m_mainCamera->getViewMatrix();
+    glm::mat4 projection = m_mainCamera->getProjectionMatrix();
+    glm::mat4 cameraShake = glm::mat4(1.0f);
+
+    ShaderManager::getInstance().attachProgram();
+    ShaderManager::getInstance().setUniformValue("uMat4View", view);
+    ShaderManager::getInstance().setUniformValue("uMat4Projection", projection);
+    ShaderManager::getInstance().setUniformValue("uMat4CameraShake",
+                                                 cameraShake);
   }
 
-  // --- 6. Buffer Swap and Redisplay ---
+  // --- 5. Late Update (Camera logic, Constraints) ---
+  if (currentLateUpdate) {
+    (*currentLateUpdate)();
+  }
+
+  // --- 6. Rendering (Draw Calls) ---
+  if (currentRenderUpdate) {
+    (*currentRenderUpdate)();
+  }
+
+  // --- 7. Buffer Swap ---
   glutSwapBuffers();
   glutPostRedisplay();
 }
 
-void GraphicsManager::applyCameraShake() const {
-  float offsetX = glm::sin(shakeTimer * shakeSpeed) * shakeMagnitude / GameConfig::WINDOW_WIDTH;
-  float offsetY = glm::cos(shakeTimer * shakeSpeed * 1.3f) * shakeMagnitude / GameConfig::WINDOW_HEIGHT;
-
-  glm::mat4 cameraShakeMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-offsetX, -offsetY, 0.0f));
-
-  ShaderManager::getInstance().attachProgram();
-  ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4CameraShake", cameraShakeMatrix);
-  ShaderManager::getInstance().detachProgram();
-}
-
-void GraphicsManager::startCameraShake(float duration, float magnitude,
-                                       float speed) {
-  shakeDuration = duration;
-  shakeMagnitude = magnitude;
-  shakeSpeed = speed;
-  shakeTimer = 0.0f;
-  shaking = true;
-}
-
 void GraphicsManager::reshape(int width, int height) {
-  // glMatrixMode(GL_PROJECTION);
-  // glLoadIdentity();
+  float originalAspect =
+      static_cast<float>(GameConfig::WINDOW_WIDTH) / GameConfig::WINDOW_HEIGHT;
 
-  // float halfWidth = static_cast<float>(GameConfig::WINDOW_WIDTH) / 2;
-  // float halfHeight = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 2;
+  float currentAspect = static_cast<float>(width) / height;
 
-  // switch (Input::getInstance().projectionMode) {
-  // case Input::PERSPECTIVE:
-  //   gluPerspective(75.0f, static_cast<float>(halfWidth) / halfHeight, 0.1f,
-  //                  3 * halfHeight);
-  //   glTranslatef(0.0f, 0.0f, -1.5f * halfHeight);
-  //   break;
-  // case Input::ORTHOGRAPHIC:
-  //   glOrtho(-halfWidth, halfWidth, -halfHeight, halfHeight, -1.0f, 1.0f);
-  //   break;
-  // case Input::TPV_TOPVIEW:
-  //   gluPerspective(75.0f, 1.5f * static_cast<float>(halfWidth) / halfHeight,
-  //                  0.1f, 3 * halfHeight);
-  //   gluLookAt(0.0f, -1.5f * halfHeight, 100.0f, 0.0f, halfHeight, -100.0f, 0.0f,
-  //             0.0f, 1.0f);
-  //   break;
-  //}
+  int xOffset = 0;
+  int yOffset = 0;
+  int newWidth = width;
+  int newHeight = height;
 
-  // glMatrixMode(GL_MODELVIEW);
-  // glLoadIdentity();
+  if (currentAspect > originalAspect) {
+    newWidth = static_cast<int>(height * originalAspect);
+    xOffset = (width - newWidth) / 2;
+  } else {
+    newHeight = static_cast<int>(width / originalAspect);
+    yOffset = (height - newHeight) / 2;
+  }
 
-  // float originalAspect =
-  //     static_cast<float>(GameConfig::WINDOW_WIDTH) / GameConfig::WINDOW_HEIGHT;
-  // float aspect = static_cast<float>(width) / height;
+  glViewport(xOffset, yOffset, newWidth, newHeight);
 
-  // if (aspect > originalAspect) {
-  //   int newWidth = originalAspect * height;
-  //   int xOffset = (width - newWidth) / 2;
-  //   glViewport(xOffset, 0, newWidth, height);
-  // } else {
-  //   int newHeight = width / originalAspect;
-  //   int yOffset = (height - newHeight) / 2;
-  //   glViewport(0, yOffset, width, newHeight);
-  // }
+  if (m_mainCamera) {
+    m_mainCamera->updateAspectRatio(originalAspect);
+  }
 }
 } // namespace BBong

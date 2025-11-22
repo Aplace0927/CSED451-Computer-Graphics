@@ -43,13 +43,13 @@ void MeshRenderer3D::renderUpdate() {
     return;
   }
   switch (Input::getInstance().graphicStyleMode) {
-  case Input::SOLID:
+  case SOLID:
     m_mesh->draw(GraphicStyle::OPAQUE_POLYGON);
     break;
-  case Input::WIREFRAME:
+  case WIREFRAME:
     m_mesh->draw(GraphicStyle::WIREFRAME);
     break;
-  case Input::HIDDEN_LINE_REMOVAL:
+  case HIDDEN_LINE_REMOVAL:
     m_mesh->draw(GraphicStyle::HIDDEN_LINE_REMOVAL);
     break;
   }

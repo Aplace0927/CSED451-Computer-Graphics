@@ -62,62 +62,8 @@ std::shared_ptr<Mesh3D> ObjFileLoader::loadFromVertex3D(
 
 std::shared_ptr<Mesh3D> ObjFileLoader::loadtoGPU(
   const std::vector<Vertex3D> &vertices,
-  const std::vector<unsigned int> &indices
-) {
-  GLuint m_vao;
-  VBOProps m_vbo;
-
-  glGenVertexArrays(1, &m_vao);
-
-  glGenBuffers(1, &m_vbo.vboVertices);
-  glBindVertexArray(m_vao);
-  glBindBuffer(GL_ARRAY_BUFFER, m_vbo.vboVertices);
-  glBufferData(
-    GL_ARRAY_BUFFER,
-    static_cast<GLsizeiptr>(vertices.size() * sizeof(Vertex3D)),
-    vertices.data(),
-    GL_STATIC_DRAW
-  );
-
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(
-    0,
-    3,
-    GL_FLOAT,
-    GL_FALSE,
-    sizeof(Vertex3D),
-    (void*)offsetof(Vertex3D, position)
-  );
-  
-  glEnableVertexAttribArray(1);
-  glVertexAttribPointer(
-    1,
-    3,
-    GL_FLOAT,
-    GL_FALSE,
-    sizeof(Vertex3D),
-    (void*)offsetof(Vertex3D, normal)
-  );
-
-  glEnableVertexAttribArray(2);
-  glVertexAttribPointer(
-    2,
-    2,
-    GL_FLOAT,
-    GL_FALSE,
-    sizeof(Vertex3D),
-    (void*)offsetof(Vertex3D, texCoord)
-  );
-
-  glBindVertexArray(0);
-
-  std::shared_ptr<Mesh3D> mesh = std::make_shared<Mesh3D>(vertices, indices);
-  mesh->setVAO(m_vao);
-  mesh->setVBO(m_vbo);
-
-  std::cerr << "[OBJLOADER] Loaded OBJ file: (|V|, |I|) = (" << vertices.size() << ", " << indices.size() << ") (VAO: " << mesh->getVAO().value() << ", VBO[Vert]: " << mesh->getVBO().value().vboVertices << ")" << std::endl;
-  
-  return mesh;
+  const std::vector<unsigned int> &indices) {
+  return std::make_shared<Mesh3D>(vertices, indices);
 }
 
 std::shared_ptr<Mesh3D> ObjFileLoader::load(const std::string &path) {

@@ -17,6 +17,7 @@
 #include "BBong/shadermanager.hpp"
 
 namespace BBong {
+class Camera;
 typedef std::function<void()> GraphicsManagerFunc;
 
 class GraphicsManager : public Singleton<GraphicsManager> {
@@ -25,26 +26,35 @@ private:
   GraphicsManager(const GraphicsManager &) = delete;
   GraphicsManager &operator=(const GraphicsManager &) = delete;
 
-  void applyCameraShake() const;
+  std::shared_ptr<GraphicsManagerFunc> updatehandler;
+  std::shared_ptr<GraphicsManagerFunc> lateUpdatehandler;
+  std::shared_ptr<GraphicsManagerFunc> renderUpdatehandler;
 
-  std::vector<std::shared_ptr<GraphicsManagerFunc>> handlers;
   std::recursive_mutex updateHandlerMutex;
-  bool shaking = false;
-  float shakeDuration = 0.0f;
-  float shakeTimer = 0.0f;
-  float shakeMagnitude = 0.0f;
-  float shakeSpeed = 0.0f;
+
+  Camera *m_mainCamera = nullptr;
 
 public:
   GraphicsManager() { lastFrame = std::chrono::high_resolution_clock::now(); };
   ~GraphicsManager() = default;
 
-  std::shared_ptr<GraphicsManagerFunc> registerHandler(GraphicsManagerFunc func);
-  void unregisterHandler(std::shared_ptr<GraphicsManagerFunc> ptr);
+  std::shared_ptr<GraphicsManagerFunc>
+  registerUpdateHandler(GraphicsManagerFunc func);
+  void unregisterUpdateHandler(std::shared_ptr<GraphicsManagerFunc> ptr);
 
-  void startCameraShake(float duration, float magnitude, float speed);
+  std::shared_ptr<GraphicsManagerFunc>
+  registerLateUpdateHandler(GraphicsManagerFunc func);
+  void unregisterLateUpdateHandler(std::shared_ptr<GraphicsManagerFunc> ptr);
+
+  std::shared_ptr<GraphicsManagerFunc>
+  registerRenderUpdateHandler(GraphicsManagerFunc func);
+  void unregisterRenderUpdateHandler(std::shared_ptr<GraphicsManagerFunc> ptr);
+
   void reshape(int width, int height);
   void update();
+
+  void setMainCamera(Camera *camera);
+  Camera *getMainCamera() const { return m_mainCamera; }
 };
 } // namespace BBong
 

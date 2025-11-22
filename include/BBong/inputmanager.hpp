@@ -12,6 +12,9 @@
 #include "utility.hpp"
 
 namespace BBong {
+enum ProjectionMode { PERSPECTIVE, ORTHOGRAPHIC, TPV_TOPVIEW, PLAYER_VIEW };
+enum GraphicStyleMode { WIREFRAME, SOLID, HIDDEN_LINE_REMOVAL };
+
 class Input : public Singleton<Input> {
 public:
   Input()
@@ -24,17 +27,6 @@ public:
 
   glm::vec3 playerMoveVec;
   bool isShooting;
-
-  enum ProjectionMode {
-    PERSPECTIVE,
-    ORTHOGRAPHIC,
-    TPV_TOPVIEW
-  };
-  enum GraphicStyleMode {
-    WIREFRAME,
-    SOLID,
-    HIDDEN_LINE_REMOVAL
-  };
 
   ProjectionMode projectionMode = PERSPECTIVE;
   GraphicStyleMode graphicStyleMode = SOLID;

@@ -19,7 +19,6 @@ public:
   explicit BackgroundBoundingBox(GameObject *owner)
       : ClonableComponent(owner) {
     auto meshRenderer = addComponent<MeshRenderer3D>();
-    //meshRenderer->SetMesh(createRainbowHexagonMesh(100));
 
     std::vector<Vertex3D> vertices = {
         {glm::vec3(-GameConfig::WINDOW_WIDTH / 2, -GameConfig::WINDOW_HEIGHT / 2, -GameConfig::WINDOW_DEPTH / 2), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
