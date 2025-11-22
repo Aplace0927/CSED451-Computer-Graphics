@@ -20,8 +20,9 @@ void Player::update() {
     meshRenderer->gameObject->setActive(true);
   }
 
+  animateViewDirection = glm::mix(animateViewDirection, direction, GameConfig::ANIMATION_BLEND_SPEED);
   transform->setRotation(glm::quat(glm::radians(glm::vec3(
-      -90.0f + 20.0f * direction.y, 180.0f + 10.0f * direction.x, 0.0f))));
+      -90.0f + 20.0f * animateViewDirection.y, 180.0f + 10.0f * animateViewDirection.x, 0.0f))));
 
   healthGemOrigin->transform->rotate(90.0f * Utility::DeltaTime,
                                      glm::normalize(glm::vec3(0, 1, 1)));

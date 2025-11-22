@@ -26,6 +26,7 @@ public:
   void keyUpEvent(unsigned char key, int x, int y);
 
   glm::vec3 playerMoveVec;
+  glm::vec3 animateAngleVec;
   bool isShooting;
 
   ProjectionMode projectionMode = PERSPECTIVE;

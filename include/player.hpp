@@ -17,7 +17,7 @@ namespace BBong {
 class Player : public ClonableComponent<Player> {
 public:
   explicit Player(GameObject *owner)
-      : ClonableComponent(owner), meshRenderer(nullptr) // ¸â¹ö º¯¼ö ÃÊ±âÈ­ Ãß°¡
+      : ClonableComponent(owner), meshRenderer(nullptr) // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½ß°ï¿½
   {
     // Player Bullet Object
     GameObject *bulletPrefab = createBulletPrefab();
@@ -111,10 +111,11 @@ private:
   float shakeSpeed = 0.0f;
 
   std::shared_ptr<ObjectPool> bullets;
+  glm::vec3 animateViewDirection = glm::vec3(0.0f);
   glm::vec3 direction = glm::vec3(0.0f);
   GameObject* shootingPoint;
   GameObject* healthGemOrigin;
-  MeshRenderer3D *meshRenderer = nullptr; // ¸í½ÃÀû ÃÊ±âÈ­
+  MeshRenderer3D *meshRenderer = nullptr; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
   std::vector<GameObject*> healthGems;
   int playerHealth = 10;
   float shootingCooldown = 0.0f;

@@ -66,6 +66,8 @@ inline constexpr float LOSE_BG_COLOR[3] = {
 
 inline constexpr int MAX_LAYERS = 8;
 
+inline constexpr float ANIMATION_BLEND_SPEED = 0.1f;
+
 enum CollisionLayer : uint8_t {
   NONE = 0,
   PLAYER = 1 << 0,
