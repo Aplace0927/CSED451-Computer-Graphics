@@ -33,11 +33,11 @@ void Input::keyEvent(unsigned char key, int x, int y) {
       break;
     case TPV_TOPVIEW:
       projectionMode = PLAYER_VIEW;
-      std::cerr << "Switched to PERSPECTIVE mode." << std::endl;
+      std::cerr << "Switched to PLAYER_VIEW mode." << std::endl;
       break;
     case PLAYER_VIEW:
       projectionMode = PERSPECTIVE;
-      std::cerr << "Switched to PLAYER_VIEW mode." << std::endl;
+      std::cerr << "Switched to PERSPECTIVE mode." << std::endl;
       break;
     }
     break;
