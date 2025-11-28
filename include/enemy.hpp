@@ -23,10 +23,10 @@ public:
 
     auto meshRenderer = addComponent<MeshRenderer3D>();
 #ifdef ASSETS_DIRECTORY
-    meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "drone.obj"));
+    meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "drone.obj"));
 #else
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
-    meshRenderer->setMesh(ObjFileLoader::load("assets/drone.obj"));
+    meshRenderer->setMesh(ObjLoader::load("assets/drone.obj"));
 #endif
     meshRenderer->setDefaultColor(glm::vec3(0.5f, 0.0f, 0.5f));
 

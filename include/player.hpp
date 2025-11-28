@@ -8,7 +8,7 @@
 #include "BBong/collider3d.hpp"
 #include "BBong/collisionmanager.hpp"
 #include "BBong/component.hpp"
-#include "BBong/objfileloader.hpp"
+#include "BBong/objloader.hpp"
 #include "objectpool.hpp"
 #include "config.hpp"
 #include "bullet.hpp"
@@ -30,10 +30,10 @@ public:
     meshRenderer = renderObj->addComponent<MeshRenderer3D>();
 
 #ifdef ASSETS_DIRECTORY
-    meshRenderer->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "jet.obj"));
+    meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "jet.obj"));
 #else
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
-    meshRenderer->setMesh(ObjFileLoader::load("assets/jet.obj"));
+    meshRenderer->setMesh(ObjLoader::load("assets/jet.obj"));
 #endif
     meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 1.0f));
 
@@ -56,10 +56,10 @@ public:
           10 * glm::sin(glm::radians(360.0f * i / playerHealth)), 0.0f));
       auto healthGemMesh = healthGem->addComponent<MeshRenderer3D>();
 #ifdef ASSETS_DIRECTORY
-      healthGemMesh->setMesh(ObjFileLoader::load(ASSETS_DIRECTORY "star.obj"));
+      healthGemMesh->setMesh(ObjLoader::load(ASSETS_DIRECTORY "star.obj"));
 #else
       printf("Warning: ASSETS_DIRECTORY not defined.\n");
-      healthGemMesh->setMesh(ObjFileLoader::load("assets/star.obj"));
+      healthGemMesh->setMesh(ObjLoader::load("assets/star.obj"));
 #endif
       healthGemMesh->setDefaultColor(glm::vec3(1.0f, 1.0f, 0.5f));
       healthGem->transform->setParent(

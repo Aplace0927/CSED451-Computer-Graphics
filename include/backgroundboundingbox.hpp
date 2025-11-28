@@ -7,7 +7,7 @@
 #include "BBong/renderer3d.hpp"
 #include "BBong/collider3d.hpp"
 #include "BBong/component.hpp"
-#include "BBong/objfileloader.hpp"
+#include "BBong/objloader.hpp"
 #include "BBong/mesh3d.hpp"
 #include "objectpool.hpp"
 #include "config.hpp"
@@ -39,7 +39,7 @@ public:
         1, 3, 7, 5,
     };
     meshRenderer->setMesh(
-        ObjFileLoader::loadFromVertex3D(vertices, indices)
+        ObjLoader::loadFromVertex3D(vertices, indices)
     );
     meshRenderer->forceGraphicStyleMode(GraphicStyle::_GAME_BOUNDINGBOX);
     meshRenderer->setDefaultColor(glm::vec3(1.0f, 1.0f, 0.0f));

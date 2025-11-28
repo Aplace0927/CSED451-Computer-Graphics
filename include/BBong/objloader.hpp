@@ -1,18 +1,22 @@
-#ifndef OBJFILELOADER
-#define OBJFILELOADER
+#ifndef OBJLOADER_HPP
+#define OBJLOADER_HPP
 
 #include <string>
 #include <memory>
 #include <vector>
 #include <map>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 #include <glm/glm.hpp>
 
 #include "BBong/mesh3d.hpp"
 
 namespace BBong {
-class ObjFileLoader {
+class ObjLoader {
 public:
-  ObjFileLoader() = delete;
+  ObjLoader() = delete;
   static std::shared_ptr<Mesh3D> load(const std::string &path);
   static std::shared_ptr<Mesh3D> loadFromVertex3D(
     const std::vector<Vertex3D> &vertices,
@@ -30,4 +34,4 @@ private:
 };
 } // namespace BBong
 
-#endif // OBJFILELOADER
+#endif // OBJLOADER_HPP

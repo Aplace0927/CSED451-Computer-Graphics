@@ -8,7 +8,7 @@ add_executable(
 	"BBong/inputmanager.cpp"
 	"BBong/mesh2d.cpp"
 	"BBong/mesh3d.cpp"
-	"BBong/objfileloader.cpp"
+	"BBong/objloader.cpp"
 	"BBong/physicsmanager.cpp"
  	"BBong/renderer2d.cpp"
 	"BBong/renderer3d.cpp"

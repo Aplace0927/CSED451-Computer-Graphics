@@ -1,12 +1,11 @@
-#include "BBong/objfileloader.hpp"
+#include "BBong/objloader.hpp"
 
-#include <fstream>
-#include <sstream>
-#include <iostream>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb/stb_image.h"
 
 namespace BBong {
 unsigned int
-ObjFileLoader::processVertex(const std::string &vertexData,
+ObjLoader::processVertex(const std::string &vertexData,
                              const std::vector<glm::vec3> &temp_positions,
                              const std::vector<glm::vec2> &temp_texCoords,
                              const std::vector<glm::vec3> &temp_normals,
@@ -43,7 +42,7 @@ ObjFileLoader::processVertex(const std::string &vertexData,
   return newIndex;
 }
 
-std::shared_ptr<Mesh3D> ObjFileLoader::loadFromVertex3D(
+std::shared_ptr<Mesh3D> ObjLoader::loadFromVertex3D(
   const std::vector<Vertex3D> &vertices,
   const std::vector<unsigned int> &indices
 ) {
@@ -56,20 +55,20 @@ std::shared_ptr<Mesh3D> ObjFileLoader::loadFromVertex3D(
   }
 
   std::cerr << "[OBJLOADER] From entity at (&V, &I) = ( " << vertices.data() << ", " << indices.data() << " )" << std::endl;
-  std::shared_ptr<Mesh3D> mesh = ObjFileLoader::loadtoGPU(out_vertices, out_indices); 
+  std::shared_ptr<Mesh3D> mesh = ObjLoader::loadtoGPU(out_vertices, out_indices); 
   return mesh;
 }
 
-std::shared_ptr<Mesh3D> ObjFileLoader::loadtoGPU(
+std::shared_ptr<Mesh3D> ObjLoader::loadtoGPU(
   const std::vector<Vertex3D> &vertices,
   const std::vector<unsigned int> &indices) {
   return std::make_shared<Mesh3D>(vertices, indices);
 }
 
-std::shared_ptr<Mesh3D> ObjFileLoader::load(const std::string &path) {
-  std::ifstream file(path);
+std::shared_ptr<Mesh3D> ObjLoader::load(const std::string &obj_path) {
+  std::ifstream file(obj_path);
   if (!file.is_open()) {
-    std::cerr << "[OBJLOADER] Error: Could not open OBJ file: " << path << std::endl;
+    std::cerr << "[OBJLOADER] Error: Could not open OBJ file: " << obj_path << std::endl;
     return nullptr;
   }
 
@@ -120,8 +119,11 @@ std::shared_ptr<Mesh3D> ObjFileLoader::load(const std::string &path) {
   }
   file.close();
 
-  std::cerr << "[OBJLOADER] From " << path << ":" << std::endl;
-  std::shared_ptr<Mesh3D> mesh = ObjFileLoader::loadtoGPU(out_vertices, out_indices); 
+  // .png texture file loading
+
+
+  std::cerr << "[OBJLOADER] From " << obj_path << ":" << std::endl;
+  std::shared_ptr<Mesh3D> mesh = ObjLoader::loadtoGPU(out_vertices, out_indices); 
   return mesh;
 }
 } // namespace BBong
