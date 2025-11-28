@@ -10,7 +10,8 @@ Game::Game() : mainScene(new Scene) {}
 
 void Game::Init() {
   BBong::ShaderManager::getInstance().init();
-
+  BBong::TextureManager::getInstance().init();
+  
   GameObject *backgroundboundingboxObj = mainScene->createGameObject();
   backgroundboundingboxObj->addComponent<BackgroundBoundingBox>();
 

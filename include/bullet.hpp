@@ -12,6 +12,7 @@
 #include "BBong/gameobject.hpp"
 #include "BBong/transform.hpp"
 #include "BBong/objloader.hpp"
+#include "BBong/texturemanager.hpp"
 #include "objectpool.hpp"
 #include "utility.hpp"
 #include "config.hpp"
@@ -65,10 +66,16 @@ public:
     auto meshRenderer = addComponent<MeshRenderer3D>();
 
 #ifdef ASSETS_DIRECTORY
-    meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "rice.obj"));
+    meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "obj/rice.obj"));
+    meshRenderer->setTextureID(
+        TextureManager::getInstance().getTexture(
+            ASSETS_DIRECTORY "texture/diffuse/diffuse_rice.png"));
 #else
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
-    meshRenderer->setMesh(ObjLoader::load("assets/rice.obj"));
+    meshRenderer->setMesh(ObjLoader::load("assets/obj/rice.obj"));
+    meshRenderer->setTextureID(
+        TextureManager::getInstance().getTexture(
+            "assets/texture/diffuse/diffuse_rice.png"));
 #endif
     meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -90,10 +97,16 @@ public:
     auto meshRenderer = addComponent<MeshRenderer3D>();
 
 #ifdef ASSETS_DIRECTORY
-    meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "rice.obj"));
+    meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "obj/rice.obj"));
+    meshRenderer->setTextureID(
+        TextureManager::getInstance().getTexture(
+            ASSETS_DIRECTORY "texture/diffuse/diffuse_rice.png"));
 #else
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
-    meshRenderer->setMesh(ObjLoader::load("assets/rice.obj"));
+    meshRenderer->setMesh(ObjLoader::load("assets/obj/rice.obj"));
+    meshRenderer->setTextureID(
+        TextureManager::getInstance().getTexture(
+            "assets/texture/diffuse/diffuse_rice.png"));
 #endif
     meshRenderer->setDefaultColor(glm::vec3(0.6f, 0.2f, 0.2f));
 

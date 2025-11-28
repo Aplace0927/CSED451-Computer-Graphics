@@ -9,6 +9,8 @@
 #include "BBong/collisionmanager.hpp"
 #include "BBong/component.hpp"
 #include "BBong/objloader.hpp"
+#include "BBong/inputmanager.hpp"
+#include "BBong/texturemanager.hpp"
 #include "objectpool.hpp"
 #include "config.hpp"
 #include "bullet.hpp"
@@ -30,10 +32,16 @@ public:
     meshRenderer = renderObj->addComponent<MeshRenderer3D>();
 
 #ifdef ASSETS_DIRECTORY
-    meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "jet.obj"));
+    meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "obj/jet.obj"));
+    meshRenderer->setTextureID(
+        TextureManager::getInstance().getTexture(
+            ASSETS_DIRECTORY "texture/diffuse/diffuse_jet.png"));
 #else
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
-    meshRenderer->setMesh(ObjLoader::load("assets/jet.obj"));
+    meshRenderer->setMesh(ObjLoader::load("assets/obj/jet.obj"));
+    meshRenderer->setTextureID(
+        TextureManager::getInstance().getTexture(
+            "assets/texture/diffuse/diffuse_jet.png"));
 #endif
     meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 1.0f));
 
@@ -56,10 +64,16 @@ public:
           10 * glm::sin(glm::radians(360.0f * i / playerHealth)), 0.0f));
       auto healthGemMesh = healthGem->addComponent<MeshRenderer3D>();
 #ifdef ASSETS_DIRECTORY
-      healthGemMesh->setMesh(ObjLoader::load(ASSETS_DIRECTORY "star.obj"));
+      healthGemMesh->setMesh(ObjLoader::load(ASSETS_DIRECTORY "obj/star_sharp.obj"));
+      healthGemMesh->setTextureID(
+          TextureManager::getInstance().getTexture(
+              ASSETS_DIRECTORY "texture/diffuse/diffuse_star.png"));
 #else
       printf("Warning: ASSETS_DIRECTORY not defined.\n");
-      healthGemMesh->setMesh(ObjLoader::load("assets/star.obj"));
+      healthGemMesh->setMesh(ObjLoader::load("assets/obj/star_sharp.obj"));
+      healthGemMesh->setTextureID(
+          TextureManager::getInstance().getTexture(
+              "assets/texture/diffuse/diffuse_star.png"));
 #endif
       healthGemMesh->setDefaultColor(glm::vec3(1.0f, 1.0f, 0.5f));
       healthGem->transform->setParent(
@@ -72,7 +86,7 @@ public:
       std::vector<glm::vec3> vertices = {glm::vec3(-3.0f, -3.0f, -3.0f),
                                          glm::vec3(3.0f, 3.0f, 3.0f)};
       collider->SetBoundingBox(vertices);
-    } // for loop brace was missing in provided snippet, assumed closed here
+    }
   };
 
   Player(const Player &other)

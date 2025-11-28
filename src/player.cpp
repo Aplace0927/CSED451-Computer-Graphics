@@ -1,7 +1,5 @@
 #include "player.hpp"
 
-#include "BBong/inputmanager.hpp"
-
 namespace BBong {
 void Player::update() {
   direction = Input::getInstance().playerMoveVec;

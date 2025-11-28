@@ -54,7 +54,7 @@ std::shared_ptr<Mesh3D> ObjLoader::loadFromVertex3D(
     out_indices.push_back(out_vertices.size() - 1);
   }
 
-  std::cerr << "[OBJLOADER] From entity at (&V, &I) = ( " << vertices.data() << ", " << indices.data() << " )" << std::endl;
+  std::cerr << "[OBJLOADER] From entity at (&V, &I) = ( " << vertices.data() << ", " << indices.data() << " ) ";
   std::shared_ptr<Mesh3D> mesh = ObjLoader::loadtoGPU(out_vertices, out_indices); 
   return mesh;
 }
@@ -62,6 +62,8 @@ std::shared_ptr<Mesh3D> ObjLoader::loadFromVertex3D(
 std::shared_ptr<Mesh3D> ObjLoader::loadtoGPU(
   const std::vector<Vertex3D> &vertices,
   const std::vector<unsigned int> &indices) {
+  
+  std::cerr << "loaded |V|: " << vertices.size() << ", |I|: " << indices.size() << std::endl;
   return std::make_shared<Mesh3D>(vertices, indices);
 }
 
@@ -119,10 +121,7 @@ std::shared_ptr<Mesh3D> ObjLoader::load(const std::string &obj_path) {
   }
   file.close();
 
-  // .png texture file loading
-
-
-  std::cerr << "[OBJLOADER] From " << obj_path << ":" << std::endl;
+  std::cerr << "[OBJLOADER] From " << obj_path << ": ";
   std::shared_ptr<Mesh3D> mesh = ObjLoader::loadtoGPU(out_vertices, out_indices); 
   return mesh;
 }
