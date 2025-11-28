@@ -14,6 +14,7 @@ add_executable(
 	"BBong/renderer3d.cpp"
 	"BBong/transform.cpp"
 	"BBong/shadermanager.cpp"
+	"BBong/texturemanager.cpp"
 	"enemy.cpp"
 	"enemypatterns.cpp"
 	"game.cpp"
