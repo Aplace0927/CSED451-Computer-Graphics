@@ -41,7 +41,7 @@ public:
 
   const std::vector<Vertex3D> getVertices();
   glm::vec3 defaultColor = glm::vec3(1.0f, 1.0f, 1.0f);
-  void draw(GraphicStyle style);
+  void draw(GraphicStyle style, GLuint textureID);
 
   void setVAO(GLuint vao) { VAO = vao; }
   void setVBO(const VBOProps &vbo) { VBO = vbo; }

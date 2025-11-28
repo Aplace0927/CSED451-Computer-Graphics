@@ -39,18 +39,23 @@ void MeshRenderer3D::renderUpdate() {
   ShaderManager::getInstance().detachProgram();
   
   if (forcedGraphicStyleMode.has_value()) {
-    m_mesh->draw(forcedGraphicStyleMode.value());
+    m_mesh->draw(forcedGraphicStyleMode.value(), 
+                 textureID.has_value() ? textureID.value() : 0);
     return;
   }
   switch (Input::getInstance().graphicStyleMode) {
   case SOLID:
-    m_mesh->draw(GraphicStyle::OPAQUE_POLYGON);
+
+    m_mesh->draw(GraphicStyle::OPAQUE_POLYGON, 
+                 textureID.has_value() ? textureID.value() : 0);
     break;
   case WIREFRAME:
-    m_mesh->draw(GraphicStyle::WIREFRAME);
+    m_mesh->draw(GraphicStyle::WIREFRAME, 
+                 textureID.has_value() ? textureID.value() : 0);
     break;
   case HIDDEN_LINE_REMOVAL:
-    m_mesh->draw(GraphicStyle::HIDDEN_LINE_REMOVAL);
+    m_mesh->draw(GraphicStyle::HIDDEN_LINE_REMOVAL, 
+                 textureID.has_value() ? textureID.value() : 0);
     break;
   }
 }

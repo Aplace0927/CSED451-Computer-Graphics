@@ -62,11 +62,12 @@ Mesh3D::~Mesh3D() {
 
 const std::vector<Vertex3D> Mesh3D::getVertices() { return m_vertices; }
 
-void Mesh3D::draw(GraphicStyle style) {
+void Mesh3D::draw(GraphicStyle style, unsigned int textureID) {
   // if VAO and VBO are available, use retained mode rendering
   if (VAO.has_value()) {
 
     ShaderManager::getInstance().attachProgram();
+    ShaderManager::getInstance().setUniformValue<float>("uFloatUseTexture", textureID ? 1.0f : 0.0f);
     ShaderManager::getInstance().setUniformValue<glm::vec3>("uColor",
                                                             defaultColor);
     ShaderStateDrawingMethod originalState =
@@ -78,13 +79,14 @@ void Mesh3D::draw(GraphicStyle style) {
       glDisable(GL_POLYGON_OFFSET_LINE);
       glEnable(GL_POLYGON_OFFSET_FILL);
       glPolygonOffset(1.0f, 1.0f); // Use a small offset
-
+      glBindTexture(GL_TEXTURE_2D, textureID);
       glBindVertexArray(VAO.value());
       glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_indices.size()),
                      GL_UNSIGNED_INT, 0);
       glBindVertexArray(0);
       break;
     case GraphicStyle::WIREFRAME:
+      ShaderManager::getInstance().setUniformValue<float>("uFloatUseTexture", 0.0f);
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
       glDisable(GL_POLYGON_OFFSET_FILL);
       glEnable(GL_POLYGON_OFFSET_LINE);
@@ -97,6 +99,7 @@ void Mesh3D::draw(GraphicStyle style) {
       glBindVertexArray(0);
       break;
     case GraphicStyle::HIDDEN_LINE_REMOVAL:
+      ShaderManager::getInstance().setUniformValue<float>("uFloatUseTexture", 0.0f);
       glEnable(GL_DEPTH_TEST);
       glDepthFunc(GL_LESS); // Standard depth function
 

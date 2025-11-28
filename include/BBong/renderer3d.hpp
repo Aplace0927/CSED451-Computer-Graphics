@@ -20,6 +20,7 @@ private:
   std::shared_ptr<Mesh3D> m_mesh;
   std::unique_ptr<BoundingBox3D> m_boundingbox;
   std::optional<GraphicStyle> forcedGraphicStyleMode = std::nullopt;
+  std::optional<GLuint> textureID = std::nullopt;
 
 public:
   explicit MeshRenderer3D(GameObject *owner);
@@ -32,6 +33,10 @@ public:
       m_mesh->defaultColor = color;
     }
   }
+
+  void setTextureID(GLuint texID) { textureID = texID;}
+
+  std::optional<GLuint> getTextureID() const { return textureID; }
 
   std::shared_ptr<Mesh3D> getMesh() { return m_mesh; }
   const BoundingBox3D *getBoundingbox() const { return m_boundingbox.get(); }
