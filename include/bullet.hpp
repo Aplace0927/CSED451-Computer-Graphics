@@ -67,13 +67,13 @@ public:
 
 #ifdef ASSETS_DIRECTORY
     meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "obj/rice.obj"));
-    meshRenderer->setTextureID(
+    meshRenderer->setTexture(
         TextureManager::getInstance().getTexture(
             ASSETS_DIRECTORY "texture/diffuse/diffuse_rice.png"));
 #else
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
     meshRenderer->setMesh(ObjLoader::load("assets/obj/rice.obj"));
-    meshRenderer->setTextureID(
+    meshRenderer->setTexture(
         TextureManager::getInstance().getTexture(
             "assets/texture/diffuse/diffuse_rice.png"));
 #endif
@@ -98,13 +98,13 @@ public:
 
 #ifdef ASSETS_DIRECTORY
     meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "obj/rice.obj"));
-    meshRenderer->setTextureID(
+    meshRenderer->setTexture(
         TextureManager::getInstance().getTexture(
             ASSETS_DIRECTORY "texture/diffuse/diffuse_sonic_1.png"));
 #else
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
     meshRenderer->setMesh(ObjLoader::load("assets/obj/rice.obj"));
-    meshRenderer->setTextureID(
+    meshRenderer->setTexture(
         TextureManager::getInstance().getTexture(
             "assets/texture/diffuse/diffuse_sonic_1.png"));
 #endif

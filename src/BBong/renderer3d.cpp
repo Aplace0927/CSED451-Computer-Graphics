@@ -13,8 +13,8 @@ MeshRenderer3D::MeshRenderer3D(const MeshRenderer3D &other)
   } else {
     this->m_boundingbox = nullptr;
   }
-  this->textureID = other.textureID;
-  this->normalMapID = other.normalMapID;
+  this->m_texture = other.m_texture;
+  this->m_normalMap = other.m_normalMap;
 }
 
 void MeshRenderer3D::setMesh(std::shared_ptr<Mesh3D> mesh) {
@@ -45,19 +45,19 @@ void MeshRenderer3D::renderUpdate() {
   ShaderManager::getInstance().setUniformValue<glm::vec3>("uColor",
                                                           m_mesh->defaultColor);
 
-  float useTexture = textureID.has_value() ? 1.0f : 0.0f;
+  float useTexture = m_texture.has_value() ? 1.0f : 0.0f;
   ShaderManager::getInstance().setUniformValue<float>("uFloatUseTexture",
                                                       useTexture);
 
-  float useNormalMap = normalMapID.has_value() ? 1.0f : 0.0f;
+  float useNormalMap = m_normalMap.has_value() ? 1.0f : 0.0f;
   ShaderManager::getInstance().setUniformValue<float>("uFloatUseNormalMap",
                                                       useNormalMap);
 
   ShaderManager::getInstance().setUniformValue<int>("samp2DTexture", 0);
   ShaderManager::getInstance().setUniformValue("normalMap", 1);
 
-  GLuint texID = textureID.has_value() ? textureID.value() : 0;
-  GLuint normID = normalMapID.has_value() ? normalMapID.value() : 0;
+  GLuint texID = m_texture.has_value() ? m_texture.value() : 0;
+  GLuint normID = m_normalMap.has_value() ? m_normalMap.value() : 0;
 
   if (forcedGraphicStyleMode.has_value()) {
     m_mesh->draw(forcedGraphicStyleMode.value(), texID, normID);

@@ -25,13 +25,13 @@ public:
     auto meshRenderer = addComponent<MeshRenderer3D>();
 #ifdef ASSETS_DIRECTORY
     meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "obj/starship.obj"));
-    meshRenderer->setTextureID(
+    meshRenderer->setTexture(
         TextureManager::getInstance().getTexture(
             ASSETS_DIRECTORY "texture/diffuse/diffuse_starship.png"));
 #else
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
     meshRenderer->setMesh(ObjLoader::load("assets/obj/starship.obj"));
-    meshRenderer->setTextureID(
+    meshRenderer->setTexture(
         TextureManager::getInstance().getTexture(
             "assets/texture/diffuse/diffuse_starship.png"));
 #endif

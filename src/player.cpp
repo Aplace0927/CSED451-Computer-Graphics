@@ -17,13 +17,17 @@ Player::Player(GameObject *owner)
 
 #ifdef ASSETS_DIRECTORY
   meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "obj/jet.obj"));
-  meshRenderer->setTextureID(TextureManager::getInstance().getTexture(
+  meshRenderer->setTexture(TextureManager::getInstance().getTexture(
       ASSETS_DIRECTORY "texture/diffuse/diffuse_jet.png"));
+  meshRenderer->setNormalMap(TextureManager::getInstance().getTexture(
+      ASSETS_DIRECTORY "texture/normal/normal_quilt.png"));
 #else
   printf("Warning: ASSETS_DIRECTORY not defined.\n");
   meshRenderer->setMesh(ObjLoader::load("assets/obj/jet.obj"));
-  meshRenderer->setTextureID(TextureManager::getInstance().getTexture(
+  meshRenderer->setTexture(TextureManager::getInstance().getTexture(
       "assets/texture/diffuse/diffuse_jet.png"));
+  meshRenderer->setNormalMap(TextureManager::getInstance().getTexture(
+      ASSETS_DIRECTORY "texture/normal/normal_industrial.png"));
 #endif
   meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 1.0f));
 
@@ -48,12 +52,12 @@ Player::Player(GameObject *owner)
 #ifdef ASSETS_DIRECTORY
     healthGemMesh->setMesh(
         ObjLoader::load(ASSETS_DIRECTORY "obj/star_sharp.obj"));
-    healthGemMesh->setTextureID(TextureManager::getInstance().getTexture(
+    healthGemMesh->setTexture(TextureManager::getInstance().getTexture(
         ASSETS_DIRECTORY "texture/diffuse/diffuse_star.png"));
 #else
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
     healthGemMesh->setMesh(ObjLoader::load("assets/obj/star_sharp.obj"));
-    healthGemMesh->setTextureID(TextureManager::getInstance().getTexture(
+    healthGemMesh->setTexture(TextureManager::getInstance().getTexture(
         "assets/texture/diffuse/diffuse_star.png"));
 #endif
     healthGemMesh->setDefaultColor(glm::vec3(1.0f, 1.0f, 0.5f));
@@ -130,11 +134,11 @@ void Player::update() {
       shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_TIME_SEC) {
     auto newBullet = bullets->acquire();
 #ifdef ASSETS_DIRECTORY
-    newBullet->getComponent<MeshRenderer3D>()->setTextureID(
+    newBullet->getComponent<MeshRenderer3D>()->setTexture(
         TextureManager::getInstance().getTexture(
             ASSETS_DIRECTORY "texture/diffuse/diffuse_rice.png"));
 #else
-    newBullet->getComponent<MeshRenderer3D>()->setTextureID(
+    newBullet->getComponent<MeshRenderer3D>()->setTexture(
         TextureManager::getInstance().getTexture(
             "assets/texture/diffuse/diffuse_rice.png"));
 #endif

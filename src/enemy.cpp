@@ -61,7 +61,7 @@ void Enemy::shooting() {
     auto *newBullet = bullets->acquire();
 
     #ifdef ASSETS_DIRECTORY
-        newBullet->getComponent<MeshRenderer3D>()->setTextureID(
+        newBullet->getComponent<MeshRenderer3D>()->setTexture(
             TextureManager::getInstance().getTexture(
                 ASSETS_DIRECTORY "texture/diffuse/diffuse_sonic_1.png"));
     #else
