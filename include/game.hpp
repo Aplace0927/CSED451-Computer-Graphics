@@ -5,6 +5,7 @@
 
 #include "BBong/singleton.hpp"
 #include "BBong/scene.hpp"
+#include "cameracontroller.hpp"
 
 namespace BBong {
 class Game : public Singleton<Game> {
@@ -12,6 +13,7 @@ class Game : public Singleton<Game> {
 
 public:
   Scene *mainScene;
+  CameraController *cameraController;
   void Init();
 
 private:

@@ -7,7 +7,6 @@ layout (location = 2) in vec2 inVec2TexCoord;
 uniform mat4 uMat4View;
 uniform mat4 uMat4Projection;
 uniform mat4 uMat4Model;
-uniform mat4 uMat4CameraShake;
 
 out vec3 outVec3WorldPosition;
 out vec2 outVec2TexCoord;
@@ -17,5 +16,5 @@ void main() {
     outVec3WorldPosition = worldPos.xyz;
     outVec2TexCoord = inVec2TexCoord;
     
-    gl_Position = uMat4Projection * uMat4CameraShake * uMat4View * worldPos;
+    gl_Position = uMat4Projection * uMat4View * worldPos;
 }

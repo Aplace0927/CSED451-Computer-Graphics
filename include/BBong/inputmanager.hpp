@@ -12,7 +12,7 @@
 #include "utility.hpp"
 
 namespace BBong {
-enum ProjectionMode { PERSPECTIVE, ORTHOGRAPHIC, TPV_TOPVIEW, PLAYER_VIEW };
+enum ProjectionMode { PERSPECTIVE, ORTHOGRAPHIC, TPV_TOPVIEW, PLAYER_VIEW, NONE };
 enum GraphicStyleMode { WIREFRAME, SOLID, HIDDEN_LINE_REMOVAL };
 
 class Input : public Singleton<Input> {

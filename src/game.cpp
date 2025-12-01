@@ -3,15 +3,16 @@
 #include "enemy.hpp"
 #include "BBong/camera.hpp"
 #include "backgroundboundingbox.hpp"
-#include "camerachanger.hpp"
 
 namespace BBong {
 Game::Game() : mainScene(new Scene) {}
 
 void Game::Init() {
+  CameraInit();
+
   BBong::ShaderManager::getInstance().init();
   BBong::TextureManager::getInstance().init();
-  
+
   GameObject *backgroundboundingboxObj = mainScene->createGameObject();
   backgroundboundingboxObj->addComponent<BackgroundBoundingBox>();
 
@@ -28,8 +29,6 @@ void Game::Init() {
   enemyObj2->transform->setWorldPosition(
       glm::vec3(GameConfig::POSITION_RIGHT_LIMIT,
                 GameConfig::POSITION_UPPER_LIMIT, 0.0f));
-
-  CameraInit();
 }
 
 void Game::CameraInit() {
@@ -39,8 +38,8 @@ void Game::CameraInit() {
   float aspectRatio =
       static_cast<float>(GameConfig::WINDOW_WIDTH) / GameConfig::WINDOW_HEIGHT;
 
-  CameraChanger *cameraController =
-      mainScene->createGameObject()->addComponent<CameraChanger>();
+  cameraController =
+      mainScene->createGameObject()->addComponent<CameraController>();
 
   // --- 1. Orthographic Camera (cam1) ---
   GameObject *cameraObj1 = mainScene->createGameObject();
@@ -50,7 +49,6 @@ void Game::CameraInit() {
                         halfDepth, -halfDepth);
   cam1->transform->setWorldPosition(glm::vec3(0.0f));
   cam1->transform->setRotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
-  cameraController->Ortho_Camera = cam1;
 
   // --- 2. Perspective Camera (cam2) ---
   GameObject *cameraObj2 = mainScene->createGameObject();
@@ -60,7 +58,6 @@ void Game::CameraInit() {
                        10.0f * halfHeight);
   cam2->transform->setWorldPosition(glm::vec3(0.0f, 0.0f, 1.3f * halfHeight));
   cam2->transform->setRotation(glm::quat(0.0f, 0.0f, 0.0f, 0.0f));
-  cameraController->Perspective_Camera = cam2;
 
   // --- 3. TPV/TopView Camera (cam3) ---
   GameObject *cameraObj3 = mainScene->createGameObject();
@@ -79,22 +76,11 @@ void Game::CameraInit() {
   cam3->transform->setWorldPosition(glm::vec3(worldMatrix[3]));
   cam3->transform->setRotation(glm::quat_cast(worldMatrix));
 
-  cameraController->TPV_Camera = cam3;
-
-  // --- 4. Player Camera (cam4) ---
-  GameObject *cameraObj4 = mainScene->createGameObject();
-  cameraObj4->transform->setParent(playerObj->transform);
-  auto cam4 = cameraObj4->addComponent<Camera>();
-  cam4->setProjectionType(ProjectionType::PERSPECTIVE);
-  cam4->setPerspective(glm::radians(60.0f), aspectRatio, 0.1f,
-                       10.0f * halfHeight);
-
-  cam4->transform->setLocalPosition(
-      glm::vec3(0.0f, halfDepth, -0.1 * halfHeight));
-  cam4->transform->setRotation(
-      glm::quat(glm::radians(glm::vec3(-50.0f, 180.0f, 0.0f))));
-  cameraController->Player_Camera = cam4;
-
-  GraphicsManager::getInstance().setMainCamera(cam2);
+  Game::getInstance().cameraController->setCamera(ProjectionMode::ORTHOGRAPHIC,
+                                                  cam1);
+  Game::getInstance().cameraController->setCamera(ProjectionMode::PERSPECTIVE,
+                                                  cam2);
+  Game::getInstance().cameraController->setCamera(ProjectionMode::TPV_TOPVIEW,
+                                                  cam3);
 }
 } // namespace BBong
