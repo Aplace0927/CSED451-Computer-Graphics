@@ -20,14 +20,14 @@ Player::Player(GameObject *owner)
   meshRenderer->setTexture(TextureManager::getInstance().getTexture(
       ASSETS_DIRECTORY "texture/diffuse/diffuse_jet.png"));
   meshRenderer->setNormalMap(TextureManager::getInstance().getTexture(
-      ASSETS_DIRECTORY "texture/normal/normal_quilt.png"));
+      ASSETS_DIRECTORY "texture/normal/normal_organic.png"));
 #else
   printf("Warning: ASSETS_DIRECTORY not defined.\n");
   meshRenderer->setMesh(ObjLoader::load("assets/obj/jet.obj"));
   meshRenderer->setTexture(TextureManager::getInstance().getTexture(
       "assets/texture/diffuse/diffuse_jet.png"));
   meshRenderer->setNormalMap(TextureManager::getInstance().getTexture(
-      ASSETS_DIRECTORY "texture/normal/normal_industrial.png"));
+      ASSETS_DIRECTORY "texture/normal/normal_organic.png"));
 #endif
   meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 1.0f));
 

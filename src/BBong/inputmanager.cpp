@@ -74,7 +74,8 @@ void Input::keyEvent(unsigned char key, int x, int y) {
       break;
     }
     ShaderManager::getInstance().attachProgram();
-    ShaderManager::getInstance().setUniformValue("uIntShadingMode",2);
+    ShaderManager::getInstance().setUniformValue<int>("uIntShadingMode",
+                                                 shadingMode);
     ShaderManager::getInstance().detachProgram();
     break;
   case 't':
