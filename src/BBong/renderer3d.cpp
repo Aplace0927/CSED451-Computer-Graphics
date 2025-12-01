@@ -13,6 +13,8 @@ MeshRenderer3D::MeshRenderer3D(const MeshRenderer3D &other)
   } else {
     this->m_boundingbox = nullptr;
   }
+  this->textureID = other.textureID;
+  this->normalMapID = other.normalMapID;
 }
 
 void MeshRenderer3D::setMesh(std::shared_ptr<Mesh3D> mesh) {
@@ -34,28 +36,31 @@ void MeshRenderer3D::renderUpdate() {
   m_boundingbox->updateWorld(transform->getWorldMatrix());
 
   ShaderManager::getInstance().attachProgram();
+
+  // Model Matrix
   glm::mat4 modelMatrix = transform->getWorldMatrix();
-  ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4Model", modelMatrix);
+  ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4Model",
+                                                          modelMatrix);
+
   ShaderManager::getInstance().detachProgram();
-  
+
+  GLuint texID = textureID.has_value() ? textureID.value() : 0;
+  GLuint normID = normalMapID.has_value() ? normalMapID.value() : 0;
+
   if (forcedGraphicStyleMode.has_value()) {
-    m_mesh->draw(forcedGraphicStyleMode.value(), 
-                 textureID.has_value() ? textureID.value() : 0);
+    m_mesh->draw(forcedGraphicStyleMode.value(), texID, normID);
     return;
   }
+
   switch (Input::getInstance().graphicStyleMode) {
   case SOLID:
-
-    m_mesh->draw(GraphicStyle::OPAQUE_POLYGON, 
-                 textureID.has_value() ? textureID.value() : 0);
+    m_mesh->draw(GraphicStyle::OPAQUE_POLYGON, texID, normID);
     break;
   case WIREFRAME:
-    m_mesh->draw(GraphicStyle::WIREFRAME, 
-                 textureID.has_value() ? textureID.value() : 0);
+    m_mesh->draw(GraphicStyle::WIREFRAME, texID, normID);
     break;
   case HIDDEN_LINE_REMOVAL:
-    m_mesh->draw(GraphicStyle::HIDDEN_LINE_REMOVAL, 
-                 textureID.has_value() ? textureID.value() : 0);
+    m_mesh->draw(GraphicStyle::HIDDEN_LINE_REMOVAL, texID, normID);
     break;
   }
 }

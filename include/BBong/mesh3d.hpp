@@ -13,6 +13,7 @@ public:
   glm::vec3 position;
   glm::vec3 normal;
   glm::vec2 texCoord;
+  glm::vec3 tangent;
 };
 
 struct VBOProps {
@@ -34,6 +35,8 @@ private:
   std::optional<GLuint> VAO;
   std::optional<VBOProps> VBO;
 
+  void calculateTangents();
+
 public:
   Mesh3D(const std::vector<Vertex3D> &vertices,
          const std::vector<unsigned int> &indices);
@@ -41,7 +44,8 @@ public:
 
   const std::vector<Vertex3D> getVertices();
   glm::vec3 defaultColor = glm::vec3(1.0f, 1.0f, 1.0f);
-  void draw(GraphicStyle style, GLuint textureID);
+  void draw(GraphicStyle style, GLuint textureID,
+            GLuint normalMapID = 0);
 
   void setVAO(GLuint vao) { VAO = vao; }
   void setVBO(const VBOProps &vbo) { VBO = vbo; }

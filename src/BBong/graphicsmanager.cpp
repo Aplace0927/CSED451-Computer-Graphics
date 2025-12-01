@@ -4,15 +4,12 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <chrono>
-#include <algorithm>
-#include <iostream>
 
 #include "config.hpp"
 #include "utility.hpp"
-#include "BBong/inputmanager.hpp"
 #include "BBong/shadermanager.hpp"
+#include "BBong/light.hpp"
 
 namespace BBong {
 #pragma region register
@@ -106,7 +103,8 @@ void GraphicsManager::update() {
                                                  cameraShake);
   }
 
-  // --- 5. Late Update (Camera logic, Constraints) ---
+  // --- 5. Late Update (Camera logic, lights) ---
+  Light::ResetFrame();
   if (currentLateUpdate) {
     (*currentLateUpdate)();
   }

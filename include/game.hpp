@@ -18,6 +18,7 @@ public:
 
 private:
   Game();
+  void LightInit();
   void CameraInit();
 
   GameObject *playerObj;

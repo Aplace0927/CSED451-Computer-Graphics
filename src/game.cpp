@@ -3,15 +3,17 @@
 #include "enemy.hpp"
 #include "BBong/camera.hpp"
 #include "backgroundboundingbox.hpp"
+#include "BBong/light.hpp"
 
 namespace BBong {
 Game::Game() : mainScene(new Scene) {}
 
 void Game::Init() {
   CameraInit();
+  LightInit();
 
-  BBong::ShaderManager::getInstance().init();
-  BBong::TextureManager::getInstance().init();
+  ShaderManager::getInstance().init();
+  TextureManager::getInstance().init();
 
   GameObject *backgroundboundingboxObj = mainScene->createGameObject();
   backgroundboundingboxObj->addComponent<BackgroundBoundingBox>();
@@ -29,6 +31,19 @@ void Game::Init() {
   enemyObj2->transform->setWorldPosition(
       glm::vec3(GameConfig::POSITION_RIGHT_LIMIT,
                 GameConfig::POSITION_UPPER_LIMIT, 0.0f));
+}
+
+void Game::LightInit() {
+  auto directionalLightObj = mainScene->createGameObject();
+  auto dirLightComp = directionalLightObj->addComponent<Light>();
+  dirLightComp->setDirectional(
+      glm::vec3(0.8f, 0.8f, 0.8f),
+      glm::vec3(2.0f, 2.0f, 2.0f),
+      glm::vec3(1.0f, 1.0f, 1.0f) 
+  );
+  glm::vec3 lightDir = glm::normalize(glm::vec3(0.001f, -1.0f, 0.0f));
+  glm::quat dirRot = glm::quatLookAt(lightDir, glm::vec3(0, 1, 0));
+  directionalLightObj->transform->setRotation(dirRot);
 }
 
 void Game::CameraInit() {

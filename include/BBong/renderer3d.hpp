@@ -21,6 +21,7 @@ private:
   std::unique_ptr<BoundingBox3D> m_boundingbox;
   std::optional<GraphicStyle> forcedGraphicStyleMode = std::nullopt;
   std::optional<GLuint> textureID = std::nullopt;
+  std::optional<GLuint> normalMapID = std::nullopt;
 
 public:
   explicit MeshRenderer3D(GameObject *owner);
@@ -34,7 +35,8 @@ public:
     }
   }
 
-  void setTextureID(GLuint texID) { textureID = texID;}
+  void setTextureID(GLuint texID) { textureID = texID; }
+  void setNormalMapID(GLuint normID) { normalMapID = normID; }
 
   std::optional<GLuint> getTextureID() const { return textureID; }
 

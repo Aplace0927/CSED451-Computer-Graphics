@@ -15,13 +15,15 @@ add_executable(
 	"BBong/transform.cpp"
 	"BBong/shadermanager.cpp"
 	"BBong/texturemanager.cpp"
+	"BBong/scene.cpp"
+	"BBong/camera.cpp"
+	"BBong/light.cpp"
 	"enemy.cpp"
 	"enemypatterns.cpp"
 	"game.cpp"
 	"main.cpp"
 	"player.cpp"
-	"utility.cpp"
-	 "BBong/scene.cpp" "BBong/camera.cpp")
+	"utility.cpp")
 if (UNIX AND NOT APPLE)
 	target_link_libraries(touhou_postech
 		GLUT glew OpenGL::GL glm glu
