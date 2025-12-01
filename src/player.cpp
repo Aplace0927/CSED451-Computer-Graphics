@@ -28,6 +28,15 @@ void Player::update() {
   if (isShooting &&
       shootingCooldown >= GameConfig::SHOOTING_COOLDOWN_TIME_SEC) {
     auto newBullet = bullets->acquire();
+#ifdef ASSETS_DIRECTORY
+    newBullet->getComponent<MeshRenderer3D>()->setTextureID(
+        TextureManager::getInstance().getTexture(
+            ASSETS_DIRECTORY "texture/diffuse/diffuse_rice.png"));
+#else
+    newBullet->getComponent<MeshRenderer3D>()->setTextureID(
+        TextureManager::getInstance().getTexture(
+            "assets/texture/diffuse/diffuse_rice.png"));
+#endif
     newBullet->transform->setWorldPosition(
         shootingPoint->transform->getWorldPosition());
     shootingCooldown = 0;

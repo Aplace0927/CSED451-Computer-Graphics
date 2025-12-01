@@ -100,13 +100,13 @@ public:
     meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "obj/rice.obj"));
     meshRenderer->setTextureID(
         TextureManager::getInstance().getTexture(
-            ASSETS_DIRECTORY "texture/diffuse/diffuse_rice.png"));
+            ASSETS_DIRECTORY "texture/diffuse/diffuse_sonic_1.png"));
 #else
     printf("Warning: ASSETS_DIRECTORY not defined.\n");
     meshRenderer->setMesh(ObjLoader::load("assets/obj/rice.obj"));
     meshRenderer->setTextureID(
         TextureManager::getInstance().getTexture(
-            "assets/texture/diffuse/diffuse_rice.png"));
+            "assets/texture/diffuse/diffuse_sonic_1.png"));
 #endif
     meshRenderer->setDefaultColor(glm::vec3(0.6f, 0.2f, 0.2f));
 

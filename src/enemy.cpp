@@ -59,6 +59,17 @@ void Enemy::shooting() {
   for (const std::function<glm::vec3(glm::vec3, float)> &func :
        shootingPattern->fire()) {
     auto *newBullet = bullets->acquire();
+
+    #ifdef ASSETS_DIRECTORY
+        newBullet->getComponent<MeshRenderer3D>()->setTextureID(
+            TextureManager::getInstance().getTexture(
+                ASSETS_DIRECTORY "texture/diffuse/diffuse_sonic_1.png"));
+    #else
+        newBullet->getComponent<MeshRenderer3D>()->setTextureID(
+            TextureManager::getInstance().getTexture(
+                "assets/texture/diffuse/diffuse_sonic_1.png"));
+    #endif
+
     newBullet->transform->setWorldPosition(transform->getWorldPosition());
     
     glm::vec3 dir = Utility::getNormalizedDirection(func(glm::vec3(0.0f), 1.0f));
