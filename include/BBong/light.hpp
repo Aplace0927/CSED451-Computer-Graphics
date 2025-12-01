@@ -6,8 +6,6 @@
 
 namespace BBong {
 
-enum class ShadingMode { GOURAUD = 0, PHONG = 1, PHONG_NORMAL_MAPPING = 2 };
-
 enum class LightType { Directional, Point };
 
 class Light : public ClonableComponent<Light> {

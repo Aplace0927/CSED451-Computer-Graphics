@@ -58,6 +58,26 @@ void Input::keyEvent(unsigned char key, int x, int y) {
     }
     GraphicsManager::getInstance().update();
     break;
+  case 'c':
+    switch (shadingMode) {
+    case GOURAUD:
+      shadingMode = PHONG;
+      std::cerr << "Switched to GOURAUD mode." << std::endl;
+      break;
+    case PHONG:
+      shadingMode = PHONG_NORMAL_MAPPING;
+      std::cerr << "Switched to PHONG mode." << std::endl;
+      break;
+    case PHONG_NORMAL_MAPPING:
+      shadingMode = GOURAUD;
+      std::cerr << "Switched to PHONG_NORMAL_MAPPING mode." << std::endl;
+      break;
+    }
+    ShaderManager::getInstance().attachProgram();
+    ShaderManager::getInstance().setUniformValue("uIntShadingMode",
+                                                 static_cast<int>(shadingMode));
+    ShaderManager::getInstance().detachProgram();
+    break;
   case 't':
     boundingBoxVisible = !boundingBoxVisible;
     std::cerr << "Bounding Box Visibility: " 

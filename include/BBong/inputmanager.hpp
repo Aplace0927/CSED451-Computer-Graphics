@@ -14,6 +14,7 @@
 namespace BBong {
 enum ProjectionMode { PERSPECTIVE, ORTHOGRAPHIC, TPV_TOPVIEW, PLAYER_VIEW, NONE };
 enum GraphicStyleMode { WIREFRAME, SOLID, HIDDEN_LINE_REMOVAL };
+enum ShadingMode { GOURAUD = 0, PHONG = 1, PHONG_NORMAL_MAPPING = 2 };
 
 class Input : public Singleton<Input> {
 public:
@@ -31,6 +32,7 @@ public:
 
   ProjectionMode projectionMode = PERSPECTIVE;
   GraphicStyleMode graphicStyleMode = SOLID;
+  ShadingMode shadingMode = GOURAUD;
   bool boundingBoxVisible = false;
 };
 }; // namespace Input

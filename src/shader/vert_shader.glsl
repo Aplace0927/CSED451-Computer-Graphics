@@ -36,7 +36,7 @@ void main() {
     mat3 normalMatrix = transpose(inverse(mat3(uMat4Model)));
     outVec3Normal = normalize(normalMatrix * inVec3Normal);
 
-    // TBN Matrix Calculate (Normal Mapping)
+    // TBN Matrix Calculate
     vec3 T = normalize(normalMatrix * inVec3Tangent);
     vec3 N = normalize(normalMatrix * inVec3Normal);
     T = normalize(T - dot(T, N) * N);
@@ -47,20 +47,20 @@ void main() {
 
     // --- Gouraud Shading Calculation ---
     if (uIntShadingMode == 0) {
-        vec3 ambient = dirLight.ambient * uColor;
-        
+        vec3 ambient = dirLight.ambient;
+
         // Diffuse
         vec3 norm = normalize(outVec3Normal);
-        vec3 lightDir = normalize(-dirLight.direction); 
+        vec3 lightDir = normalize(-dirLight.direction);
         float diff = max(dot(norm, lightDir), 0.0);
-        vec3 diffuse = dirLight.diffuse * diff * uColor;
-        
+        vec3 diffuse = dirLight.diffuse * diff;
+
         // Specular
         vec3 viewDir = normalize(uVec3ViewPos - outVec3FragPos);
         vec3 reflectDir = reflect(-lightDir, norm);
         float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
-        vec3 specular = dirLight.specular * spec * uColor;
-        
+        vec3 specular = dirLight.specular * spec;
+
         outGouraudColor = vec4(ambient + diffuse + specular, 1.0);
     } else {
         outGouraudColor = vec4(0.0);

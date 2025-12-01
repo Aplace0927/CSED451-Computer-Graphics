@@ -53,10 +53,6 @@ void main() {
     // 1. Gouraud Shading
     if (uIntShadingMode == 0) {
         FragColor = outGouraudColor * vec4(objectColor, 1.0);
-        if (uFloatUseTexture > 0.5)
-             FragColor = outGouraudColor * texColor;
-        else 
-             FragColor = outGouraudColor;
         return;
     }
 
@@ -94,7 +90,7 @@ vec3 CalcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir, vec3 color)
     
     vec3 ambient  = light.ambient  * color;
     vec3 diffuse  = light.diffuse  * diff * color;
-    vec3 specular = light.specular * spec * vec3(1.0); // Specular´Â º¸Åë Èò»ö ºû
+    vec3 specular = light.specular * spec * vec3(1.0);
     
     return (ambient + diffuse + specular);
 }
@@ -112,9 +108,16 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, v
     
     // Attenuation
     float distance    = length(light.position - fragPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance + 
-    			     light.quadratic * (distance * distance));    
     
+    // Safety Fix
+    float attenuationDenominator = light.constant + light.linear * distance + 
+                                   light.quadratic * (distance * distance);
+                                   
+    float attenuation = 0.0;
+    if (attenuationDenominator > 0.0001) {
+        attenuation = 1.0 / attenuationDenominator;
+    }
+
     vec3 ambient  = light.ambient  * color;
     vec3 diffuse  = light.diffuse  * diff * color;
     vec3 specular = light.specular * spec * vec3(1.0);

@@ -42,7 +42,19 @@ void MeshRenderer3D::renderUpdate() {
   ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4Model",
                                                           modelMatrix);
 
-  ShaderManager::getInstance().detachProgram();
+  ShaderManager::getInstance().setUniformValue<glm::vec3>("uColor",
+                                                          m_mesh->defaultColor);
+
+  float useTexture = textureID.has_value() ? 1.0f : 0.0f;
+  ShaderManager::getInstance().setUniformValue<float>("uFloatUseTexture",
+                                                      useTexture);
+
+  float useNormalMap = normalMapID.has_value() ? 1.0f : 0.0f;
+  ShaderManager::getInstance().setUniformValue<float>("uFloatUseNormalMap",
+                                                      useNormalMap);
+
+  ShaderManager::getInstance().setUniformValue<int>("samp2DTexture", 0);
+  ShaderManager::getInstance().setUniformValue("normalMap", 1);
 
   GLuint texID = textureID.has_value() ? textureID.value() : 0;
   GLuint normID = normalMapID.has_value() ? normalMapID.value() : 0;
@@ -63,5 +75,7 @@ void MeshRenderer3D::renderUpdate() {
     m_mesh->draw(GraphicStyle::HIDDEN_LINE_REMOVAL, texID, normID);
     break;
   }
+
+  ShaderManager::getInstance().detachProgram();
 }
 } // namespace BBong

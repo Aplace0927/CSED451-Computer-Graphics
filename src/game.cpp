@@ -44,6 +44,15 @@ void Game::LightInit() {
   glm::vec3 lightDir = glm::normalize(glm::vec3(0.001f, -1.0f, 0.0f));
   glm::quat dirRot = glm::quatLookAt(lightDir, glm::vec3(0, 1, 0));
   directionalLightObj->transform->setRotation(dirRot);
+
+  auto pointLightObj = mainScene->createGameObject();
+  auto pointLightComp = pointLightObj->addComponent<Light>();
+  pointLightComp->setPoint(
+      glm::vec3(0.2f, 0.0f, 0.0f), // Ambient
+      glm::vec3(1.0f, 0.0f, 0.0f), // Diffuse
+      glm::vec3(1.0f, 1.0f, 1.0f), // Specular
+      1.0f, 0.09f, 0.032f // ★ Constant를 1.0으로 설정하여 0으로 나누기 방지 ★
+  );
 }
 
 void Game::CameraInit() {
