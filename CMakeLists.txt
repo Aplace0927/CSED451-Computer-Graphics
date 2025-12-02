@@ -100,3 +100,12 @@ file(
     INSTALL "${CMAKE_SOURCE_DIR}/src/shader"
     DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}"
 )
+
+add_custom_target(CopyShaders ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/src/shader"
+    "${RUNTIME_SHADER_DIRECTORY}"
+    COMMENT "Updating Shaders..."
+)
+
+add_dependencies(touhou_postech CopyShaders)

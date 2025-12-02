@@ -38,7 +38,7 @@ struct PointLight {
     vec3 specular;
 };
 
-#define NR_POINT_LIGHTS 1
+#define NR_POINT_LIGHTS 4
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 
 // --- Function Prototypes ---
@@ -59,7 +59,7 @@ void main() {
     // 2. Normal Vector
     vec3 norm = normalize(outVec3Normal);
     if (uIntShadingMode == 2 && uFloatUseNormalMap > 0.5) {
-        vec3 normalFromMap = texture(normalMap, outVec2TexCoord).rgb;
+        vec3 normalFromMap = texture(normalMap, outVec2TexCoord*500).rgb;
         normalFromMap = normalize(normalFromMap * 2.0 - 1.0);
         norm = normalize(outTBN * normalFromMap);
     }

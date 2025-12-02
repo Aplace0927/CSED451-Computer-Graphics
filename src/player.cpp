@@ -1,6 +1,7 @@
 #include "player.hpp"
 
 #include "cameracontroller.hpp"
+#include "BBong/light.hpp"
 
 namespace BBong {
 Player::Player(GameObject *owner)
@@ -14,20 +15,21 @@ Player::Player(GameObject *owner)
   GameObject *renderObj =
       Game::getInstance().mainScene->createGameObject(transform);
   meshRenderer = renderObj->addComponent<MeshRenderer3D>();
+  meshRenderer->transform->setScale(glm::vec3(5.0f));
 
 #ifdef ASSETS_DIRECTORY
   meshRenderer->setMesh(ObjLoader::load(ASSETS_DIRECTORY "obj/jet.obj"));
   meshRenderer->setTexture(TextureManager::getInstance().getTexture(
       ASSETS_DIRECTORY "texture/diffuse/diffuse_jet.png"));
   meshRenderer->setNormalMap(TextureManager::getInstance().getTexture(
-      ASSETS_DIRECTORY "texture/normal/normal_organic.png"));
+      ASSETS_DIRECTORY "texture/normal/normal_industrial.png"));
 #else
   printf("Warning: ASSETS_DIRECTORY not defined.\n");
   meshRenderer->setMesh(ObjLoader::load("assets/obj/jet.obj"));
   meshRenderer->setTexture(TextureManager::getInstance().getTexture(
       "assets/texture/diffuse/diffuse_jet.png"));
   meshRenderer->setNormalMap(TextureManager::getInstance().getTexture(
-      ASSETS_DIRECTORY "texture/normal/normal_organic.png"));
+      ASSETS_DIRECTORY "texture/normal/normal_industrial.png"));
 #endif
   meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 1.0f));
 
@@ -93,6 +95,15 @@ Player::Player(GameObject *owner)
 
   Game::getInstance().cameraController->setCamera(ProjectionMode::PLAYER_VIEW,
                                                   cam4);
+
+  // --- 5. Player Light ---
+  auto pointLightComp = addComponent<Light>();
+  pointLightComp->setPoint(
+      glm::vec3(0.2f, 0.2f, 0.2f), // Ambient
+      glm::vec3(1.0f, 1.0f, 1.0f), // Diffuse
+      glm::vec3(1.0f, 1.0f, 1.0f), // Specular
+      1.0f, 0.09f, 0.032f // ★ Constant를 1.0으로 설정하여 0으로 나누기 방지 ★
+  );
 }
 
 Player::Player(const Player &other)

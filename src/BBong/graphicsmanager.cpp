@@ -94,13 +94,10 @@ void GraphicsManager::update() {
   if (m_mainCamera) {
     glm::mat4 view = m_mainCamera->getViewMatrix();
     glm::mat4 projection = m_mainCamera->getProjectionMatrix();
-    glm::mat4 cameraShake = glm::mat4(1.0f);
 
     ShaderManager::getInstance().attachProgram();
     ShaderManager::getInstance().setUniformValue("uMat4View", view);
     ShaderManager::getInstance().setUniformValue("uMat4Projection", projection);
-    ShaderManager::getInstance().setUniformValue("uMat4CameraShake",
-                                                 cameraShake);
   }
 
   // --- 5. Late Update (Camera logic, lights) ---

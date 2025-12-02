@@ -45,6 +45,8 @@ void MeshRenderer3D::renderUpdate() {
   GLuint texID = m_texture.has_value() ? m_texture.value() : 0;
   GLuint normID = m_normalMap.has_value() ? m_normalMap.value() : 0;
 
+  ShaderManager::getInstance().detachProgram();
+
   if (forcedGraphicStyleMode.has_value()) {
     m_mesh->draw(forcedGraphicStyleMode.value(), texID, normID);
     return;
@@ -62,6 +64,5 @@ void MeshRenderer3D::renderUpdate() {
     break;
   }
 
-  ShaderManager::getInstance().detachProgram();
 }
 } // namespace BBong

@@ -70,7 +70,7 @@ void Game::CameraInit() {
   auto cam1 = cameraObj1->addComponent<Camera>();
   cam1->setProjectionType(ProjectionType::ORTHOGRAPHIC);
   cam1->setOrthographic(GameConfig::WINDOW_WIDTH, GameConfig::WINDOW_HEIGHT,
-                        halfDepth, -halfDepth);
+                        -halfDepth, halfDepth);
   cam1->transform->setWorldPosition(glm::vec3(0.0f));
   cam1->transform->setRotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
 
