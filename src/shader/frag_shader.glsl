@@ -38,7 +38,7 @@ struct PointLight {
     vec3 specular;
 };
 
-#define NR_POINT_LIGHTS 4
+#define NR_POINT_LIGHTS 16
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 
 // --- Function Prototypes ---
@@ -59,7 +59,7 @@ void main() {
     // 2. Normal Vector
     vec3 norm = normalize(outVec3Normal);
     if (uIntShadingMode == 2 && uFloatUseNormalMap > 0.5) {
-        vec3 normalFromMap = texture(normalMap, outVec2TexCoord*500).rgb;
+        vec3 normalFromMap = texture(normalMap, outVec2TexCoord * 500).rgb;
         normalFromMap = normalize(normalFromMap * 2.0 - 1.0);
         norm = normalize(outTBN * normalFromMap);
     }
@@ -107,7 +107,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, v
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
     
     // Attenuation
-    float distance    = length(light.position - fragPos);
+    float distance    = length(light.position - fragPos) / 512.0;
     
     // Safety Fix
     float attenuationDenominator = light.constant + light.linear * distance + 
