@@ -12,35 +12,46 @@ ShaderManager::~ShaderManager() {
   removeProgram();
 }
 
-void ShaderManager::init() {
-#ifdef SHADER_DIRECTORY
+GLuint ShaderManager::addShader(
+    std::string alias,
+    std::string vertexShader,
+    std::string fragmentShader
+  ) {
   std::vector<ShaderInfo> shaders = {
-      {SHADER_DIRECTORY "vert_shader.glsl", GL_VERTEX_SHADER},
-      {SHADER_DIRECTORY "frag_shader.glsl", GL_FRAGMENT_SHADER},
+      {vertexShader, GL_VERTEX_SHADER},
+      {fragmentShader, GL_FRAGMENT_SHADER},
   };
-#else
-  std::vector<ShaderInfo> shaders = {
-      {"../shader/vert_shader.glsl", GL_VERTEX_SHADER},
-      {"../shader/frag_shader.glsl", GL_FRAGMENT_SHADER},
-  };
-#endif
   programID = installShaders(shaders);
 
   if (programID == 0) {
     std::cerr << "[SHADER] Shader program initialization failed!" << std::endl;
   }
+
+  programs.push_back(programID);
+  programAlias[alias] = programID;
+  return programID;
 }
 
-GLint ShaderManager::getUniformLocation(const std::string &symbol) {
-  if (uniformLocationCache.find(symbol) != uniformLocationCache.end()) {
-    return uniformLocationCache[symbol];
+GLint ShaderManager::getUniformLocation(std::string alias,
+                                        const std::string &symbol) {
+  if (programAlias.find(alias) == programAlias.end()) {
+    std::cerr << "[SHADER] Alias '" << alias << "' not found." << std::endl;
+    return -1;
   }
-  GLint location = glGetUniformLocation(programID, symbol.c_str());
+  GLuint program = programAlias[alias];
+  if (uniformLocationCache.find(program) == uniformLocationCache.end()) {
+    uniformLocationCache[program] = std::map<std::string, GLint>();
+  }
+  if (uniformLocationCache[program].find(symbol) !=
+      uniformLocationCache[program].end()) {
+    return uniformLocationCache[program][symbol];
+  }
+  GLint location = glGetUniformLocation(program, symbol.c_str());
   if (location == -1) {
     std::cerr << "[SHADER] Uniform Variable '" << symbol
               << "' Not found in shader program." << std::endl;
   }
-  uniformLocationCache[symbol] = location;
+  uniformLocationCache[program][symbol] = location;
   return location;
 }
 
@@ -128,7 +139,14 @@ GLint ShaderManager::compileShader(const std::string shaderPath,
   return shaderID;
 }
 
-void ShaderManager::attachProgram() { glUseProgram(programID); }
+void ShaderManager::attachProgram(std::string alias) { 
+  if (programAlias.find(alias) != programAlias.end()) {
+    programID = programAlias[alias];
+    glUseProgram(programID);
+  } else {
+    std::cerr << "[SHADER] Program alias '" << alias << "' not found." << std::endl;
+  }
+}
 
 void ShaderManager::detachProgram() { glUseProgram(0); }
 
@@ -179,40 +197,46 @@ void ShaderManager::setCurrentDrawingState(
 }
 
 template <>
-void ShaderManager::setUniformValue<int>(const std::string &symbol,
+void ShaderManager::setUniformValue<int>(const std::string alias,
+                                         const std::string &symbol,
                                          const int &value) {
-  glUniform1i(getUniformLocation(symbol), value);
+  glUniform1i(getUniformLocation(alias, symbol), value);
 }
 
 template <>
-void ShaderManager::setUniformValue<float>(const std::string &symbol,
+void ShaderManager::setUniformValue<float>(const std::string alias,
+                                           const std::string &symbol,
                                            const float &value) {
-  glUniform1f(getUniformLocation(symbol), value);
+  glUniform1f(getUniformLocation(alias, symbol), value);
 }
 
 template <>
-void ShaderManager::setUniformValue<glm::vec3>(const std::string &symbol,
+void ShaderManager::setUniformValue<glm::vec3>(const std::string alias,
+                                               const std::string &symbol,
                                                const glm::vec3 &value) {
-  glUniform3fv(getUniformLocation(symbol), 1, glm::value_ptr(value));
+  glUniform3fv(getUniformLocation(alias, symbol), 1, glm::value_ptr(value));
 }
 
 template <>
-void ShaderManager::setUniformValue<glm::vec4>(const std::string &symbol,
+void ShaderManager::setUniformValue<glm::vec4>(const std::string alias,
+                                               const std::string &symbol,
                                                const glm::vec4 &value) {
-  glUniform4fv(getUniformLocation(symbol), 1, glm::value_ptr(value));
+  glUniform4fv(getUniformLocation(alias, symbol), 1, glm::value_ptr(value));
 }
 
 template <>
-void ShaderManager::setUniformValue<glm::mat3>(const std::string &symbol,
+void ShaderManager::setUniformValue<glm::mat3>(const std::string alias,
+                                               const std::string &symbol,
                                                const glm::mat3 &value) {
-  glUniformMatrix3fv(getUniformLocation(symbol), 1, GL_FALSE,
+  glUniformMatrix3fv(getUniformLocation(alias, symbol), 1, GL_FALSE,
                      glm::value_ptr(value));
 }
 
 template <>
-void ShaderManager::setUniformValue<glm::mat4>(const std::string &symbol,
+void ShaderManager::setUniformValue<glm::mat4>(const std::string alias,
+                                               const std::string &symbol,
                                                const glm::mat4 &value) {
-  glUniformMatrix4fv(getUniformLocation(symbol), 1, GL_FALSE,
+  glUniformMatrix4fv(getUniformLocation(alias, symbol), 1, GL_FALSE,
                      glm::value_ptr(value));
 }
 } // namespace BBong

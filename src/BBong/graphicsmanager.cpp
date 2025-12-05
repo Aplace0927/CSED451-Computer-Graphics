@@ -1,5 +1,5 @@
 #include "BBong/graphicsmanager.hpp"
-#include "BBong/camera.hpp" // Camera Å¬·¡½º ÀüÃ¼ Á¤ÀÇ ÇÊ¿ä
+#include "BBong/camera.hpp" // Camera Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
@@ -95,9 +95,9 @@ void GraphicsManager::update() {
     glm::mat4 view = m_mainCamera->getViewMatrix();
     glm::mat4 projection = m_mainCamera->getProjectionMatrix();
 
-    ShaderManager::getInstance().attachProgram();
-    ShaderManager::getInstance().setUniformValue("uMat4View", view);
-    ShaderManager::getInstance().setUniformValue("uMat4Projection", projection);
+    ShaderManager::getInstance().attachProgram("basic_shader");
+    ShaderManager::getInstance().setUniformValue("basic_shader", "uMat4View", view);
+    ShaderManager::getInstance().setUniformValue("basic_shader", "uMat4Projection", projection);
   }
 
   // --- 5. Late Update (Camera logic, lights) ---

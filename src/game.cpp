@@ -12,7 +12,30 @@ void Game::Init() {
   CameraInit();
   LightInit();
 
-  ShaderManager::getInstance().init();
+#ifdef SHADER_DIRECTORY
+  ShaderManager::getInstance().addShader(
+    "basic_shader",
+    SHADER_DIRECTORY "vert_shader.glsl",
+    SHADER_DIRECTORY "frag_shader.glsl"
+  );
+  ShaderManager::getInstance().addShader(
+    "skybox_shader",
+    SHADER_DIRECTORY "vert_shader_skybox.glsl",
+    SHADER_DIRECTORY "frag_shader_skybox.glsl"
+  );
+#else
+  ShaderManager::getInstance().addShader(
+    "basic_shader",
+    "../shader/vert_shader.glsl",
+    "../shader/frag_shader.glsl"
+  );
+  ShaderManager::getInstance().addShader(
+    "skybox_shader",
+    "../shader/vert_shader_skybox.glsl",
+    "../shader/frag_shader_skybox.glsl"
+  );
+#endif
+  
   TextureManager::getInstance().init();
 
   GameObject *backgroundboundingboxObj = mainScene->createGameObject();
@@ -51,7 +74,7 @@ void Game::LightInit() {
       glm::vec3(0.2f, 0.0f, 0.0f), // Ambient
       glm::vec3(1.0f, 0.0f, 0.0f), // Diffuse
       glm::vec3(1.0f, 1.0f, 1.0f), // Specular
-      1.0f, 0.09f, 0.032f // ¡Ú Constant¸¦ 1.0À¸·Î ¼³Á¤ÇÏ¿© 0À¸·Î ³ª´©±â ¹æÁö ¡Ú
+      1.0f, 0.09f, 0.032f // ï¿½ï¿½ Constantï¿½ï¿½ 1.0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
   );
 }
 

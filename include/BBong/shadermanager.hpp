@@ -34,12 +34,12 @@ public:
     ShaderManager();
     ~ShaderManager();
 
-    void init();
+    GLuint addShader(std::string alias, std::string vertexShader, std::string fragmentShader);
     
-    GLint getUniformLocation(const std::string &symbol);
-    template<typename T> void setUniformValue(const std::string &symbol, const T &value);
+    GLint getUniformLocation(std::string alias, const std::string &symbol);
+    template<typename T> void setUniformValue(std::string alias, const std::string &symbol, const T &value);
 
-    void attachProgram();
+    void attachProgram(std::string alias);
     void detachProgram();
     void removeProgram();
 
@@ -48,7 +48,9 @@ public:
 
 private:
     GLuint programID;
-    std::map<std::string, GLint> uniformLocationCache;
+    std::vector<GLuint> programs;
+    std::map<std::string, GLuint> programAlias;
+    std::map<GLuint, std::map<std::string, GLint>> uniformLocationCache;
 
     GLuint installShaders(const std::vector<ShaderInfo> &shaderInformations);
     GLint compileShader(const std::string shaderPath, GLenum shaderType);

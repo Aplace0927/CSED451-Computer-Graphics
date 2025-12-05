@@ -73,9 +73,10 @@ void Input::keyEvent(unsigned char key, int x, int y) {
       std::cerr << "Switched to GOURAUD mode." << std::endl;
       break;
     }
-    ShaderManager::getInstance().attachProgram();
-    ShaderManager::getInstance().setUniformValue<int>("uIntShadingMode",
-                                                 shadingMode);
+    ShaderManager::getInstance().attachProgram("basic_shader");
+    ShaderManager::getInstance().setUniformValue<int>(
+      "basic_shader", "uIntShadingMode", shadingMode
+    );
     ShaderManager::getInstance().detachProgram();
     break;
   case 't':

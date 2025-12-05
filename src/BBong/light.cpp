@@ -13,25 +13,25 @@ void Light::ResetFrame() { s_pointLightIndex = 0; }
 
 void Light::lateUpdate() {
   ShaderManager &shader = ShaderManager::getInstance();
-  shader.attachProgram();
+  shader.attachProgram("basic_shader");
 
   if (type == LightType::Directional) {
     glm::vec3 dir = getDirection();
-    shader.setUniformValue<glm::vec3>("dirLight.direction", dir);
-    shader.setUniformValue<glm::vec3>("dirLight.ambient", ambient);
-    shader.setUniformValue<glm::vec3>("dirLight.diffuse", diffuse);
-    shader.setUniformValue<glm::vec3>("dirLight.specular", specular);
+    shader.setUniformValue<glm::vec3>("basic_shader", "dirLight.direction", dir);
+    shader.setUniformValue<glm::vec3>("basic_shader", "dirLight.ambient", ambient);
+    shader.setUniformValue<glm::vec3>("basic_shader", "dirLight.diffuse", diffuse);
+    shader.setUniformValue<glm::vec3>("basic_shader", "dirLight.specular", specular);
   } else if (type == LightType::Point) {
     std::string base = "pointLights[" + std::to_string(s_pointLightIndex) + "]";
     glm::vec3 pos = transform->getWorldPosition();
 
-    shader.setUniformValue<glm::vec3>(base + ".position", pos);
-    shader.setUniformValue<float>(base + ".constant", constant);
-    shader.setUniformValue<float>(base + ".linear", linear);
-    shader.setUniformValue<float>(base + ".quadratic", quadratic);
-    shader.setUniformValue<glm::vec3>(base + ".ambient", ambient);
-    shader.setUniformValue<glm::vec3>(base + ".diffuse", diffuse);
-    shader.setUniformValue<glm::vec3>(base + ".specular", specular);
+    shader.setUniformValue<glm::vec3>("basic_shader", base + ".position", pos);
+    shader.setUniformValue<float>("basic_shader", base + ".constant", constant);
+    shader.setUniformValue<float>("basic_shader", base + ".linear", linear);
+    shader.setUniformValue<float>("basic_shader", base + ".quadratic", quadratic);
+    shader.setUniformValue<glm::vec3>("basic_shader", base + ".ambient", ambient);
+    shader.setUniformValue<glm::vec3>("basic_shader", base + ".diffuse", diffuse);
+    shader.setUniformValue<glm::vec3>("basic_shader", base + ".specular", specular);
 
     s_pointLightIndex++;
   }

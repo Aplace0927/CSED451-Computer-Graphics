@@ -35,12 +35,13 @@ void MeshRenderer3D::renderUpdate() {
 
   m_boundingbox->updateWorld(transform->getWorldMatrix());
 
-  ShaderManager::getInstance().attachProgram();
+  ShaderManager::getInstance().attachProgram("basic_shader");
 
   // Model Matrix
   glm::mat4 modelMatrix = transform->getWorldMatrix();
-  ShaderManager::getInstance().setUniformValue<glm::mat4>("uMat4Model",
-                                                          modelMatrix);
+  ShaderManager::getInstance().setUniformValue<glm::mat4>(
+    "basic_shader", "uMat4Model", modelMatrix
+  );
 
   GLuint texID = m_texture.has_value() ? m_texture.value() : 0;
   GLuint normID = m_normalMap.has_value() ? m_normalMap.value() : 0;

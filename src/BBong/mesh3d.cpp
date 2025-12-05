@@ -107,23 +107,23 @@ const std::vector<Vertex3D> Mesh3D::getVertices() { return m_vertices; }
 void Mesh3D::draw(GraphicStyle style, GLuint textureID, GLuint normalMapID) {
   if (VAO.has_value()) {
 
-    ShaderManager::getInstance().attachProgram();
+    ShaderManager::getInstance().attachProgram("basic_shader");
 
     // Texture Unit 0: Diffuse
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
-    ShaderManager::getInstance().setUniformValue<int>("samp2DTexture", 0);
+    ShaderManager::getInstance().setUniformValue<int>("basic_shader", "samp2DTexture", 0);
     ShaderManager::getInstance().setUniformValue<float>(
-        "uFloatUseTexture", textureID ? 1.0f : 0.0f);
+        "basic_shader", "uFloatUseTexture", textureID ? 1.0f : 0.0f);
 
     // Texture Unit 1: Normal Map
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, normalMapID);
-    ShaderManager::getInstance().setUniformValue<int>("normalMap", 1);
+    ShaderManager::getInstance().setUniformValue<int>("basic_shader", "normalMap", 1);
     ShaderManager::getInstance().setUniformValue<float>(
-        "uFloatUseNormalMap", normalMapID ? 1.0f : 0.0f);
+        "basic_shader", "uFloatUseNormalMap", normalMapID ? 1.0f : 0.0f);
 
-    ShaderManager::getInstance().setUniformValue<glm::vec3>("uColor",
+    ShaderManager::getInstance().setUniformValue<glm::vec3>("basic_shader", "uColor",
                                                             defaultColor);
     ShaderStateDrawingMethod originalState =
         ShaderManager::getInstance().getCurrentDrawingState();
@@ -142,7 +142,7 @@ void Mesh3D::draw(GraphicStyle style, GLuint textureID, GLuint normalMapID) {
       break;
 
     case GraphicStyle::WIREFRAME:
-      ShaderManager::getInstance().setUniformValue<float>("uFloatUseTexture", 0.0f);
+      ShaderManager::getInstance().setUniformValue<float>("basic_shader", "uFloatUseTexture", 0.0f);
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
       glDisable(GL_POLYGON_OFFSET_FILL);
       glEnable(GL_POLYGON_OFFSET_LINE);
@@ -156,7 +156,7 @@ void Mesh3D::draw(GraphicStyle style, GLuint textureID, GLuint normalMapID) {
       break;
 
     case GraphicStyle::HIDDEN_LINE_REMOVAL:
-      ShaderManager::getInstance().setUniformValue<float>("uFloatUseTexture", 0.0f);
+      ShaderManager::getInstance().setUniformValue<float>("basic_shader", "uFloatUseTexture", 0.0f);
       glEnable(GL_DEPTH_TEST);
       glDepthFunc(GL_LESS);
 
