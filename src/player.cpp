@@ -29,7 +29,7 @@ Player::Player(GameObject *owner)
   meshRenderer->setTexture(TextureManager::getInstance().getTexture(
       "assets/texture/diffuse/diffuse_jet.png"));
   meshRenderer->setNormalMap(TextureManager::getInstance().getTexture(
-      ASSETS_DIRECTORY "texture/normal/normal_industrial.png"));
+      "assets/texture/normal/normal_industrial.png"));
 #endif
   meshRenderer->setDefaultColor(glm::vec3(0.0f, 1.0f, 1.0f));
 
@@ -47,9 +47,10 @@ Player::Player(GameObject *owner)
   for (int i = 0; i < playerHealth; ++i) {
     GameObject *healthGem =
         Game::getInstance().mainScene->createGameObject(transform);
+    healthGem->transform->setScale(glm::vec3(5.0f));
     healthGem->transform->setLocalPosition(glm::vec3(
-        10 * glm::cos(glm::radians(360.0f * i / playerHealth)),
-        10 * glm::sin(glm::radians(360.0f * i / playerHealth)), 0.0f));
+        3 * 10 * glm::cos(glm::radians(360.0f * i / playerHealth)),
+        3 * 10 * glm::sin(glm::radians(360.0f * i / playerHealth)), 0.0f));
     auto healthGemMesh = healthGem->addComponent<MeshRenderer3D>();
 #ifdef ASSETS_DIRECTORY
     healthGemMesh->setMesh(
@@ -63,6 +64,15 @@ Player::Player(GameObject *owner)
         "assets/texture/diffuse/diffuse_star.png"));
 #endif
     healthGemMesh->setDefaultColor(glm::vec3(1.0f, 1.0f, 0.5f));
+
+    auto healthGempointLightComp = healthGem->addComponent<Light>();
+    healthGempointLightComp->setPoint(
+        glm::vec3(0.2f, 0.0f, 0.0f), // Ambient
+        glm::vec3(1.0f, 0.0f, 0.0f), // Diffuse
+        glm::vec3(1.0f, 1.0f, 1.0f), // Specular
+        1.0f, 0.09f, 0.032f // ï¿½ï¿½ Constantï¿½ï¿½ 1.0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+    );
+
     healthGem->transform->setParent(healthGemOrigin->transform);
     healthGems.push_back(healthGem);
 
@@ -102,7 +112,7 @@ Player::Player(GameObject *owner)
       glm::vec3(0.2f, 0.2f, 0.2f), // Ambient
       glm::vec3(1.0f, 1.0f, 1.0f), // Diffuse
       glm::vec3(1.0f, 1.0f, 1.0f), // Specular
-      1.0f, 0.09f, 0.032f // ¡Ú Constant¸¦ 1.0À¸·Î ¼³Á¤ÇÏ¿© 0À¸·Î ³ª´©±â ¹æÁö ¡Ú
+      1.0f, 0.09f, 0.032f // ï¿½ï¿½ Constantï¿½ï¿½ 1.0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
   );
 }
 
