@@ -20,10 +20,12 @@ add_executable(
 	"BBong/light.cpp"
 	"enemy.cpp"
 	"enemypatterns.cpp"
+	"skybox.cpp"
 	"game.cpp"
 	"main.cpp"
 	"player.cpp"
 	"utility.cpp")
+
 if (UNIX AND NOT APPLE)
 	target_link_libraries(touhou_postech
 		GLUT glew OpenGL::GL glm glu

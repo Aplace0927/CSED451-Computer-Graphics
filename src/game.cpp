@@ -4,6 +4,7 @@
 #include "BBong/camera.hpp"
 #include "backgroundboundingbox.hpp"
 #include "BBong/light.hpp"
+#include "skybox.hpp"
 
 namespace BBong {
 Game::Game() : mainScene(new Scene) {}
@@ -54,6 +55,28 @@ void Game::Init() {
   enemyObj2->transform->setWorldPosition(
       glm::vec3(GameConfig::POSITION_RIGHT_LIMIT,
                 GameConfig::POSITION_UPPER_LIMIT, 0.0f));
+
+      // Skybox setup
+  GameObject *skyboxObj = mainScene->createGameObject();
+  auto skybox = skyboxObj->addComponent<Skybox>();
+  skybox->setCubemapFaces({
+  #ifdef ASSETS_DIRECTORY
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_day.png", // +x
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_day.png", // -x
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_day.png", // +y
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_day.png", // -y
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_ocean_day.png", // +z
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_ocean_day.png"  // -z
+  #else
+    "../assets/texture/diffuse/diffuse_sky_day.png", // +x
+    "../assets/texture/diffuse/diffuse_sky_day.png", // -x
+    "../assets/texture/diffuse/diffuse_sky_day.png", // +y
+    "../assets/texture/diffuse/diffuse_sky_day.png", // -y
+    "../assets/texture/diffuse/diffuse_ocean_day.png", // +z
+    "../assets/texture/diffuse/diffuse_ocean_day.png"  // -z
+  #endif
+    });
+
 }
 
 void Game::LightInit() {
