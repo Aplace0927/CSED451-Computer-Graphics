@@ -61,19 +61,19 @@ void Game::Init() {
   auto skybox = skyboxObj->addComponent<Skybox>();
   skybox->setCubemapFaces({
   #ifdef ASSETS_DIRECTORY
-    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_day.png", // +x
-    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_day.png", // -x
-    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_day.png", // +y
-    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_day.png", // -y
-    ASSETS_DIRECTORY "texture/diffuse/diffuse_ocean_day.png", // +z
-    ASSETS_DIRECTORY "texture/diffuse/diffuse_ocean_day.png"  // -z
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_night.png", // +x
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_night.png", // -x
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_night.png", // +y
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_sky_night.png", // -y
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_ocean_night.png", // +z
+    ASSETS_DIRECTORY "texture/diffuse/diffuse_ocean_night.png"  // -z
   #else
-    "../assets/texture/diffuse/diffuse_sky_day.png", // +x
-    "../assets/texture/diffuse/diffuse_sky_day.png", // -x
-    "../assets/texture/diffuse/diffuse_sky_day.png", // +y
-    "../assets/texture/diffuse/diffuse_sky_day.png", // -y
-    "../assets/texture/diffuse/diffuse_ocean_day.png", // +z
-    "../assets/texture/diffuse/diffuse_ocean_day.png"  // -z
+    "../assets/texture/diffuse/diffuse_sky_night.png", // +x
+    "../assets/texture/diffuse/diffuse_sky_night.png", // -x
+    "../assets/texture/diffuse/diffuse_sky_night.png", // +y
+    "../assets/texture/diffuse/diffuse_sky_night.png", // -y
+    "../assets/texture/diffuse/diffuse_ocean_night.png", // +z
+    "../assets/texture/diffuse/diffuse_ocean_night.png"  // -z
   #endif
     });
 
