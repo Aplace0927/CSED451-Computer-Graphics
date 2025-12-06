@@ -36,6 +36,7 @@ private:
 private:
   GLuint vao = 0;
   GLuint vbo = 0;
+  GLuint ebo = 0;
   GLuint cubemapTex = 0;
   std::string shaderAlias = "skybox_shader";
   std::array<std::string, 6> facePaths{};
