@@ -24,7 +24,6 @@ uniform vec3 uColor;
 out vec3 outVec3FragPos;
 out vec3 outVec3Normal;
 out vec2 outVec2TexCoord;
-out vec4 outGouraudColor;
 out mat3 outTBN;
 
 void main() {
@@ -44,25 +43,4 @@ void main() {
     outTBN = mat3(T, B, N);
 
     gl_Position = uMat4Projection * uMat4View * worldPos;
-
-    // --- Gouraud Shading Calculation ---
-    if (uIntShadingMode == 0) {
-        vec3 ambient = dirLight.ambient;
-
-        // Diffuse
-        vec3 norm = normalize(outVec3Normal);
-        vec3 lightDir = normalize(-dirLight.direction);
-        float diff = max(dot(norm, lightDir), 0.0);
-        vec3 diffuse = dirLight.diffuse * diff;
-
-        // Specular
-        vec3 viewDir = normalize(uVec3ViewPos - outVec3FragPos);
-        vec3 reflectDir = reflect(-lightDir, norm);
-        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
-        vec3 specular = dirLight.specular * spec;
-
-        outGouraudColor = vec4(ambient + diffuse + specular, 1.0);
-    } else {
-        outGouraudColor = vec4(0.0);
-    }
 }

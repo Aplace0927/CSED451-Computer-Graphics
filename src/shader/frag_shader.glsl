@@ -50,9 +50,28 @@ void main() {
     vec4 texColor = texture(samp2DTexture, outVec2TexCoord);
     vec3 objectColor = mix(uColor, texColor.rgb, uFloatUseTexture);
 
-    // 1. Gouraud Shading
+    // 1. Gouraud Shading (supports directional + point lights)
     if (uIntShadingMode == 0) {
-        FragColor = outGouraudColor * vec4(objectColor, 1.0);
+        vec3 norm = normalize(outVec3Normal);
+        vec3 viewDir = normalize(uVec3ViewPos - outVec3FragPos);
+
+        // Directional light contribution
+        vec3 ambDir = dirLight.ambient;
+        vec3 lightDir = normalize(-dirLight.direction);
+        float diffDir = max(dot(norm, lightDir), 0.0);
+        vec3 difDir = dirLight.diffuse * diffDir;
+        vec3 refDir = reflect(-lightDir, norm);
+        float specDir = pow(max(dot(viewDir, refDir), 0.0), 32.0);
+        vec3 speDir = dirLight.specular * specDir;
+
+        vec3 lighting = ambDir + difDir + speDir;
+
+        // Point lights contribution (Phong terms aggregated per-fragment)
+        for (int i = 0; i < NR_POINT_LIGHTS; i++) {
+            lighting += CalcPointLight(pointLights[i], norm, outVec3FragPos, viewDir, objectColor);
+        }
+
+        FragColor = vec4(lighting * objectColor, 1.0);
         return;
     }
 
@@ -107,7 +126,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, v
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
     
     // Attenuation
-    float distance    = length(light.position - fragPos) / 512.0;
+    float distance    = length(light.position - fragPos) / 128.0;
     
     // Safety Fix
     float attenuationDenominator = light.constant + light.linear * distance + 
