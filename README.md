@@ -22,34 +22,27 @@
 |--------|--------|-------------|
 | - | `main.cpp` | Main program |
 | `game.hpp` | `game.cpp` | Game class and callback registration |
-
 | `utility.hpp` | - | Utility functions for graphics calculation |
 | `config.hpp` | - | Configuration constants |
-
 | `singleton.hpp` | `singleton.cpp`| Singleton template class |
 | `objfileloader.hpp` | `objfileloader.cpp` | covert obj file to mesh |
 | `objectpool.hpp` | - | Optimization helper for multiple homogenous objects |
-
 | `gameobject.hpp` | `gameobject.cpp` | GameObject |
 | `component.hpp` | `component.cpp` | Base Ability of GameObject |
 | `scene.hpp` | `scene.cpp`| SceneGraph of Game Project |
-
 | `boundingbox2d.hpp` | - | Boundingbox2d for detecting collision |
 | `boundingbox3d.hpp` | - | Boundingbox3d for detecting collision |
 | `mesh2d.hpp` | `mesh2d.cpp` | Mesh2d for rendering |
 | `mesh3d.hpp` | `mesh2d.cpp` | Mesh3d for rendering |
-
 | `transform.hpp` | `transform.cpp` | Component for coordinate system |
 | `collider2d.hpp` | - | Component for detecting collision2d |
 | `collider3d.hpp` | `collider3d.cpp` | Component for detecting collision3d |
 | `renderer2d.hpp` | `renderer2d.cpp` | Component for rendering 2d mesh |
 | `renderer3d.hpp` | `renderer3d.cpp` | Component for rendering 3d mesh |
-
 | `collisionmanager.hpp` | `collisionmanager.cpp` | Collision checking management |
 | `graphicsmanager.hpp` | `graphicsmanager.cpp` | GameObject rendering management |
 | `physicsmanager.hpp` | `physicsmanager.cpp` | Physics simulation management |
 | `inputmanager.hpp` | `inputmanager.cpp` | Input management |
-
 | `backgroundboundingbox.hpp` | - | Component for Backgound Boundingbox |
 | `bullet.hpp` | - | Component for Bullet behavior |
 | `enemy.hpp` | `enemy.cpp` | Component for Enemy behavior |
