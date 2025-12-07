@@ -24,40 +24,40 @@ void Input::keyEvent(unsigned char key, int x, int y) {
   case 'e':
     switch (projectionMode) {
     case PERSPECTIVE:
-      projectionMode = ORTHOGRAPHIC;
-      std::cerr << "Switched to ORTHOGRAPHIC mode." << std::endl;
-      break;
-    case ORTHOGRAPHIC:
       projectionMode = TPV_TOPVIEW;
-      std::cerr << "Switched to TPV_TOPVIEW mode." << std::endl;  
+      std::cerr << "Switched to TPV_TOPVIEW mode." << std::endl;
       break;
+    // case ORTHOGRAPHIC:
+    //   projectionMode = TPV_TOPVIEW;
+    //   std::cerr << "Switched to TPV_TOPVIEW mode." << std::endl;  
+    //   break;
     case TPV_TOPVIEW:
-      projectionMode = PLAYER_VIEW;
-      std::cerr << "Switched to PLAYER_VIEW mode." << std::endl;
-      break;
-    case PLAYER_VIEW:
       projectionMode = PERSPECTIVE;
       std::cerr << "Switched to PERSPECTIVE mode." << std::endl;
       break;
+    // case PLAYER_VIEW:
+    //   projectionMode = PERSPECTIVE;
+    //   std::cerr << "Switched to PERSPECTIVE mode." << std::endl;
+    //   break;
     }
     break;
-  case 'r':
-    switch (graphicStyleMode) {
-    case WIREFRAME:
-      graphicStyleMode = SOLID;
-      std::cerr << "Switched to SOLID mode." << std::endl;
-      break;
-    case SOLID:
-      graphicStyleMode = HIDDEN_LINE_REMOVAL;
-      std::cerr << "Switched to HIDDEN_LINE_REMOVAL mode." << std::endl;
-      break;
-    case HIDDEN_LINE_REMOVAL:
-      graphicStyleMode = WIREFRAME;
-      std::cerr << "Switched to WIREFRAME mode." << std::endl;
-      break;
-    }
-    GraphicsManager::getInstance().update();
-    break;
+  // case 'r':
+  //   switch (graphicStyleMode) {
+  //   case WIREFRAME:
+  //     graphicStyleMode = SOLID;
+  //     std::cerr << "Switched to SOLID mode." << std::endl;
+  //     break;
+  //   case SOLID:
+  //     graphicStyleMode = HIDDEN_LINE_REMOVAL;
+  //     std::cerr << "Switched to HIDDEN_LINE_REMOVAL mode." << std::endl;
+  //     break;
+  //   case HIDDEN_LINE_REMOVAL:
+  //     graphicStyleMode = WIREFRAME;
+  //     std::cerr << "Switched to WIREFRAME mode." << std::endl;
+  //     break;
+  //   }
+  //   GraphicsManager::getInstance().update();
+  //   break;
   case 'c':
     switch (shadingMode) {
     case GOURAUD:
