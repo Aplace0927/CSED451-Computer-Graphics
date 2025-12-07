@@ -38,10 +38,16 @@ struct PointLight {
     vec3 specular;
 };
 
+#define SHININESS 32.0
+#define DISTANCE_FACTOR 64.0
+#define TEXTURE_SCALE 500.0
 #define NR_POINT_LIGHTS 16
+
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 
 // --- Function Prototypes ---
+vec3 CalcGouraudDirLight(DirectionalLight dirLight, vec3 normal, vec3 viewDir, vec3 color);
+vec3 CalcGouraudPointLight(PointLight pointLight, vec3 normal, vec3 fragPos, vec3 viewDir, vec3 color);
 vec3 CalcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir, vec3 color);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, vec3 color);
 
@@ -49,51 +55,81 @@ void main() {
     // 0. Base Color
     vec4 texColor = texture(samp2DTexture, outVec2TexCoord);
     vec3 objectColor = mix(uColor, texColor.rgb, uFloatUseTexture);
+    vec3 norm = normalize(outVec3Normal);
+
+    vec3 viewDir = normalize(uVec3ViewPos - outVec3FragPos);
+    vec3 result = vec3(0.0, 0.0, 0.0);
 
     // 1. Gouraud Shading (supports directional + point lights)
     if (uIntShadingMode == 0) {
-        vec3 norm = normalize(outVec3Normal);
-        vec3 viewDir = normalize(uVec3ViewPos - outVec3FragPos);
-
-        // Directional light contribution
-        vec3 ambDir = dirLight.ambient;
-        vec3 lightDir = normalize(-dirLight.direction);
-        float diffDir = max(dot(norm, lightDir), 0.0);
-        vec3 difDir = dirLight.diffuse * diffDir;
-        vec3 refDir = reflect(-lightDir, norm);
-        float specDir = pow(max(dot(viewDir, refDir), 0.0), 32.0);
-        vec3 speDir = dirLight.specular * specDir;
-
-        vec3 lighting = ambDir + difDir + speDir;
-
-        // Point lights contribution (Phong terms aggregated per-fragment)
+        result = CalcGouraudDirLight(dirLight, norm, viewDir, objectColor);
         for (int i = 0; i < NR_POINT_LIGHTS; i++) {
-            lighting += CalcPointLight(pointLights[i], norm, outVec3FragPos, viewDir, objectColor);
+            result += CalcGouraudPointLight(pointLights[i], norm, outVec3FragPos, viewDir, objectColor);
         }
 
-        FragColor = vec4(lighting * objectColor, 1.0);
+        FragColor = vec4(result * objectColor, 1.0);
         return;
     }
 
     // 2. Normal Vector
-    vec3 norm = normalize(outVec3Normal);
-    if (uIntShadingMode == 2 && uFloatUseNormalMap > 0.5) {
-        vec3 normalFromMap = texture(normalMap, outVec2TexCoord * 500).rgb;
+    if (uIntShadingMode == 2) {
+        vec3 normalFromMap = texture(normalMap, outVec2TexCoord * TEXTURE_SCALE).rgb;
         normalFromMap = normalize(normalFromMap * 2.0 - 1.0);
         norm = normalize(outTBN * normalFromMap);
     }
 
-    vec3 viewDir = normalize(uVec3ViewPos - outVec3FragPos);
-    vec3 result = vec3(0.0);
-
     // 3. Directional Light
     result += CalcDirLight(dirLight, norm, viewDir, objectColor);
-
-    // 4. Point Lights
     for(int i = 0; i < NR_POINT_LIGHTS; i++)
         result += CalcPointLight(pointLights[i], norm, outVec3FragPos, viewDir, objectColor);
 
     FragColor = vec4(result, 1.0);
+}
+
+vec3 CalcGouraudDirLight(DirectionalLight dirLight, vec3 normal, vec3 viewDir, vec3 color) {
+    // Directional light contribution
+    vec3 lightDir = normalize(-dirLight.direction);
+    
+    vec3 ambient = dirLight.ambient;
+
+    float diffIntensity = max(dot(normal, lightDir), 0.0);
+    vec3 diffused = dirLight.diffuse * diffIntensity;
+
+    vec3 reflDir = reflect(-lightDir, normal);
+
+    float specIntensity = pow(max(dot(viewDir, reflDir), 0.0), SHININESS);
+    vec3 specular = dirLight.specular * specIntensity;
+
+    return (ambient + diffused + specular);
+}
+
+vec3 CalcGouraudPointLight(PointLight pointLight, vec3 normal, vec3 fragPos, vec3 viewDir, vec3 color) {
+    // Point light contribution
+    vec3 lightDir = normalize(pointLight.position - fragPos);
+    
+    vec3 ambient = pointLight.ambient;
+
+    float diffIntensity = max(dot(normal, lightDir), 0.0);
+    vec3 diffused = pointLight.diffuse * diffIntensity;
+
+    vec3 reflDir = reflect(-lightDir, normal);
+
+    float specIntensity = pow(max(dot(viewDir, reflDir), 0.0), SHININESS);
+    vec3 specular = pointLight.specular * specIntensity;
+
+    // Attenuation
+    float distance    = length(pointLight.position - fragPos) / DISTANCE_FACTOR;
+    
+    // Safety Fix
+    float attenuationDenominator = pointLight.constant + pointLight.linear * distance + 
+                                   pointLight.quadratic * (distance * distance);
+                                   
+    float attenuation = 0.0;
+    if (attenuationDenominator > 0.0001) {
+        attenuation = 1.0 / attenuationDenominator;
+    }
+
+    return (ambient + diffused + specular) * attenuation;
 }
 
 // Directional Light
@@ -105,7 +141,7 @@ vec3 CalcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir, vec3 color)
     
     // Specular (Phong)
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0); // Shininess = 32
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), SHININESS); // Shininess = 32
     
     vec3 ambient  = light.ambient  * color;
     vec3 diffuse  = light.diffuse  * diff * color;
@@ -123,10 +159,10 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, v
     
     // Specular
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), SHININESS); // Shininess = 32
     
     // Attenuation
-    float distance    = length(light.position - fragPos) / 128.0;
+    float distance    = length(light.position - fragPos) / DISTANCE_FACTOR;
     
     // Safety Fix
     float attenuationDenominator = light.constant + light.linear * distance + 
